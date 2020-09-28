@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dash.dashmode.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MiningToolItemMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

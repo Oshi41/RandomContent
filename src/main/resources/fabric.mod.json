@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "dash-mode",
+  "version": "${version}",
+  "name": "Dash Mode",
+  "description": "",
+  "authors": [
+    "Dash"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/dash-mode/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dash.dashmode.client.DashModeClient"
+    ],
+    "main": [
+      "dash.dashmode.DashMode"
+    ]
+  },
+  "mixins": [
+    "dash-mode.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.10.0+build.208",
+    "fabric": "*",
+    "minecraft": "1.16.3"
+  }
+}

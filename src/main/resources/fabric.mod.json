@@ -16,7 +16,7 @@
       "dash.dashmode.client.DashModeClient"
     ],
     "main": [
-      "dash.dashmode.DashMode"
+      "dash.dashmode.DashMod"
     ]
   },
   "mixins": [

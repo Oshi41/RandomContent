@@ -1,6 +1,6 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.block.DashGrassBlock;
+import dash.dashmode.tags.DashTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.*;
@@ -27,7 +27,7 @@ public class MiningToolItemMixin {
 
     @Inject(method = "getMiningSpeedMultiplier", at = @At("HEAD"), cancellable = true)
     public void getMiningSpeedMultiplierInject(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
-        if (isShovel && DashGrassBlock.isDashSoil(state)) {
+        if (isShovel && state.isIn(DashTags.Soil)) {
             cir.setReturnValue(miningSpeed);
         }
     }

@@ -4,8 +4,9 @@
   "package": "dash.dashmode.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "FeatureMixin",
     "MiningToolItemMixin",
-    "FeatureMixin"
+    "OreBlockMixin"
   ],
   "client": [
   ],

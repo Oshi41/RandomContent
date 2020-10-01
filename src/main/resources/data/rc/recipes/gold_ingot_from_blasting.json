@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "rc:paper_gold_ores"
+    "tag": "rc:paper_gold_ore"
   },
   "result": "minecraft:gold_ingot",
   "experience": 1.0,

@@ -1,6 +1,6 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.tags.DashTags;
+import dash.dashmode.registry.DashTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.*;

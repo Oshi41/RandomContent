@@ -1,4 +1,4 @@
-package dash.dashmode.tags;
+package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
 import net.fabricmc.fabric.api.tag.TagRegistry;

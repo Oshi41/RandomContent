@@ -80,6 +80,6 @@ public class DashBiomes {
         Registry.register(BuiltinRegistries.BIOME, PaperBiomeKey.getValue(), PaperBiome);
         BuiltinBiomesAccessor.getBY_RAW_ID().put(BuiltinRegistries.BIOME.getRawId(PaperBiome), PaperBiomeKey);
 
-        OverworldBiomes.addContinentalBiome(PaperBiomeKey, OverworldClimate.TEMPERATE, 50);
+        OverworldBiomes.addContinentalBiome(PaperBiomeKey, OverworldClimate.TEMPERATE, DashMod.MainConfig.getConfig().PaperBiomeWeight);
     }
 }

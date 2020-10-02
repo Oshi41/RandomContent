@@ -1,0 +1,20 @@
+{
+  "rc.paperbiome.comment": "Вес биома для Бумажного измерения",
+  "biome.rc.paper_biome": "Бумажный биом",
+  "itemGroup.rc.general": "Random Content",
+  "block.rc.paper_dirt": "Бумажная земля",
+  "block.rc.paper_grass_block": "Бумажная трава",
+  "block.rc.paper_stone": "Бумажный камень",
+  "block.rc.paper_oak_log": "Бумажный дуб",
+  "block.rc.paper_leaves": "Бумажная листва",
+  "block.rc.paper_birch_sapling": "Саженец бумажного дуба",
+  "block.rc.paper_flower": "Бумажный цветок",
+  "block.rc.paper_coal_ore": "Руда бумажного угля",
+  "block.rc.paper_iron_ore": "Руда бумажного железа",
+  "block.rc.paper_gold_ore": "Руда бумажного золота",
+  "block.rc.paper_redstone_ore": "Руда бумажного красного камня",
+  "block.rc.paper_lapis_ore": "Руда бумажного лазурита",
+  "block.rc.paper_diamond_ore": "Руда бумажного алмаза",
+  "block.rc.paper_emerald_ore": "Руда бумажного изумруда",
+  "item.rc.paper_apple": "Бумажное яблоко"
+}

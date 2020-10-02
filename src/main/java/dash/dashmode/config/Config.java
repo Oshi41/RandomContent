@@ -137,7 +137,8 @@ public class Config<T> {
             String comment = "";
 
             if (!property.commentLangKey().isEmpty()) {
-                comment = new TranslatableText(property.commentLangKey()).toString();
+                TranslatableText translatableText = new TranslatableText(property.commentLangKey());
+                comment = translatableText.toString();
             } else {
                 comment = property.comment();
             }

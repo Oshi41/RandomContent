@@ -16,6 +16,7 @@ import net.minecraft.world.gen.decorator.DepthAverageDecoratorConfig;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.foliage.LargeOakFoliagePlacer;
+import net.minecraft.world.gen.placer.SimpleBlockPlacer;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.trunk.LargeOakTrunkPlacer;
 
@@ -35,6 +36,7 @@ public class DashFeatures {
     public static final ConfiguredFeature<?, ?> PaperDiamondOre;
     public static final ConfiguredFeature<?, ?> PaperLapisOre;
     public static final ConfiguredFeature<?, ?> PaperEmeraldOre;
+    public static final ConfiguredFeature<RandomPatchFeatureConfig, ?> PaperFlowers;
 
     static {
         AnyStoneRule = new TagMatchRuleTest(DashTags.Stone);
@@ -86,6 +88,10 @@ public class DashFeatures {
                 .decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP)
                 .decorate(Decorator.COUNT_EXTRA.configure(new CountExtraDecoratorConfig(2, 0.1F, 1)));
 
+        PaperFlowers = Feature.RANDOM_PATCH.configure((new RandomPatchFeatureConfig.Builder(new SimpleBlockStateProvider(DashBlocks.PaperFlower.getDefaultState()),
+                SimpleBlockPlacer.INSTANCE))
+                .tries(32)
+                .build());
     }
 
     public static void init(String modId) {
@@ -103,6 +109,7 @@ public class DashFeatures {
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_emerald"), PaperEmeraldOre);
 
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "random_paper_tree"), RandomPaperTree);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "random_paper_flowers"), PaperFlowers);
     }
 
 }

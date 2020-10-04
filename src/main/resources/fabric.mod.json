@@ -13,7 +13,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "dash.dashmode.client.DashModeClient"
+      "dash.dashmode.client.DashModClient"
+    ],
+    "server": [
+      "dash.dashmode.server.DashModServer"
     ],
     "main": [
       "dash.dashmode.DashMod"

@@ -22,8 +22,9 @@ public class DashSaplingBlock extends SaplingBlock {
 
     @Override
     protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-        if (canPlant == null)
+        if (canPlant == null) {
             return super.canPlantOnTop(floor, world, pos);
+        }
 
         return canPlant.canPlantOnTop(floor, world, pos);
     }

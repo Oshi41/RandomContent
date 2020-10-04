@@ -18,10 +18,13 @@ import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
+import java.awt.*;
+
 public class DashBiomes {
     public static final Biome PaperBiome;
     public static final RegistryKey<Biome> PaperBiomeKey;
     private static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> PaperSurfaceBuilder;
+
 
     static {
         PaperBiomeKey = RegistryKey.of(Registry.BIOME_KEY,
@@ -53,6 +56,9 @@ public class DashBiomes {
         generationSettings.feature(GenerationStep.Feature.UNDERGROUND_ORES, DashFeatures.PaperEmeraldOre);
 
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, DashFeatures.RandomPaperTree);
+        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, DashFeatures.PaperFlowers);
+
+        int white = Color.WHITE.getRGB();
 
         PaperBiome = (new Biome.Builder())
                 .precipitation(Biome.Precipitation.RAIN)
@@ -62,10 +68,10 @@ public class DashBiomes {
                 .temperature(0.8F)
                 .downfall(0.4F)
                 .effects((new BiomeEffects.Builder())
-                        .waterColor(0x3f76e4)
-                        .waterFogColor(0x050533)
-                        .fogColor(0xc0d8ff)
-                        .skyColor(0x77adff)
+                        .waterColor(white)
+                        .waterFogColor(white)
+                        .fogColor(white)
+                        .skyColor(white)
                         .build())
                 .spawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())

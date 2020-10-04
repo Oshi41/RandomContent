@@ -128,8 +128,9 @@ public class DashBlocks {
     private static void initBlock(Identifier id, Block block, @Nullable Item.Settings settings) {
         Registry.register(Registry.BLOCK, id, block);
 
-        if (settings != null)
+        if (settings != null) {
             Registry.register(Registry.ITEM, id, new BlockItem(block, settings));
+        }
 
     }
 

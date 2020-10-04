@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Language;
 import net.minecraft.util.crash.CrashReport;
 import org.apache.commons.io.FileUtils;
 
@@ -30,12 +30,17 @@ public class Config<T> {
     /**
      * GSON parser object
      */
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
 
     /**
      * List of annotated fields
      */
     private final Map<Field, Property> fields = new HashMap<>();
+
+    /**
+     * Linked file
+     */
+    private final File configFile;
 
     /**
      * Singletone config object
@@ -66,6 +71,8 @@ public class Config<T> {
             Property annotation = field.getAnnotation(Property.class);
             fields.put(field, annotation);
         }
+
+        configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), modId + ".json");
     }
 
     /**
@@ -79,9 +86,9 @@ public class Config<T> {
 
     /**
      * Populate config object from file
+     * Without comments!!! The correct lang will apper later
      */
     public void read() {
-        final File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), modId + ".json");
         configFile.getParentFile().mkdirs();
 
         if (configFile.exists()) {
@@ -93,16 +100,19 @@ public class Config<T> {
                 CrashReport.create(e, "Config reading error");
             }
         } else {
-            writeToFile(configFile);
+            writeToFile();
         }
     }
 
-    private void writeToFile(File file) {
-        file.getParentFile().mkdirs();
+    /**
+     * Write current config to
+     */
+    private void writeToFile() {
+        configFile.getParentFile().mkdirs();
 
-        if (!file.exists()) {
+        if (!configFile.exists()) {
             try {
-                file.createNewFile();
+                configFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
 
@@ -122,10 +132,7 @@ public class Config<T> {
                 configJsonObj.add(property.category(), category);
             }
 
-            String key = property.key();
-            if (key.isEmpty()) {
-                key = field.getName();
-            }
+            String key = getKey(property, field);
 
             if (category.has(key)) {
                 CrashReport.create(new Exception("duplicate key:" + key), String.format("Duplicating key (%s) in category (%s)", key, category));
@@ -134,21 +141,10 @@ public class Config<T> {
             JsonObject fieldObject = new JsonObject();
             category.add(key, fieldObject);
 
-            String comment = "";
-
-            if (!property.commentLangKey().isEmpty()) {
-                TranslatableText translatableText = new TranslatableText(property.commentLangKey());
-                comment = translatableText.toString();
-            } else {
-                comment = property.comment();
-            }
-
-            fieldObject.addProperty("_comment", comment);
-
             try {
                 Object fieldValue = field.get(instance);
-                JsonElement fieldValueJson = gson.toJsonTree(fieldValue);
-                fieldObject.add("value", fieldValueJson);
+                fieldObject.addProperty("value", gson.toJson(fieldValue));
+                fieldObject.addProperty("_comment", getComment(property));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
 
@@ -158,7 +154,7 @@ public class Config<T> {
 
         String jsonContent = gson.toJson(configJsonObj);
         try {
-            FileUtils.writeStringToFile(file, jsonContent, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(configFile, jsonContent, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -175,25 +171,25 @@ public class Config<T> {
 
             // missing category
             JsonObject category = jsonObject.getAsJsonObject(property.category());
-            if (category == null)
+            if (category == null) {
                 continue;
-
-            // key or field name
-            String key = property.key();
-            if (key.isEmpty()) {
-                key = field.getName();
             }
 
+            // key or field name
+            String key = getKey(property, field);
+
             // missing key
-            if (!category.has(key))
+            if (!category.has(key)) {
                 continue;
+            }
 
             // get field as json
             JsonObject fieldValue = category.get(key).getAsJsonObject();
             JsonElement value = fieldValue.get("value");
 
-            if (value == null)
+            if (value == null) {
                 continue;
+            }
 
             // parse actual value
             Object parsedValue = gson.fromJson(value, field.getType());
@@ -207,5 +203,23 @@ public class Config<T> {
                 CrashReport.create(e, "Config reading error");
             }
         }
+    }
+
+    private String getKey(Property property, Field field) {
+        String key = property.key();
+
+        if (key.isEmpty()) {
+            key = field.getName();
+        }
+
+        return key;
+    }
+
+    private String getComment(Property property) {
+        if (property.commentLangKey().isEmpty())
+            return property.comment();
+
+
+        return Language.getInstance().get(property.commentLangKey());
     }
 }

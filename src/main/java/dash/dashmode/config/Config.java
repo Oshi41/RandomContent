@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.crash.CrashReport;
+import net.minecraft.util.math.MathHelper;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -30,7 +32,11 @@ public class Config<T> {
     /**
      * GSON parser object
      */
-    private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder()
+            .enableComplexMapKeySerialization()
+            .registerTypeAdapter(Identifier.class, new Identifier.Serializer())
+            .setPrettyPrinting()
+            .create();
 
     /**
      * List of annotated fields
@@ -141,15 +147,16 @@ public class Config<T> {
             JsonObject fieldObject = new JsonObject();
             category.add(key, fieldObject);
 
-            try {
-                Object fieldValue = field.get(instance);
-                fieldObject.addProperty("value", gson.toJson(fieldValue));
-                fieldObject.addProperty("_comment", getComment(property));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            Object fieldValue = getCorrectedFieldValue(field);
 
-                CrashReport.create(e, "Error during reading config");
+            JsonElement element = gson.toJsonTree(fieldValue, field.getType());
+            fieldObject.add("value", element);
+            fieldObject.addProperty("_comment", getComment(property));
+
+            if (field.isAnnotationPresent(FloatValidate.class)) {
+                fieldObject.addProperty("_valueRestrictions", getValueRestrictions(field.getAnnotation(FloatValidate.class)));
             }
+
         }
 
         String jsonContent = gson.toJson(configJsonObj);
@@ -194,15 +201,44 @@ public class Config<T> {
             // parse actual value
             Object parsedValue = gson.fromJson(value, field.getType());
 
-            // trying to inject to object
+
             try {
+                // trying to inject to object
                 field.set(instance, parsedValue);
+
+                // fix value
+                field.set(instance, getCorrectedFieldValue(field));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
 
                 CrashReport.create(e, "Config reading error");
             }
         }
+    }
+
+    /**
+     * Using field validation
+     *
+     * @param field
+     * @return
+     */
+    private Object getCorrectedFieldValue(Field field) {
+        Object value = null;
+
+        try {
+            value = field.get(instance);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+
+            CrashReport.create(e, "Error during config read");
+        }
+
+        if (value instanceof Float && field.isAnnotationPresent(FloatValidate.class)) {
+            FloatValidate annotation = field.getAnnotation(FloatValidate.class);
+            return MathHelper.clamp(((Float) value), annotation.minValue(), annotation.maxValue());
+        }
+
+        return value;
     }
 
     private String getKey(Property property, Field field) {
@@ -217,9 +253,12 @@ public class Config<T> {
 
     private String getComment(Property property) {
         if (property.commentLangKey().isEmpty())
-            return property.comment();
+            return Language.getInstance().get(property.commentLangKey());
 
+        return property.comment();
+    }
 
-        return Language.getInstance().get(property.commentLangKey());
+    private String getValueRestrictions(FloatValidate prop) {
+        return String.format(Language.getInstance().get("rc.range_restrict.comment"), prop.minValue(), prop.maxValue());
     }
 }

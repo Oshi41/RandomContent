@@ -13,12 +13,14 @@ public class ThrownEntityMixin {
     @Inject(method = "getGravity", at = @At("HEAD"), cancellable = true)
     public void getGravityInject(CallbackInfoReturnable<Float> cir) {
         Entity entity = (Entity) ((Object) this);
-        if (entity.hasNoGravity())
+        if (entity.hasNoGravity()) {
             return;
+        }
 
-        Float gravity = GravityHelper.getGravity(entity);
-        if (gravity == null || gravity == 1)
+        float gravity = GravityHelper.getGravity(entity);
+        if (gravity == 1) {
             return;
+        }
 
         cir.setReturnValue(gravity * cir.getReturnValue());
     }

@@ -32,8 +32,8 @@ public abstract class LivingEntityMixin {
         if (canApply()) {
             LivingEntity entity = (LivingEntity) ((Object) this);
 
-            Float multiplier = GravityHelper.getGravity(entity);
-            if (multiplier != null && multiplier != 1) {
+            float multiplier = GravityHelper.getGravity(entity);
+            if (multiplier != 1) {
                 double gravity = entity.getVelocity().y <= 0.0D && entity.hasStatusEffect(StatusEffects.SLOW_FALLING)
                         ? 0.01
                         : 0.08;
@@ -48,8 +48,8 @@ public abstract class LivingEntityMixin {
     @ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 1)
     private float handleFallDamageInjected(float damageMultiplier) {
         if (canApply()) {
-            Float gravity = GravityHelper.getGravity(((Entity) ((Object) this)));
-            if (gravity != null && gravity != 1) {
+            float gravity = GravityHelper.getGravity(((Entity) ((Object) this)));
+            if (gravity != 1) {
                 damageMultiplier *= gravity;
             }
         }

@@ -58,6 +58,8 @@ public class DashBiomes {
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, DashFeatures.RandomPaperTree);
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, DashFeatures.PaperFlowers);
 
+        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, DashFeatures.PaperEntTreeFeature);
+
         int white = Color.WHITE.getRGB();
 
         PaperBiome = (new Biome.Builder())

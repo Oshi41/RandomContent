@@ -9,7 +9,15 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.world.World;
 
 public class GravityHelper {
-    public static Float getGravity(Entity entity) {
+
+    /**
+     * Returns gravity multiplier for current entity.
+     * 1 for standart
+     *
+     * @param entity
+     * @return
+     */
+    public static float getGravity(Entity entity) {
         if (entity == null) {
             return 1f;
         }
@@ -19,7 +27,7 @@ public class GravityHelper {
             return 1f;
         }
 
-        return DashMod.MainConfig.getConfig().DimensionsGravity.getOrDefault(world.getRegistryKey().getValue().toString(), 1f);
+        return DashMod.MainConfig.getConfig().DimensionsGravity.getOrDefault(world.getRegistryKey().getValue(), 1f);
     }
 
     /**

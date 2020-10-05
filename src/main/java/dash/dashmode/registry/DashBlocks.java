@@ -43,6 +43,7 @@ public class DashBlocks {
     public static final Block PaperLapisOre;
     public static final Block PaperRedstoneOre;
     public static final Block PaperDiamondOre;
+    public static final Block PaperCrystalLog;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL));
@@ -99,6 +100,12 @@ public class DashBlocks {
                 .strength(3.0F, 3.0F)
                 .sounds(BlockSoundGroup.NETHER_ORE));
         XpBlocks.put(PaperEmeraldOre, new Pair<>(2, 5));
+
+        PaperCrystalLog = new Block(FabricBlockSettings.of(Material.WOOD, MaterialColor.WHITE)
+                .requiresTool()
+                .strength(0.2f)
+                .sounds(BlockSoundGroup.WOOD));
+        XpBlocks.put(PaperCrystalLog, new Pair<>(2, 5));
     }
 
     public static void init(String modeName) {
@@ -121,6 +128,8 @@ public class DashBlocks {
         initBlock(new Identifier(modeName, "paper_lapis_ore"), PaperLapisOre, defaultSettings);
         initBlock(new Identifier(modeName, "paper_diamond_ore"), PaperDiamondOre, defaultSettings);
         initBlock(new Identifier(modeName, "paper_emerald_ore"), PaperEmeraldOre, defaultSettings);
+
+        initBlock(new Identifier(modeName, "paper_crystal_log"), PaperCrystalLog, defaultSettings);
     }
 
     // region Helping methods

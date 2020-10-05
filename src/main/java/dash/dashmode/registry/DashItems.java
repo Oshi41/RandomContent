@@ -8,14 +8,17 @@ import net.minecraft.util.registry.Registry;
 
 public class DashItems {
     public static final Item PaperApple;
+    public static final Item PaperCrystal;
 
     static {
         PaperApple = new Item((new Item.Settings()).group(DashMod.DashItemsTab).food(FoodComponents.APPLE));
+        PaperCrystal = new Item(new Item.Settings().group(DashMod.DashItemsTab));
     }
 
     public static void init(String modId) {
         DashMod.MainLogger.debug("Entering to item registry");
 
         Registry.register(Registry.ITEM, new Identifier(modId, "paper_apple"), PaperApple);
+        Registry.register(Registry.ITEM, new Identifier(modId, "paper_crystal"), PaperCrystal);
     }
 }

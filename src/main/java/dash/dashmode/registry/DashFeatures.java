@@ -9,15 +9,16 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.UniformIntDistribution;
-import net.minecraft.world.gen.decorator.CountExtraDecoratorConfig;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.decorator.DecoratorConfig;
-import net.minecraft.world.gen.decorator.DepthAverageDecoratorConfig;
+import net.minecraft.world.gen.decorator.*;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.size.ThreeLayersFeatureSize;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
+import net.minecraft.world.gen.foliage.DarkOakFoliagePlacer;
 import net.minecraft.world.gen.foliage.LargeOakFoliagePlacer;
 import net.minecraft.world.gen.placer.SimpleBlockPlacer;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
+import net.minecraft.world.gen.trunk.DarkOakTrunkPlacer;
 import net.minecraft.world.gen.trunk.LargeOakTrunkPlacer;
 
 import java.util.OptionalInt;
@@ -37,6 +38,7 @@ public class DashFeatures {
     public static final ConfiguredFeature<?, ?> PaperLapisOre;
     public static final ConfiguredFeature<?, ?> PaperEmeraldOre;
     public static final ConfiguredFeature<RandomPatchFeatureConfig, ?> PaperFlowers;
+    public static final ConfiguredFeature<?, ?> PaperEntTreeFeature;
 
     static {
         AnyStoneRule = new TagMatchRuleTest(DashTags.Stone);
@@ -92,6 +94,22 @@ public class DashFeatures {
                 SimpleBlockPlacer.INSTANCE))
                 .tries(32)
                 .build());
+
+        PaperEntTreeFeature = Feature.TREE.configure((new TreeFeatureConfig.Builder(
+                new WeightedBlockStateProvider()
+                        .addState(DashBlocks.PaperOakLog.getDefaultState(), 20)
+                        .addState(DashBlocks.PaperCrystalLog.getDefaultState(), 1),
+                new SimpleBlockStateProvider(DashBlocks.PaperLeaves.getDefaultState()),
+                new DarkOakFoliagePlacer(
+                        UniformIntDistribution.of(1),
+                        UniformIntDistribution.of(0)),
+                new DarkOakTrunkPlacer(15, 2, 1),
+                new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty())))
+                .maxWaterDepth(Integer.MAX_VALUE)
+                .heightmap(Heightmap.Type.MOTION_BLOCKING)
+                .ignoreVines()
+                .build())
+                .decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig((int) Math.max(DashMod.MainConfig.getConfig().PaperCrystalTreeChance, 1))));
     }
 
     public static void init(String modId) {
@@ -110,6 +128,9 @@ public class DashFeatures {
 
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "random_paper_tree"), RandomPaperTree);
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "random_paper_flowers"), PaperFlowers);
+
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_ent_tree"), PaperEntTreeFeature);
+
     }
 
 }

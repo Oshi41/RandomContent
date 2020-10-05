@@ -13,9 +13,9 @@ public class TickEntityMixin {
     public void addModifyArgs(Args args) {
         Entity entity = (Entity) ((Object) this);
         if (!entity.hasNoGravity()) {
-            Float gravity = GravityHelper.getGravity(entity);
+            float gravity = GravityHelper.getGravity(entity);
 
-            if (gravity != null && gravity != 1) {
+            if (gravity != 1) {
                 args.set(1, (double) args.get(1) * gravity);
             }
         }

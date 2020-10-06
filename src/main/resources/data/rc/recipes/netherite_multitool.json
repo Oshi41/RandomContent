@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "2 3",
+    "456"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:netherite_sword"
+    },
+    "2": {
+      "item": "minecraft:netherite_axe"
+    },
+    "3": {
+      "item": "minecraft:netherite_pickaxe"
+    },
+    "4": {
+      "item": "minecraft:netherite_hoe"
+    },
+    "5": {
+      "item": "minecraft:shears"
+    },
+    "6": {
+      "item": "minecraft:netherite_shovel"
+    }
+  },
+  "result": {
+    "item": "rc:netherite_multitool"
+  }
+}

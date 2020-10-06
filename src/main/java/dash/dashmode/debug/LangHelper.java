@@ -50,7 +50,8 @@ public class LangHelper {
 
         List<Boolean> registries = new ArrayList<>();
 
-        registries.add(initBlocksAndItems());
+        registries.add(addKeys(Registry.BLOCK, "block"));
+        registries.add(addKeys(Registry.ITEM, "item", "block"));
         registries.add(addKeys(Registry.ENTITY_TYPE, "entity_type"));
         registries.add(addKeys(BuiltinRegistries.BIOME, "biome"));
         registries.add(itemGroupCheck());
@@ -79,60 +80,36 @@ public class LangHelper {
         return addKeys(translationKeys, "itemGroup");
     }
 
-    private boolean initBlocksAndItems() {
-        Set<Identifier> blocks = Registry.BLOCK.getEntries().stream()
-                .filter(x -> x.getKey().getValue().getNamespace() == id)
-                .map(x -> x.getKey().getValue())
-                .collect(Collectors.toSet());
-
-        boolean block = addKeys(blocks, "block");
-
-        Set<Identifier> items = Registry.ITEM.getEntries().stream()
-                .filter(x -> x.getKey().getValue().getNamespace() == id)
-                .map(x -> x.getKey().getValue())
-                .collect(Collectors.toSet());
-
-        boolean item = addKeys(items, "item");
-
-        Set<Identifier> toRemove = new HashSet<>(items);
-
-        toRemove.retainAll(blocks);
-        items.removeAll(toRemove);
-
-        String message = "";
-
-        for (Map.Entry<File, JsonObject> entry : langFiles.entrySet()) {
-            JsonObject jsonObject = entry.getValue();
-
-            for (Identifier identifier : toRemove) {
-                String key = String.format("item.%s.%s", identifier.getNamespace(), identifier.getPath());
-
-                if (jsonObject.has(key)) {
-                    message += String.format("Item key duplication (ItemBlock): %s", key);
-                    jsonObject.remove(key);
-                }
-            }
-        }
-
-        return item || block || !message.isEmpty();
-    }
-
-    private <T> boolean addKeys(Registry<T> registry, String prefix) {
+    private <T> boolean addKeys(Registry<T> registry, String prefix, String... exclude) {
         List<Identifier> allItems = registry.getEntries().stream()
                 .filter(x -> x.getKey().getValue().getNamespace() == id)
                 .map(x -> x.getKey().getValue()).collect(Collectors.toList());
 
-        return addKeys(allItems, prefix);
+        return addKeys(allItems, prefix, exclude);
     }
 
-    private <T> boolean addKeys(Collection<Identifier> allItems, String prefix) {
+    private <T> boolean addKeys(Collection<Identifier> allItems, String prefix, String... exclude) {
         String message = "";
+
+        if (exclude == null) {
+            exclude = new String[0];
+        }
 
         for (Identifier item : allItems) {
             String key = String.format("%s.%s.%s", prefix, item.getNamespace(), item.getPath());
 
             for (Map.Entry<File, JsonObject> entry : langFiles.entrySet()) {
                 JsonObject object = entry.getValue();
+
+                // skip containing keys
+                if (Arrays.stream(exclude).map(x -> String.format("%s.%s.%s", x, item.getNamespace(), item.getPath()))
+                        .anyMatch(object::has)) {
+                    if (object.remove(key) != null) {
+                        message += String.format("Wrong key %s in file %s was removed %s", key, entry.getKey().getName(), System.lineSeparator());
+                    }
+
+                    continue;
+                }
 
                 if (!object.has(key)) {
                     message += String.format("Missing key %s in file %s%s", key, entry.getKey().getName(), System.lineSeparator());

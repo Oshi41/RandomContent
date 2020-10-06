@@ -22,5 +22,8 @@
   "rc.range_restrict.comment": "Принимает значения от %s до %s",
   "block.rc.paper_crystal_log": "Кристально-бумажный дуб",
   "item.rc.paper_crystal": "Бумажный кристалл",
-  "item.rc.golden_multitool": "Золотой мульти-инструмент"
+  "item.rc.golden_multitool": "Золотой мульти-инструмент",
+  "item.rc.iron_multitool": "Железный мульти-инструмент",
+  "item.rc.diamond_multitool": "Алмазный мульти-инструмент",
+  "item.rc.netherite_multitool": "Незеритовый мульти-инструмент"
 }

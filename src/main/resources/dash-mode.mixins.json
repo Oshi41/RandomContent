@@ -8,8 +8,10 @@
     "LivingEntityMixin",
     "MiningToolItemMixin",
     "OreBlockMixin",
+    "ShearBlockMixin",
     "ThrownEntityMixin",
-    "TickEntityMixin"
+    "TickEntityMixin",
+    "TripwireBlockMixin"
   ],
   "client": [
   ],

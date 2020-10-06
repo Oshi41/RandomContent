@@ -102,8 +102,7 @@ public class DashBlocks {
         XpBlocks.put(PaperEmeraldOre, new Pair<>(2, 5));
 
         PaperCrystalLog = new Block(FabricBlockSettings.of(Material.WOOD, MaterialColor.WHITE)
-                .requiresTool()
-                .strength(0.2f)
+                .strength(3f)
                 .sounds(BlockSoundGroup.WOOD));
         XpBlocks.put(PaperCrystalLog, new Pair<>(2, 5));
     }

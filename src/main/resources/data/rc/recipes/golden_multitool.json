@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "2 3",
+    "456"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:golden_sword"
+    },
+    "2": {
+      "item": "minecraft:golden_axe"
+    },
+    "3": {
+      "item": "minecraft:golden_pickaxe"
+    },
+    "4": {
+      "item": "minecraft:golden_hoe"
+    },
+    "5": {
+      "item": "minecraft:shears"
+    },
+    "6": {
+      "item": "minecraft:golden_shovel"
+    }
+  },
+  "result": {
+    "item": "rc:golden_multitool"
+  }
+}

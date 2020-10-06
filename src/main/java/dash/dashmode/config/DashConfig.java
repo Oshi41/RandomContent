@@ -17,6 +17,5 @@ public class DashConfig {
     @Property(category = "worldGen", commentLangKey = "rc.gravity_dims.comment")
     public Map<Identifier, Float> DimensionsGravity = new HashMap<Identifier, Float>() {{
         put(DimensionType.OVERWORLD_ID, 1F);
-        put(DimensionType.THE_END_ID, 0.2F);
     }};
 }

@@ -14,6 +14,7 @@
     "TripwireBlockMixin"
   ],
   "client": [
+    "ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

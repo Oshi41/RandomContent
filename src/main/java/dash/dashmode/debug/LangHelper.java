@@ -53,6 +53,7 @@ public class LangHelper {
         registries.add(addKeys(Registry.BLOCK, "block"));
         registries.add(addKeys(Registry.ITEM, "item", "block"));
         registries.add(addKeys(Registry.ENTITY_TYPE, "entity_type"));
+        registries.add(addKeys(Registry.BLOCK_ENTITY_TYPE, "block_entity_type"));
         registries.add(addKeys(BuiltinRegistries.BIOME, "biome"));
         registries.add(itemGroupCheck());
 

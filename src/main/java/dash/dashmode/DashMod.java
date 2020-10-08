@@ -35,6 +35,8 @@ public class DashMod implements ModInitializer {
         DashFeatures.init(ModId);
         DashBiomes.init();
 
+        DashBlockEntities.init(ModId);
+        DashEntities.init(ModId);
 
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
     }

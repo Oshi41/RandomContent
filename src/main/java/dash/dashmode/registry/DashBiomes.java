@@ -18,8 +18,6 @@ import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
-import java.awt.*;
-
 public class DashBiomes {
     public static final Biome PaperBiome;
     public static final RegistryKey<Biome> PaperBiomeKey;
@@ -60,7 +58,7 @@ public class DashBiomes {
 
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, DashFeatures.PaperEntTreeFeature);
 
-        int white = Color.WHITE.getRGB();
+        int white = 16777215;
 
         PaperBiome = (new Biome.Builder())
                 .precipitation(Biome.Precipitation.RAIN)

@@ -4,7 +4,9 @@ import dash.dashmode.DashMod;
 import dash.dashmode.block.DashFlowerBlock;
 import dash.dashmode.block.DashGrassBlock;
 import dash.dashmode.block.DashSaplingBlock;
+import dash.dashmode.block.JarOfKeepingBlock;
 import dash.dashmode.feature.PaperOakFeature;
+import dash.dashmode.item.JarOfKeepingItem;
 import dash.dashmode.settings.SaplingSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -44,6 +46,7 @@ public class DashBlocks {
     public static final Block PaperRedstoneOre;
     public static final Block PaperDiamondOre;
     public static final Block PaperCrystalLog;
+    public static final Block JarOfKeeping;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL));
@@ -105,6 +108,16 @@ public class DashBlocks {
                 .strength(3f)
                 .sounds(BlockSoundGroup.WOOD));
         XpBlocks.put(PaperCrystalLog, new Pair<>(2, 5));
+
+        JarOfKeeping = new JarOfKeepingBlock(FabricBlockSettings.of(Material.GLASS, MaterialColor.BLACK)
+                .strength(0.3F)
+                .sounds(BlockSoundGroup.GLASS)
+                .nonOpaque()
+                .allowsSpawning((state, world, pos, type) -> false)
+                .solidBlock((state, world, pos) -> false)
+                .suffocates((state, world, pos) -> false)
+                .blockVision((state, world, pos) -> false),
+                false);
     }
 
     public static void init(String modeName) {
@@ -129,6 +142,9 @@ public class DashBlocks {
         initBlock(new Identifier(modeName, "paper_emerald_ore"), PaperEmeraldOre, defaultSettings);
 
         initBlock(new Identifier(modeName, "paper_crystal_log"), PaperCrystalLog, defaultSettings);
+
+        initBlock(new Identifier(modeName, "jar_of_keeping"), JarOfKeeping, null);
+        Registry.register(Registry.ITEM, new Identifier(modeName, "jar_of_keeping"), new JarOfKeepingItem(JarOfKeeping, defaultSettings));
     }
 
     // region Helping methods

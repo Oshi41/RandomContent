@@ -25,5 +25,10 @@
   "item.rc.golden_multitool": "Золотой мульти-инструмент",
   "item.rc.iron_multitool": "Железный мульти-инструмент",
   "item.rc.diamond_multitool": "Алмазный мульти-инструмент",
-  "item.rc.netherite_multitool": "Незеритовый мульти-инструмент"
+  "item.rc.netherite_multitool": "Незеритовый мульти-инструмент",
+  "block.rc.jar_of_keeping": "Банка удержания",
+  "block.rc.perfect_jar_of_keeping": "Совершенная банка удержания",
+  "rc.jar_of_keeping.can_escape": "Удерживаемый моб может сбежать",
+  "entity_type.rc.jar_of_keeping_throwable": "",
+  "block_entity_type.rc.jar_of_keeping_block": ""
 }

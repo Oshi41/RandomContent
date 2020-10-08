@@ -47,6 +47,7 @@ public class DashBlocks {
     public static final Block PaperDiamondOre;
     public static final Block PaperCrystalLog;
     public static final Block JarOfKeeping;
+    public static final Block PerfectJarOfKeeping;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL));
@@ -118,6 +119,16 @@ public class DashBlocks {
                 .suffocates((state, world, pos) -> false)
                 .blockVision((state, world, pos) -> false),
                 false);
+
+        PerfectJarOfKeeping = new JarOfKeepingBlock(FabricBlockSettings.of(Material.GLASS, MaterialColor.BLACK)
+                .strength(0.3F)
+                .sounds(BlockSoundGroup.GLASS)
+                .nonOpaque()
+                .allowsSpawning((state, world, pos, type) -> false)
+                .solidBlock((state, world, pos) -> false)
+                .suffocates((state, world, pos) -> false)
+                .blockVision((state, world, pos) -> false),
+                true);
     }
 
     public static void init(String modeName) {
@@ -143,8 +154,14 @@ public class DashBlocks {
 
         initBlock(new Identifier(modeName, "paper_crystal_log"), PaperCrystalLog, defaultSettings);
 
-        initBlock(new Identifier(modeName, "jar_of_keeping"), JarOfKeeping, null);
-        Registry.register(Registry.ITEM, new Identifier(modeName, "jar_of_keeping"), new JarOfKeepingItem(JarOfKeeping, defaultSettings));
+        Identifier jarOfKeeping = new Identifier(modeName, "jar_of_keeping");
+
+        initBlock(jarOfKeeping, JarOfKeeping, null);
+        Registry.register(Registry.ITEM, jarOfKeeping, new JarOfKeepingItem(JarOfKeeping, defaultSettings, false));
+
+        Identifier perfectJarOfKeeping = new Identifier(modeName, "perfect_jar_of_keeping");
+        initBlock(perfectJarOfKeeping, PerfectJarOfKeeping, null);
+        Registry.register(Registry.ITEM, perfectJarOfKeeping, new JarOfKeepingItem(PerfectJarOfKeeping, defaultSettings, true));
     }
 
     // region Helping methods

@@ -37,7 +37,7 @@ public class ClientPlayNetworkHandlerMixin {
         double d = packet.getX();
         double e = packet.getY();
         double f = packet.getZ();
-        Entity entity = null;
+        Entity entity;
 
         try {
             entity = entityType.create(world);

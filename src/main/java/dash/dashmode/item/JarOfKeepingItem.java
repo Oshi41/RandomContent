@@ -30,8 +30,11 @@ import java.util.List;
 import java.util.Random;
 
 public class JarOfKeepingItem extends BlockItem {
-    public JarOfKeepingItem(Block block, Settings settings) {
+    private final boolean isEnhanced;
+
+    public JarOfKeepingItem(Block block, Settings settings, boolean isEnhanced) {
         super(block, settings.maxCount(1));
+        this.isEnhanced = isEnhanced;
     }
 
     @Override
@@ -66,19 +69,13 @@ public class JarOfKeepingItem extends BlockItem {
     }
 
     @Override
-    public ItemStack getDefaultStack() {
-        ItemStack stack = super.getDefaultStack();
+    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
+        super.onCraft(stack, world, player);
 
-        CompoundTag compoundTag = new CompoundTag();
-        CompoundTag blockEntityTag = new CompoundTag();
-        compoundTag.put(JarOfKeepingBlockEntity.BlockItemTag, blockEntityTag);
+        CompoundTag subTag = stack.getOrCreateSubTag(JarOfKeepingBlockEntity.BlockItemTag);
 
-        blockEntityTag.putInt(JarOfKeepingBlockEntity.BreakChanceTag, 1000);
-        blockEntityTag.putInt(JarOfKeepingBlockEntity.CatchChanceTag, 5);
-
-        stack.setTag(compoundTag);
-
-        return stack;
+        subTag.putInt(JarOfKeepingBlockEntity.BreakChanceTag, isEnhanced ? -1 : 20 * 60 * 30);
+        subTag.putInt(JarOfKeepingBlockEntity.CatchChanceTag, isEnhanced ? -1 : 10);
     }
 
     @Override

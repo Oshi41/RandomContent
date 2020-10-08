@@ -6,7 +6,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -75,12 +77,32 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
     }
 
     protected boolean isCatchableEntity(Entity entity) {
-        return entity instanceof MobEntity && entity.isAlive();
+        if (!entity.isAlive())
+            return false;
+
+        if (!(entity instanceof LivingEntity)) {
+            return false;
+        }
+
+        if (getOwner() instanceof PlayerEntity && ((PlayerEntity) getOwner()).isCreative()) {
+            return true;
+        }
+
+        LivingEntity livingEntity = (LivingEntity) entity;
+
+        StatusEffectInstance weakness = livingEntity.getStatusEffect(StatusEffects.WEAKNESS);
+
+        if (weakness == null)
+            return false;
+
+        StatusEffectInstance slowness = livingEntity.getStatusEffect(StatusEffects.SLOWNESS);
+
+        return slowness != null && slowness.getAmplifier() >= 3;
     }
 
     @Environment(EnvType.CLIENT)
     protected void spawnParticles(boolean wasCaught) {
-        ParticleEffect effect = wasCaught ? ParticleTypes.EXPLOSION : ParticleTypes.FLAME;
+        ParticleEffect effect = wasCaught ? ParticleTypes.EXPLOSION : ParticleTypes.SMOKE;
 
         Random random = getEntityWorld().random;
 
@@ -90,9 +112,9 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
                     getX() + random.nextFloat() - random.nextFloat(),
                     getY() + random.nextFloat() - random.nextFloat(),
                     getZ() + random.nextFloat() - random.nextFloat(),
-                    random.nextFloat() - random.nextFloat(),
-                    random.nextFloat() - random.nextFloat(),
-                    random.nextFloat() - random.nextFloat()
+                    random.nextFloat() - 1,
+                    random.nextFloat(),
+                    random.nextFloat() - 1
             );
         }
     }

@@ -38,6 +38,8 @@ public class DashMod implements ModInitializer {
         DashBlockEntities.init(ModId);
         DashEntities.init(ModId);
 
+        //DashRecipes.init(ModId);
+
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
     }
 }

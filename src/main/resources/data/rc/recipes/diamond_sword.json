@@ -1,0 +1,22 @@
+{
+  "type": "rc:crafting_shaped",
+  "pattern": [
+    "12 ",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:wooden_sword"
+    },
+    "2": {
+      "item": "minecraft:potion",
+      "compound": {
+        "Potion": "minecraft:strong_strength"
+      }
+    }
+  },
+  "result": {
+    "item": "minecraft:diamond_sword"
+  }
+}

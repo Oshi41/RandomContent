@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
@@ -80,10 +81,13 @@ public abstract class IngredientMixin {
         int i = buf.readVarInt();
 
         for (int j = 0; j < i; j++) {
-            Item item = Registry.ITEM.get(new Identifier(buf.readString()));
-            JsonObject tag = rc_gson.fromJson(buf.readString(), JsonObject.class);
+            String id = buf.readString();
+            String compound = buf.readString();
 
-            value.rc_tags.put(item, tag);
+            Item item = Registry.ITEM.get(new Identifier(id));
+            JsonElement tag = JsonHelper.deserialize(compound);
+
+            value.rc_tags.put(item, tag.getAsJsonObject());
         }
     }
 
@@ -121,9 +125,11 @@ public abstract class IngredientMixin {
         buf.writeVarInt(rc_tags.size());
 
         for (Map.Entry<Item, JsonObject> entry : rc_tags.entrySet()) {
-            Identifier id = Registry.ITEM.getId(entry.getKey());
-            buf.writeString(id.toString());
-            buf.writeString(entry.toString());
+            String itemId = Registry.ITEM.getId(entry.getKey()).toString();
+            String compound = rc_gson.toJson(entry.getValue());
+
+            buf.writeString(itemId);
+            buf.writeString(compound);
         }
     }
 

@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "FeatureMixin",
+    "IngredientMixin",
     "LivingEntityMixin",
     "MiningToolItemMixin",
     "OreBlockMixin",
+    "ShapedRecipeMixin",
     "ShearBlockMixin",
     "ThrownEntityMixin",
     "TickEntityMixin",

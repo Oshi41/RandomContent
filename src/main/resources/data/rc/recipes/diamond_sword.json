@@ -1,5 +1,5 @@
 {
-  "type": "rc:crafting_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "12 ",
     "   ",
@@ -17,6 +17,12 @@
     }
   },
   "result": {
-    "item": "minecraft:diamond_sword"
+    "item": "minecraft:diamond_sword",
+    "compound": {
+      "Damage": {
+        "nbt_type": 3,
+        "nbt_value": "10"
+      }
+    }
   }
 }

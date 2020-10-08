@@ -1,9 +1,14 @@
 package dash.dashmode.mixin;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dash.dashmode.utils.NbtUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
@@ -33,11 +38,8 @@ import java.util.stream.StreamSupport;
 
 @Mixin(Ingredient.class)
 public abstract class IngredientMixin {
-    private static final String Rc_CompoundTag = "compound";
-    private static final Gson rc_gson = new GsonBuilder().create();
-
     @Unique
-    private final Map<Item, JsonObject> rc_tags = new HashMap<>();
+    private final Map<Item, CompoundTag> rc_tags = new HashMap<>();
 
     @Unique
     private final AbstractComparator rc_jsonComparator = new DefaultComparator(JSONCompareMode.LENIENT);
@@ -63,14 +65,21 @@ public abstract class IngredientMixin {
             items.add(json.getAsJsonObject());
         }
 
-        for (JsonObject item : items) {
-            if (!item.has(Rc_CompoundTag))
-                continue;
+        items.removeIf(x -> !x.has(NbtUtil.CompoundTagName));
 
-            Identifier itemId = new Identifier(item.get("item").getAsString());
-            Item itemEntry = Registry.ITEM.get(itemId);
+        if (items.isEmpty())
+            return;
 
-            value.rc_tags.put(itemEntry, item.getAsJsonObject(Rc_CompoundTag));
+        for (JsonObject itemObj : items) {
+            Item itemEntry = JsonHelper.getItem(itemObj, "item");
+            try {
+                String jsonRaw = NbtUtil.GSON.toJson(itemObj.getAsJsonObject(NbtUtil.CompoundTagName));
+                CompoundTag compoundTag = StringNbtReader.parse(jsonRaw);
+
+                value.rc_tags.put(itemEntry, compoundTag);
+            } catch (CommandSyntaxException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -82,12 +91,10 @@ public abstract class IngredientMixin {
 
         for (int j = 0; j < i; j++) {
             String id = buf.readString();
-            String compound = buf.readString();
+            CompoundTag compound = buf.readCompoundTag();
 
             Item item = Registry.ITEM.get(new Identifier(id));
-            JsonElement tag = JsonHelper.deserialize(compound);
-
-            value.rc_tags.put(item, tag.getAsJsonObject());
+            value.rc_tags.put(item, compound);
         }
     }
 
@@ -111,11 +118,11 @@ public abstract class IngredientMixin {
         }
 
         for (JsonObject entry : entries) {
-            Item item = Registry.ITEM.get(new Identifier(entry.get("item").getAsString()));
-            JsonObject compound = rc_tags.get(item);
+            CompoundTag tag = rc_tags.get(JsonHelper.getItem(entry, "item"));
 
-            if (compound != null) {
-                entry.add(Rc_CompoundTag, compound);
+            if (tag != null) {
+                JsonObject jsonObject = NbtUtil.GSON.fromJson(tag.toString(), JsonObject.class);
+                entry.add(NbtUtil.CompoundTagName, jsonObject);
             }
         }
     }
@@ -124,12 +131,11 @@ public abstract class IngredientMixin {
     private void writeInject(PacketByteBuf buf, CallbackInfo ci) {
         buf.writeVarInt(rc_tags.size());
 
-        for (Map.Entry<Item, JsonObject> entry : rc_tags.entrySet()) {
+        for (Map.Entry<Item, CompoundTag> entry : rc_tags.entrySet()) {
             String itemId = Registry.ITEM.getId(entry.getKey()).toString();
-            String compound = rc_gson.toJson(entry.getValue());
 
             buf.writeString(itemId);
-            buf.writeString(compound);
+            buf.writeCompoundTag(entry.getValue());
         }
     }
 
@@ -138,29 +144,22 @@ public abstract class IngredientMixin {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;")),
             cancellable = true)
     public void testInject(@Nullable ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue())
+        if (rc_tags.isEmpty() || itemStack == null)
             return;
 
-        if (itemStack == null)
+        CompoundTag compoundTag = rc_tags.get(itemStack.getItem());
+        if (compoundTag == null)
             return;
 
-        JsonObject json = rc_tags.get(itemStack.getItem());
-        if (json == null)
+        CompoundTag left = itemStack.getTag();
+        if (left == null)
             return;
-
-        CompoundTag tag = itemStack.getTag();
-        if (tag == null) {
-            cir.setReturnValue(false);
-            return;
-        }
 
         try {
-            String left = json.toString();
-            String right = tag.toString();
-
-            JSONCompareResult result = JSONCompare.compareJSON(left, right, rc_jsonComparator);
+            JSONCompareResult result = JSONCompare.compareJSON(left.toString(), compoundTag.toString(), rc_jsonComparator);
             cir.setReturnValue(result.passed());
-        } catch (AssertionError | JSONException e) {
+        } catch (JSONException e) {
+            e.printStackTrace();
             cir.setReturnValue(false);
         }
     }

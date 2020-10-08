@@ -20,7 +20,7 @@
     "item": "minecraft:diamond_sword",
     "compound": {
       "Damage": {
-        "nbt_type": 3,
+        "nbt_type": "3",
         "nbt_value": "10"
       }
     }

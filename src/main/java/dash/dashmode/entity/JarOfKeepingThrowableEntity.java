@@ -52,13 +52,15 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
         Entity entity = entityHitResult.getEntity();
         ItemStack stack = getItem();
 
-        if (entity != null && isCatchableEntity(entity)) {
+        boolean isCreative = getOwner() instanceof PlayerEntity && ((PlayerEntity) getOwner()).isCreative();
+
+        if (entity != null && isCatchableEntity(entity) || isCreative) {
             CompoundTag tag = stack.getSubTag(JarOfKeepingBlockEntity.BlockItemTag);
             if (tag != null && !tag.isEmpty()) {
                 int catchChance = tag.getInt(JarOfKeepingBlockEntity.CatchChanceTag);
                 boolean canCatch = catchChance <= 0 || world.random.nextInt(catchChance) == 0;
 
-                if (canCatch) {
+                if (canCatch || isCreative) {
                     CompoundTag entityTag = new CompoundTag();
                     entity.saveToTag(entityTag);
                     tag.put(JarOfKeepingBlockEntity.EntityTag, entity.toTag(entityTag));
@@ -82,10 +84,6 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
 
         if (!(entity instanceof LivingEntity)) {
             return false;
-        }
-
-        if (getOwner() instanceof PlayerEntity && ((PlayerEntity) getOwner()).isCreative()) {
-            return true;
         }
 
         LivingEntity livingEntity = (LivingEntity) entity;

@@ -9,6 +9,7 @@
     "LivingEntityMixin",
     "MiningToolItemMixin",
     "OreBlockMixin",
+    "ServerPlayerInteractionManagerMixin",
     "ShapedRecipeMixin",
     "ShearBlockMixin",
     "ThrownEntityMixin",

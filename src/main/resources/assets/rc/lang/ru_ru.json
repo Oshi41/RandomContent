@@ -30,5 +30,6 @@
   "block.rc.perfect_jar_of_keeping": "Совершенная банка удержания",
   "rc.jar_of_keeping.can_escape": "Удерживаемый моб может сбежать",
   "entity_type.rc.jar_of_keeping_throwable": "",
-  "block_entity_type.rc.jar_of_keeping_block": ""
+  "block_entity_type.rc.jar_of_keeping_block": "Банка удержания",
+  "item.rc.boer_3": "Универсальный бур"
 }

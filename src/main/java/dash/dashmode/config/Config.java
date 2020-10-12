@@ -252,8 +252,9 @@ public class Config<T> {
     }
 
     private String getComment(Property property) {
-        if (property.commentLangKey().isEmpty())
+        if (property.commentLangKey().isEmpty()) {
             return Language.getInstance().get(property.commentLangKey());
+        }
 
         return property.comment();
     }

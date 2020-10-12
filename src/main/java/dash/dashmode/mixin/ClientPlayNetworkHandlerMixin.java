@@ -1,6 +1,7 @@
 package dash.dashmode.mixin;
 
 import dash.dashmode.DashMod;
+import dash.dashmode.armor.IArmorSupplier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.sound.MovingMinecartSoundInstance;
@@ -8,6 +9,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.network.packet.s2c.play.EntityEquipmentUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,8 +33,9 @@ public class ClientPlayNetworkHandlerMixin {
         EntityType<?> entityType = packet.getEntityTypeId();
 
         // Entity is not belong to our mod
-        if (!Registry.ENTITY_TYPE.getId(entityType).getNamespace().equals(DashMod.ModId))
+        if (!Registry.ENTITY_TYPE.getId(entityType).getNamespace().equals(DashMod.ModId)) {
             return;
+        }
 
         double d = packet.getX();
         double e = packet.getY();
@@ -46,8 +49,9 @@ public class ClientPlayNetworkHandlerMixin {
             return;
         }
 
-        if (entity == null)
+        if (entity == null) {
             return;
+        }
 
         int i = packet.getId();
         entity.updateTrackedPosition(d, e, f);
@@ -62,5 +66,15 @@ public class ClientPlayNetworkHandlerMixin {
         }
 
         ci.cancel();
+    }
+
+    @Inject(method = "onEquipmentUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/EntityEquipmentUpdateS2CPacket;getEquipmentList()Ljava/util/List;"))
+    private void onEquipmentUpdateInject(EntityEquipmentUpdateS2CPacket packet, CallbackInfo ci) {
+        Entity entity = world.getEntityById(packet.getId());
+        if (!(entity instanceof IArmorSupplier)) {
+            return;
+        }
+
+        ((IArmorSupplier) entity).refresh();
     }
 }

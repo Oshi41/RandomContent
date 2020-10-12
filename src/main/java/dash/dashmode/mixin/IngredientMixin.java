@@ -48,8 +48,9 @@ public abstract class IngredientMixin {
     private static void fromJsonInject(@Nullable JsonElement json, CallbackInfoReturnable<Ingredient> cir) {
         IngredientMixin value = (IngredientMixin) ((Object) cir.getReturnValue());
 
-        if (json == null || !json.isJsonObject())
+        if (json == null || !json.isJsonObject()) {
             return;
+        }
 
         List<JsonObject> items = new ArrayList<>();
 
@@ -67,8 +68,9 @@ public abstract class IngredientMixin {
 
         items.removeIf(x -> !x.has(NbtUtil.CompoundTagName));
 
-        if (items.isEmpty())
+        if (items.isEmpty()) {
             return;
+        }
 
         for (JsonObject itemObj : items) {
             Item itemEntry = JsonHelper.getItem(itemObj, "item");
@@ -100,8 +102,9 @@ public abstract class IngredientMixin {
 
     @Inject(method = "toJson", at = @At(value = "RETURN"))
     private void toJsonInject(CallbackInfoReturnable<JsonElement> cir) {
-        if (rc_tags.isEmpty())
+        if (rc_tags.isEmpty()) {
             return;
+        }
 
         JsonElement value = cir.getReturnValue();
         List<JsonObject> entries = new ArrayList<>();
@@ -144,16 +147,19 @@ public abstract class IngredientMixin {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;")),
             cancellable = true)
     public void testInject(@Nullable ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
-        if (rc_tags.isEmpty() || itemStack == null)
+        if (rc_tags.isEmpty() || itemStack == null) {
             return;
+        }
 
         CompoundTag compoundTag = rc_tags.get(itemStack.getItem());
-        if (compoundTag == null)
+        if (compoundTag == null) {
             return;
+        }
 
         CompoundTag left = itemStack.getTag();
-        if (left == null)
+        if (left == null) {
             return;
+        }
 
         try {
             JSONCompareResult result = JSONCompare.compareJSON(left.toString(), compoundTag.toString(), rc_jsonComparator);

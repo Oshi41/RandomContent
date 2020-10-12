@@ -79,8 +79,9 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
     }
 
     protected boolean isCatchableEntity(Entity entity) {
-        if (!entity.isAlive())
+        if (!entity.isAlive()) {
             return false;
+        }
 
         if (!(entity instanceof LivingEntity)) {
             return false;
@@ -90,8 +91,9 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
 
         StatusEffectInstance weakness = livingEntity.getStatusEffect(StatusEffects.WEAKNESS);
 
-        if (weakness == null)
+        if (weakness == null) {
             return false;
+        }
 
         StatusEffectInstance slowness = livingEntity.getStatusEffect(StatusEffects.SLOWNESS);
 

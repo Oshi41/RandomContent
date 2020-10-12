@@ -41,8 +41,9 @@ public class JarOfKeepingItem extends BlockItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         TypedActionResult<ItemStack> use = super.use(world, user, hand);
 
-        if (use.getResult() != ActionResult.PASS)
+        if (use.getResult() != ActionResult.PASS) {
             return use;
+        }
 
         ItemStack itemStack = use.getValue();
         CompoundTag tag = itemStack.getSubTag(JarOfKeepingBlockEntity.BlockItemTag);

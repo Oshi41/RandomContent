@@ -14,7 +14,11 @@
     "ShearBlockMixin",
     "ThrownEntityMixin",
     "TickEntityMixin",
-    "TripwireBlockMixin"
+    "TripwireBlockMixin",
+    "armor.EntityArmorMixin",
+    "armor.LivingEntityMixinArmor",
+    "armor.MobEntityMixin",
+    "armor.PlayerEntityMixin"
   ],
   "client": [
     "ClientPlayNetworkHandlerMixin"

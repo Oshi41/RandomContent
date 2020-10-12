@@ -1,16 +1,10 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.DashMod;
-import dash.dashmode.utils.GravityHelper;
+import dash.dashmode.gravity.GravityHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,16 +12,11 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     @Unique
-    private final Set<Identifier> rc_setId = new HashSet<>();
-    @Unique
     private boolean rc_isFlying;
+
 
     private boolean canApply() {
         return !rc_isFlying;
@@ -71,56 +60,4 @@ public abstract class LivingEntityMixin {
         return damageMultiplier;
     }
 
-    @Inject(method = "onEquipStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;playSound(Lnet/minecraft/sound/SoundEvent;FF)V"))
-    private void onEquipStackInject(ItemStack stack, CallbackInfo ci) {
-
-        LivingEntity entity = (LivingEntity) ((Object) this);
-
-        Set<Identifier> equipped = DashMod.ArmorSetRegistry.getEntries().stream().filter(x -> x.getValue().test(entity)).map(x -> x.getKey().getValue()).collect(Collectors.toSet());
-
-        // Удалил уже используемые, осталось только разница
-        equipped.removeAll(rc_setId);
-
-        for (Identifier identifier : rc_setId) {
-            onEquipmentChanged(identifier, !rc_setId.remove(identifier));
-        }
-
-        for (Identifier identifier : equipped) {
-            onEquipmentChanged(identifier, rc_setId.add(identifier));
-        }
-
-        CompoundTag compoundTag = getData();
-        ListTag listTag = new ListTag();
-        rc_setId.stream().map(x -> StringTag.of(x.toString())).forEach(listTag::add);
-        compoundTag.put("armorSets", listTag);
-
-        saveData(compoundTag);
-    }
-
-    /**
-     * todo call event
-     *
-     * @param id   - id of armor set
-     * @param isOn - is armor currently on
-     */
-    private void onEquipmentChanged(Identifier id, boolean isOn) {
-
-    }
-
-    /**
-     * Gets data from entity
-     *
-     * @return
-     */
-    private CompoundTag getData() {
-        // todo
-        return new CompoundTag();
-    }
-
-    /**
-     * @param tag
-     */
-    private void saveData(CompoundTag tag) {
-        // todo
-    }
 }

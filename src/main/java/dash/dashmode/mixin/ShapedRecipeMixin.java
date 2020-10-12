@@ -17,8 +17,9 @@ public class ShapedRecipeMixin {
     private static void getItemStackInject(JsonObject json, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack value = cir.getReturnValue();
 
-        if (!json.has(NbtUtil.CompoundTagName))
+        if (!json.has(NbtUtil.CompoundTagName)) {
             return;
+        }
 
         JsonObject compound = JsonHelper.getObject(json, NbtUtil.CompoundTagName);
         CompoundTag tag = NbtUtil.parseCompound(compound);

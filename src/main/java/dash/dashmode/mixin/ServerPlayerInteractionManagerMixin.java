@@ -1,6 +1,7 @@
 package dash.dashmode.mixin;
 
 import dash.dashmode.utils.IDigItem;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerActionResponseS2CPacket;
@@ -10,7 +11,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,8 +36,9 @@ public abstract class ServerPlayerInteractionManagerMixin {
             return;
         }
 
-        if (player.isSneaking())
+        if (player.isSneaking()) {
             return;
+        }
 
         ItemStack stack = player.inventory.getMainHandStack();
 
@@ -59,12 +60,24 @@ public abstract class ServerPlayerInteractionManagerMixin {
         }
 
 
-        BlockHitResult hitResult = new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), direction, pos, false);
+        BlockHitResult hitResult = new BlockHitResult(player.getCameraPosVec(1), direction, pos, false);
         Set<BlockPos> breakingPoses = ((IDigItem) stack.getItem()).getBreakingPoses(hitResult, stack);
 
         breakingPoses.remove(pos);
 
         for (BlockPos breakingPos : breakingPoses) {
+            if (!player.isCreative()) {
+                BlockState state = world.getBlockState(breakingPos);
+                if (state.isAir()) {
+                    continue;
+                }
+
+                // can't break
+                if (state.calcBlockBreakingDelta(player, world, breakingPos) <= 0) {
+                    continue;
+                }
+            }
+
             if (!tryBreakBlock(breakingPos)) {
                 continue;
             }

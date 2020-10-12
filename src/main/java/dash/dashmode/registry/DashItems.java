@@ -28,7 +28,7 @@ public class DashItems {
         DiamondMultitool = new MultiToolItem(DashToolMaterials.DiamondMultiTool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab));
         NetheriteMultitool = new MultiToolItem(DashToolMaterials.NetheriteMultitool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab));
 
-        Boer3 = new BoerItem(DashToolMaterials.DiamondMultiTool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab), 1, 0);
+        Boer3 = new BoerItem(DashToolMaterials.IronMultitool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab), 1, 0);
     }
 
     public static void init(String modId) {
@@ -41,6 +41,6 @@ public class DashItems {
         Registry.register(Registry.ITEM, new Identifier(modId, "diamond_multitool"), DiamondMultitool);
         Registry.register(Registry.ITEM, new Identifier(modId, "netherite_multitool"), NetheriteMultitool);
 
-        Registry.register(Registry.ITEM, new Identifier(modId, "boer_3"), Boer3);
+        Registry.register(Registry.ITEM, new Identifier(modId, "boer_iron"), Boer3);
     }
 }

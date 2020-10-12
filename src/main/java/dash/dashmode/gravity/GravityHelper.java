@@ -1,4 +1,4 @@
-package dash.dashmode.utils;
+package dash.dashmode.gravity;
 
 import dash.dashmode.DashMod;
 import net.minecraft.entity.Entity;

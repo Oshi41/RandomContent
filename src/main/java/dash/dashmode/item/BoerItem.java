@@ -43,8 +43,9 @@ public class BoerItem extends MultiToolItem implements IDigItem {
     }
 
     private ActionResult tryPlaceBlocks(ItemUsageContext context, Item... items) {
-        if (context == null || items == null || items.length == 0 || context.getPlayer() == null)
+        if (context == null || items == null || items.length == 0 || context.getPlayer() == null) {
             return ActionResult.PASS;
+        }
 
         Set<Item> set = Arrays.stream(items).collect(Collectors.toSet());
 
@@ -61,8 +62,9 @@ public class BoerItem extends MultiToolItem implements IDigItem {
             }
         }
 
-        if (stack == null)
+        if (stack == null) {
             return ActionResult.PASS;
+        }
 
         BlockHitResult hitResult = new BlockHitResult(context.getHitPos(), context.getSide(), context.getBlockPos(), context.hitsInsideBlock());
         ItemPlacementContext placementContext = new ItemPlacementContext(player, context.getHand(), stack, hitResult);

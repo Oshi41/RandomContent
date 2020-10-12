@@ -1,6 +1,7 @@
 package dash.dashmode;
 
 import com.mojang.serialization.Lifecycle;
+import dash.dashmode.armor.ArmorDescription;
 import dash.dashmode.config.Config;
 import dash.dashmode.config.DashConfig;
 import dash.dashmode.event.BlockBreakEvent;
@@ -44,6 +45,8 @@ public class DashMod implements ModInitializer {
 
         DashBlockEntities.init(ModId);
         DashEntities.init(ModId);
+
+        DashArmor.init(ModId);
 
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
     }

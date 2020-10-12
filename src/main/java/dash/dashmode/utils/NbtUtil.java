@@ -23,8 +23,9 @@ public class NbtUtil {
 
         for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
 
-            if (entry.getValue().isJsonObject())
+            if (entry.getValue().isJsonObject()) {
                 tag.put(entry.getKey(), parseTag(entry.getValue().getAsJsonObject()));
+            }
         }
 
         return tag;
@@ -74,8 +75,9 @@ public class NbtUtil {
 
                 for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet()) {
 
-                    if (entry.getValue().isJsonObject())
+                    if (entry.getValue().isJsonObject()) {
                         tag.put(entry.getKey(), parseTag(entry.getValue().getAsJsonObject()));
+                    }
                 }
 
                 return tag;

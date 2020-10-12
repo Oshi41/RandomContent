@@ -1,6 +1,6 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.utils.GravityHelper;
+import dash.dashmode.gravity.GravityHelper;
 import net.minecraft.entity.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

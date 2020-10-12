@@ -1,5 +1,6 @@
 package dash.dashmode;
 
+import com.mojang.serialization.Lifecycle;
 import dash.dashmode.config.Config;
 import dash.dashmode.config.DashConfig;
 import dash.dashmode.event.BlockBreakEvent;
@@ -10,6 +11,9 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.registry.SimpleRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +25,9 @@ public class DashMod implements ModInitializer {
     public static final ItemGroup DashItemsTab = FabricItemGroupBuilder
             .build(new Identifier(ModId, "general"),
                     () -> new ItemStack(DashBlocks.PaperStone.asItem()));
+
+    public static final RegistryKey<Registry<ArmorDescription>> ArmorSetRegistryKey = RegistryKey.ofRegistry(new Identifier(ModId, "armor_registry"));
+    public static final Registry<ArmorDescription> ArmorSetRegistry = new SimpleRegistry<>(ArmorSetRegistryKey, Lifecycle.experimental());
 
     @Override
     public void onInitialize() {
@@ -37,8 +44,6 @@ public class DashMod implements ModInitializer {
 
         DashBlockEntities.init(ModId);
         DashEntities.init(ModId);
-
-        //DashRecipes.init(ModId);
 
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
     }

@@ -1,14 +1,10 @@
 package dash.dashmode.utils;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -65,23 +61,4 @@ public class PositionUtils {
         return list;
     }
 
-    public static double getReachDistance(PlayerEntity entity) {
-        return 5;
-    }
-
-    @Nullable
-    public static BlockHitResult rayCast(PlayerEntity entity) {
-
-        // collect information on camera
-        Vec3d cameraPos = entity.getCameraPosVec(1);
-        Vec3d rotation = entity.getRotationVec(1).multiply(getReachDistance(entity));
-        Vec3d combined = cameraPos.add(rotation);
-
-        BlockHitResult raycast = entity.getEntityWorld().raycast(new RaycastContext(cameraPos, combined, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, entity));
-
-        if (raycast != null && raycast.getType() == HitResult.Type.BLOCK)
-            return raycast;
-
-        return null;
-    }
 }

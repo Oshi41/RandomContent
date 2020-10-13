@@ -54,25 +54,26 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
 
         boolean isCreative = getOwner() instanceof PlayerEntity && ((PlayerEntity) getOwner()).isCreative();
 
-        if (entity != null && isCatchableEntity(entity) || isCreative) {
-            CompoundTag tag = stack.getSubTag(JarOfKeepingBlockEntity.BlockItemTag);
-            if (tag != null && !tag.isEmpty()) {
-                int catchChance = tag.getInt(JarOfKeepingBlockEntity.CatchChanceTag);
-                boolean canCatch = catchChance <= 0 || world.random.nextInt(catchChance) == 0;
+        if (entity != null)
+            if (isCreative || isCatchableEntity(entity)) {
+                CompoundTag tag = stack.getOrCreateSubTag(JarOfKeepingBlockEntity.BlockItemTag);
+                if (tag != null && !tag.isEmpty()) {
+                    int catchChance = tag.getInt(JarOfKeepingBlockEntity.CatchChanceTag);
+                    boolean canCatch = catchChance <= 0 || world.random.nextInt(catchChance) == 0;
 
-                if (canCatch || isCreative) {
-                    CompoundTag entityTag = new CompoundTag();
-                    entity.saveToTag(entityTag);
-                    tag.put(JarOfKeepingBlockEntity.EntityTag, entity.toTag(entityTag));
-                }
+                    if (canCatch || isCreative) {
+                        CompoundTag entityTag = new CompoundTag();
+                        entity.saveToTag(entityTag);
+                        tag.put(JarOfKeepingBlockEntity.EntityTag, entity.toTag(entityTag));
+                    }
 
-                if (world.isClient()) {
-                    spawnParticles(canCatch);
-                } else {
-                    entity.remove();
+                    if (world.isClient()) {
+                        spawnParticles(canCatch);
+                    } else {
+                        entity.remove();
+                    }
                 }
             }
-        }
 
         dropStack(stack);
         remove();

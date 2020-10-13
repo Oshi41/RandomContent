@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "rc:crafting_shaped",
   "pattern": [
     " A ",
     "AMA",

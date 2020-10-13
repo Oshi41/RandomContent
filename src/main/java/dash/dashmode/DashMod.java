@@ -47,6 +47,7 @@ public class DashMod implements ModInitializer {
         DashEntities.init(ModId);
 
         DashArmor.init(ModId);
+        DashRecipes.init(ModId);
 
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
     }

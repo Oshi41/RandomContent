@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "rc:item/boer_3"
+    "layer0": "rc:item/boer_iron"
   }
 }

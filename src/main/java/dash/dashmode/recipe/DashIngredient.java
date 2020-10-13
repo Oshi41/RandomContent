@@ -1,5 +1,6 @@
 package dash.dashmode.recipe;
 
+import dash.dashmode.mixin.IngredientAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Ingredient;
@@ -23,7 +24,6 @@ public class DashIngredient implements Predicate<ItemStack> {
     private CompoundTag tag;
 
     public DashIngredient(Ingredient source) {
-
         this.source = source;
     }
 
@@ -55,13 +55,33 @@ public class DashIngredient implements Predicate<ItemStack> {
         return tag == null || test(stack, tag);
     }
 
+    /**
+     * Populates tag into cached stacks
+     *
+     * @param tag
+     * @return
+     */
     public DashIngredient and(CompoundTag tag) {
         this.tag = tag;
+
+        if (tag != null) {
+            CompoundTag copy = getTag();
+
+            IngredientAccessor accessor = (IngredientAccessor) ((Object) this.source);
+            accessor.rc_cacheMatchingStacks();
+            for (ItemStack stack : accessor.rc_getMatchingStacks()) {
+                stack.setTag(copy);
+            }
+        }
+
         return this;
     }
 
     @Nullable
     public CompoundTag getTag() {
+        if (tag == null)
+            return null;
+
         return tag.copy();
     }
 

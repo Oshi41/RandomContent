@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dash.dashmode.mixin.IngredientAccessor;
 import dash.dashmode.mixin.ShapedRecipeAccessor;
+import dash.dashmode.registry.DashRecipes;
 import dash.dashmode.utils.NbtUtil;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -24,37 +25,17 @@ import net.minecraft.world.World;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DashCraftRecipe extends ShapedRecipe {
     private final DefaultedList<DashIngredient> conditions;
 
     public DashCraftRecipe(ShapedRecipe recipe) {
-        super(recipe.getId(), recipe.getGroup(), recipe.getWidth(), recipe.getHeight(), recipe.getPreviewInputs(), recipe.getOutput());
-
-        DefaultedList<Ingredient> inputs = recipe.getPreviewInputs();
-        conditions = DefaultedList.ofSize(inputs.size(), DashIngredient.EMPTY);
-
-        for (int i = 0; i < inputs.size(); i++) {
-            IngredientAccessor mixin = (IngredientAccessor) ((Object) inputs.get(i));
-            DashIngredient ingredient = new DashIngredient(inputs.get(i));
-
-            mixin.rc_cacheMatchingStacks();
-            ItemStack[] stacks = mixin.rc_getMatchingStacks();
-
-            if (stacks != null && stacks.length > 0) {
-                ItemStack stack = stacks[0];
-                if (stack.hasTag()) {
-                    CompoundTag tag = stack.getTag();
-                    ingredient = ingredient.and(tag);
-                }
-            }
-
-            conditions.set(i, ingredient);
-        }
+        this(recipe, getFrom(recipe));
     }
 
     public DashCraftRecipe(ShapedRecipe recipe, DefaultedList<DashIngredient> conditions) {
-        super(recipe.getId(), recipe.getGroup(), recipe.getWidth(), recipe.getHeight(), recipe.getPreviewInputs(), recipe.getOutput());
+        super(recipe.getId(), recipe.getGroup(), recipe.getWidth(), recipe.getHeight(), getFrom(conditions), recipe.getOutput());
         this.conditions = conditions;
     }
 
@@ -95,6 +76,43 @@ public class DashCraftRecipe extends ShapedRecipe {
         }
 
         return true;
+    }
+
+    private static DefaultedList<DashIngredient> getFrom(ShapedRecipe recipe) {
+        DefaultedList<Ingredient> inputs = recipe.getPreviewInputs();
+
+        DefaultedList<DashIngredient> result = DefaultedList.ofSize(inputs.size(), DashIngredient.EMPTY);
+
+        for (int i = 0; i < inputs.size(); i++) {
+            IngredientAccessor mixin = (IngredientAccessor) ((Object) inputs.get(i));
+            DashIngredient ingredient = new DashIngredient(inputs.get(i));
+
+            mixin.rc_cacheMatchingStacks();
+            ItemStack[] stacks = mixin.rc_getMatchingStacks();
+
+            if (stacks != null && stacks.length > 0) {
+                ItemStack stack = stacks[0];
+                if (stack.hasTag()) {
+                    CompoundTag tag = stack.getTag();
+                    ingredient = ingredient.and(tag);
+                }
+            }
+
+            result.set(i, ingredient);
+        }
+
+        return result;
+    }
+
+    private static DefaultedList<Ingredient> getFrom(DefaultedList<DashIngredient> source) {
+        DefaultedList<Ingredient> list = DefaultedList.of();
+        list.addAll(source.stream().map(x -> x.source).collect(Collectors.toList()));
+        return list;
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return DashRecipes.DashRecipesSerializer;
     }
 
     public static class Serializer implements RecipeSerializer<DashCraftRecipe> {

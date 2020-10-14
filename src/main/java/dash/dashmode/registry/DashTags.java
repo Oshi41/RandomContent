@@ -10,6 +10,9 @@ public class DashTags {
     /**
      * Tag for soil blocks
      */
-    public static final Tag<Block> Soil = TagRegistry.block(new Identifier(DashMod.ModId, "soil"));
-    public static final Tag<Block> Stone = TagRegistry.block(new Identifier(DashMod.ModId, "stone"));
+
+    public static final Tag<Block> FeatureSoil = TagRegistry.block(new Identifier(DashMod.ModId, "soil"));
+    public static final Tag<Block> FeatureStone = TagRegistry.block(new Identifier(DashMod.ModId, "stone"));
+
+    public static final Tag<Block> Sharable = TagRegistry.block(new Identifier(DashMod.ModId, "shearable"));
 }

@@ -27,7 +27,7 @@ public class MiningToolItemMixin {
 
     @Inject(method = "getMiningSpeedMultiplier", at = @At("HEAD"), cancellable = true)
     public void getMiningSpeedMultiplierInject(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
-        if (isShovel && state.isIn(DashTags.Soil)) {
+        if (isShovel && state.isIn(DashTags.FeatureSoil)) {
             cir.setReturnValue(miningSpeed);
         }
     }

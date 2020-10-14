@@ -41,7 +41,7 @@ public class DashFeatures {
     public static final ConfiguredFeature<?, ?> PaperEntTreeFeature;
 
     static {
-        AnyStoneRule = new TagMatchRuleTest(DashTags.Stone);
+        AnyStoneRule = new TagMatchRuleTest(DashTags.FeatureStone);
 
         FancyPaperOak = Feature.TREE.configure(
                 (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(DashBlocks.PaperOakLog.getDefaultState()),

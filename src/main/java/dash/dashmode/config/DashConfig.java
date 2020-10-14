@@ -18,4 +18,7 @@ public class DashConfig {
     public Map<Identifier, Float> DimensionsGravity = new HashMap<Identifier, Float>() {{
         put(DimensionType.OVERWORLD_ID, 1F);
     }};
+
+    @Property(category = "environment", commentLangKey = "rc.fixModdedShears.comment")
+    public boolean fixModdedShearsDrop = true;
 }

@@ -6,7 +6,9 @@
   "mixins": [
     "FeatureMixin",
     "IngredientAccessor",
+    "ItemPredicateAccessor",
     "LivingEntityMixin",
+    "MatchToolLootConditionMixin",
     "MiningToolItemMixin",
     "OreBlockMixin",
     "ServerPlayerInteractionManagerMixin",

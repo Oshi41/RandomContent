@@ -38,7 +38,7 @@ public class DashMod implements ModInitializer {
         DashBlocks.init(ModId);
         DashItems.init(ModId);
 
-        DashTags.Soil.contains(null);
+        DashTags.FeatureSoil.contains(null);
 
         DashFeatures.init(ModId);
         DashBiomes.init();

@@ -31,5 +31,7 @@
   "rc.jar_of_keeping.can_escape": "Удерживаемый моб может сбежать",
   "entity_type.rc.jar_of_keeping_throwable": "",
   "block_entity_type.rc.jar_of_keeping_block": "Банка удержания",
-  "item.rc.boer_iron": "Универсальный бур"
+  "item.rc.boer_iron": "Универсальный бур",
+  "item.rc.iron_scissors": "Железные ножницы",
+  "rc.fixModdedShears.comment": "Выставите в true, чтобы дроп с блоков учитывал все ножницы мода, а не только ванильные"
 }

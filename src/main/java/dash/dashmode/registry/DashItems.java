@@ -2,6 +2,7 @@ package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
 import dash.dashmode.item.BoerItem;
+import dash.dashmode.item.DashShears;
 import dash.dashmode.item.MultiToolItem;
 import net.minecraft.item.FoodComponents;
 import net.minecraft.item.Item;
@@ -17,7 +18,13 @@ public class DashItems {
     public static final Item DiamondMultitool;
     public static final Item NetheriteMultitool;
 
-    public static final Item Boer3;
+
+    public static final Item IronScissors;
+    public static final Item GoldenScissors;
+    public static final Item DiamondScissors;
+    public static final Item NetheriteScissors;
+
+    public static final Item IronBoer;
 
     static {
         PaperApple = new Item((new Item.Settings()).group(DashMod.DashItemsTab).food(FoodComponents.APPLE));
@@ -28,7 +35,12 @@ public class DashItems {
         DiamondMultitool = new MultiToolItem(DashToolMaterials.DiamondMultiTool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab));
         NetheriteMultitool = new MultiToolItem(DashToolMaterials.NetheriteMultitool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab));
 
-        Boer3 = new BoerItem(DashToolMaterials.IronMultitool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab), 1, 0);
+        IronBoer = new BoerItem(DashToolMaterials.IronMultitool, 3, -3F, new Item.Settings().group(DashMod.DashItemsTab), 1, 0);
+
+        IronScissors = new DashShears(DashToolMaterials.IronShears, new Item.Settings().group(DashMod.DashItemsTab));
+        GoldenScissors = new DashShears(DashToolMaterials.GoldenShears, new Item.Settings().group(DashMod.DashItemsTab));
+        DiamondScissors = new DashShears(DashToolMaterials.DiamondShears, new Item.Settings().group(DashMod.DashItemsTab));
+        NetheriteScissors = new DashShears(DashToolMaterials.NetheriteShears, new Item.Settings().group(DashMod.DashItemsTab));
     }
 
     public static void init(String modId) {
@@ -41,6 +53,7 @@ public class DashItems {
         Registry.register(Registry.ITEM, new Identifier(modId, "diamond_multitool"), DiamondMultitool);
         Registry.register(Registry.ITEM, new Identifier(modId, "netherite_multitool"), NetheriteMultitool);
 
-        Registry.register(Registry.ITEM, new Identifier(modId, "boer_iron"), Boer3);
+        Registry.register(Registry.ITEM, new Identifier(modId, "boer_iron"), IronBoer);
+        Registry.register(Registry.ITEM, new Identifier(modId, "iron_scissors"), IronScissors);
     }
 }

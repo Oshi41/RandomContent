@@ -12,14 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class FeatureMixin {
     @Inject(method = "isSoil(Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
     private static void isSoilInject(Block block, CallbackInfoReturnable<Boolean> cir) {
-        if (block.isIn(DashTags.Soil)) {
+        if (block.isIn(DashTags.FeatureSoil)) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "isStone", at = @At("HEAD"), cancellable = true)
     private static void isStoneInject(Block block, CallbackInfoReturnable<Boolean> cir) {
-        if (block.isIn(DashTags.Stone)) {
+        if (block.isIn(DashTags.FeatureStone)) {
             cir.setReturnValue(true);
         }
     }

@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "rc:golden_multitool"
+    "rc:iron_multitool",
+    "rc:golden_multitool",
+    "rc:diamond_multitool",
+    "rc:netherite_multitool"
   ]
 }

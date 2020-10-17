@@ -1,10 +1,7 @@
 package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
-import dash.dashmode.block.DashFlowerBlock;
-import dash.dashmode.block.DashGrassBlock;
-import dash.dashmode.block.DashSaplingBlock;
-import dash.dashmode.block.JarOfKeepingBlock;
+import dash.dashmode.block.*;
 import dash.dashmode.feature.PaperOakFeature;
 import dash.dashmode.item.JarOfKeepingItem;
 import dash.dashmode.settings.SaplingSettings;
@@ -18,20 +15,15 @@ import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
 
 public class DashBlocks {
-    public static final Map<Block, Pair<Integer, Integer>> XpBlocks = new HashMap<>();
-
     public static final Block PaperDirt;
     public static final Block PaperGrass;
     public static final Block PaperStone;
@@ -50,17 +42,19 @@ public class DashBlocks {
     public static final Block PaperCrystalLog;
     public static final Block JarOfKeeping;
     public static final Block PerfectJarOfKeeping;
+    public static final Block PaperOakPlank;
+    public static final Block PortalCane;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL)
                 .requiresTool()
-                .breakByTool(FabricToolTags.SHEARS, 0));
+                .breakByTool(FabricToolTags.SHEARS, -1));
         PaperGrass = new DashGrassBlock(FabricBlockSettings.of(Material.SOLID_ORGANIC, MaterialColor.WHITE).ticksRandomly().strength(0.6F).sounds(BlockSoundGroup.GRASS)
                 .requiresTool()
-                .breakByTool(FabricToolTags.SHEARS, 0), () -> PaperDirt);
+                .breakByTool(FabricToolTags.SHEARS, -1), () -> PaperDirt);
         PaperStone = new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.STONE).requiresTool().strength(1.5F, 6.0F)
                 .requiresTool()
-                .breakByTool(FabricToolTags.SHEARS, 0));
+                .breakByTool(FabricToolTags.SHEARS, -1));
         PaperOakLog = createLogBlock(MaterialColor.WHITE, MaterialColor.LIGHT_GRAY, settings -> settings.breakByTool(FabricToolTags.SHEARS, 0).requiresTool());
         PaperLeaves = createLeavesBlock(settings -> settings.breakByTool(FabricToolTags.SHEARS, 0).requiresTool());
 
@@ -87,17 +81,15 @@ public class DashBlocks {
                 .breakByTool(FabricToolTags.SHEARS, 1)
                 .strength(3.0F, 3.0F));
 
-        PaperLapisOre = new OreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
+        PaperLapisOre = new DashOreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
                 .requiresTool()
                 .breakByTool(FabricToolTags.SHEARS, 1)
-                .strength(3.0F, 3.0F));
-        XpBlocks.put(PaperLapisOre, new Pair<>(2, 5));
+                .strength(3.0F, 3.0F), 2, 5);
 
-        PaperCoalOre = new OreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
+        PaperCoalOre = new DashOreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
                 .requiresTool()
                 .breakByTool(FabricToolTags.SHEARS, 0)
-                .strength(3.0F, 3.0F));
-        XpBlocks.put(PaperLapisOre, new Pair<>(0, 2));
+                .strength(3.0F, 3.0F), 0, 2);
 
         PaperRedstoneOre = new RedstoneOreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
                 .requiresTool()
@@ -106,30 +98,26 @@ public class DashBlocks {
                 .luminance(createLightLevelFromBlockState(9))
                 .strength(3.0F, 3.0F));
 
-        PaperDiamondOre = new OreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
+        PaperDiamondOre = new DashOreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
                 .requiresTool()
                 .breakByTool(FabricToolTags.SHEARS, 2)
-                .strength(3.0F, 3.0F));
-        XpBlocks.put(PaperDiamondOre, new Pair<>(3, 7));
+                .strength(3.0F, 3.0F), 3, 7);
 
-        PaperEmeraldOre = new OreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
+        PaperEmeraldOre = new DashOreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
                 .requiresTool()
                 .breakByTool(FabricToolTags.SHEARS, 2)
-                .strength(3.0F, 3.0F));
-        XpBlocks.put(PaperEmeraldOre, new Pair<>(3, 7));
+                .strength(3.0F, 3.0F), 3, 7);
 
-        PaperQuartzOre = new OreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
+        PaperQuartzOre = new DashOreBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.WHITE)
                 .requiresTool()
                 .breakByTool(FabricToolTags.SHEARS, 0)
                 .strength(3.0F, 3.0F)
-                .sounds(BlockSoundGroup.NETHER_ORE));
-        XpBlocks.put(PaperEmeraldOre, new Pair<>(2, 5));
+                .sounds(BlockSoundGroup.NETHER_ORE), 2, 5);
 
-        PaperCrystalLog = new Block(FabricBlockSettings.of(Material.WOOD, MaterialColor.WHITE)
+        PaperCrystalLog = new DashOreBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WHITE)
                 .strength(3f)
                 .breakByTool(FabricToolTags.SHEARS, 0)
-                .sounds(BlockSoundGroup.WOOD));
-        XpBlocks.put(PaperCrystalLog, new Pair<>(2, 5));
+                .sounds(BlockSoundGroup.WOOD), 2, 5);
 
         JarOfKeeping = new JarOfKeepingBlock(FabricBlockSettings.of(Material.GLASS, MaterialColor.BLACK)
                 .strength(0.3F)
@@ -150,6 +138,21 @@ public class DashBlocks {
                 .suffocates((state, world, pos) -> false)
                 .blockVision((state, world, pos) -> false),
                 true);
+
+        PaperOakPlank = new Block(FabricBlockSettings.of(Material.WOOD, MaterialColor.WHITE)
+                .strength(2.0F, 3.0F)
+                .requiresTool()
+                .breakByTool(FabricToolTags.SHEARS, -1)
+                .sounds(BlockSoundGroup.WOOD));
+
+        PortalCane = new DashPortalBlock(AbstractBlock.Settings.of(Material.PLANT)
+                .noCollision()
+                .ticksRandomly()
+                .strength(-1.0F)
+                .sounds(BlockSoundGroup.CROP)
+                .luminance((state) -> {
+                    return 11;
+                }), () -> null);
     }
 
     public static void init(String modeName) {
@@ -172,6 +175,7 @@ public class DashBlocks {
         initBlock(new Identifier(modeName, "paper_lapis_ore"), PaperLapisOre, defaultSettings);
         initBlock(new Identifier(modeName, "paper_diamond_ore"), PaperDiamondOre, defaultSettings);
         initBlock(new Identifier(modeName, "paper_emerald_ore"), PaperEmeraldOre, defaultSettings);
+        initBlock(new Identifier(modeName, "paper_quartz_ore"), PaperQuartzOre, defaultSettings);
 
         initBlock(new Identifier(modeName, "paper_crystal_log"), PaperCrystalLog, defaultSettings);
 
@@ -183,6 +187,9 @@ public class DashBlocks {
         Identifier perfectJarOfKeeping = new Identifier(modeName, "perfect_jar_of_keeping");
         initBlock(perfectJarOfKeeping, PerfectJarOfKeeping, null);
         Registry.register(Registry.ITEM, perfectJarOfKeeping, new JarOfKeepingItem(PerfectJarOfKeeping, defaultSettings, true));
+
+        initBlock(new Identifier(modeName, "paper_oak_plank"), PaperOakPlank, defaultSettings);
+        initBlock(new Identifier(modeName, "portal_cane"), PortalCane, defaultSettings);
     }
 
     // region Helping methods

@@ -33,5 +33,9 @@
   "block_entity_type.rc.jar_of_keeping_block": "Банка удержания",
   "item.rc.boer_iron": "Универсальный бур",
   "item.rc.iron_scissors": "Железные ножницы",
-  "rc.fixModdedShears.comment": "Выставите в true, чтобы дроп с блоков учитывал все ножницы мода, а не только ванильные"
+  "rc.fixModdedShears.comment": "Выставите в true, чтобы дроп с блоков учитывал все ножницы мода, а не только ванильные",
+  "block.rc.paper_quartz_ore": "Бумажная руда кварца",
+  "item.rc.golden_scissors": "Золотые ножницы",
+  "block.rc.paper_oak_plank": "Доски бумажного дуба",
+  "block.rc.portal_cane": "Портальный тростник"
 }

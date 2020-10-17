@@ -14,13 +14,13 @@ public class DashToolMaterial implements ToolMaterial {
     private final int enchantability;
     private final Lazy<Ingredient> repairIngredient;
 
-    public DashToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier<Ingredient> repairIngredient) {
+    public DashToolMaterial(int miningLevel, float itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier<Ingredient> repairIngredient) {
         this.miningLevel = miningLevel;
-        this.itemDurability = itemDurability;
+        this.itemDurability = (int) itemDurability;
         this.miningSpeed = miningSpeed;
         this.attackDamage = attackDamage;
         this.enchantability = enchantability;
-        this.repairIngredient = new Lazy(repairIngredient);
+        this.repairIngredient = new Lazy<>(repairIngredient);
     }
 
     @Override

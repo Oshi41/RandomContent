@@ -1,10 +1,12 @@
 package dash.dashmode.utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.*;
+import net.minecraft.world.border.WorldBorder;
+import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -61,4 +63,23 @@ public class PositionUtils {
         return list;
     }
 
+    /**
+     * Gets portal position
+     *
+     * @param destination
+     * @param entity
+     * @return
+     */
+    public static BlockPos getTeleportPos(ServerWorld destination, Entity entity) {
+        WorldBorder worldBorder = destination.getWorldBorder();
+        double d = Math.max(-2.9999872E7D, worldBorder.getBoundWest() + 16.0D);
+        double e = Math.max(-2.9999872E7D, worldBorder.getBoundNorth() + 16.0D);
+        double f = Math.min(2.9999872E7D, worldBorder.getBoundEast() - 16.0D);
+        double g = Math.min(2.9999872E7D, worldBorder.getBoundSouth() - 16.0D);
+        double h = DimensionType.method_31109(entity.getEntityWorld().getDimension(), destination.getDimension());
+        Vec3d position = entity.getPos();
+
+        BlockPos portalPosition = new BlockPos(MathHelper.clamp(position.x * h, d, f), position.y, MathHelper.clamp(position.z * h, e, g));
+        return portalPosition;
+    }
 }

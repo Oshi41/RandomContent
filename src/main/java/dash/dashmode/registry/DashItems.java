@@ -55,5 +55,6 @@ public class DashItems {
 
         Registry.register(Registry.ITEM, new Identifier(modId, "boer_iron"), IronBoer);
         Registry.register(Registry.ITEM, new Identifier(modId, "iron_scissors"), IronScissors);
+        Registry.register(Registry.ITEM, new Identifier(modId, "golden_scissors"), GoldenScissors);
     }
 }

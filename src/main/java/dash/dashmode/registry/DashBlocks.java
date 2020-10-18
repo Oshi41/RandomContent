@@ -152,7 +152,7 @@ public class DashBlocks {
                 .sounds(BlockSoundGroup.CROP)
                 .luminance((state) -> {
                     return 11;
-                }), () -> null);
+                }), () -> DashDimensions.PaperLands);
     }
 
     public static void init(String modeName) {

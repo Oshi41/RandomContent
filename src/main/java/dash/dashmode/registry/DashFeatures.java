@@ -39,6 +39,7 @@ public class DashFeatures {
     public static final ConfiguredFeature<?, ?> PaperEmeraldOre;
     public static final ConfiguredFeature<RandomPatchFeatureConfig, ?> PaperFlowers;
     public static final ConfiguredFeature<?, ?> PaperEntTreeFeature;
+    private static final ConfiguredFeature PaperQuartzOre;
 
     static {
         AnyStoneRule = new TagMatchRuleTest(DashTags.FeatureStone);
@@ -110,27 +111,34 @@ public class DashFeatures {
                 .ignoreVines()
                 .build())
                 .decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig((int) Math.max(DashMod.MainConfig.getConfig().PaperCrystalTreeChance, 1))));
+
+        PaperQuartzOre = (ConfiguredFeature) ((ConfiguredFeature) Feature.ORE.configure(new OreFeatureConfig(AnyStoneRule,
+                DashBlocks.PaperQuartzOre.getDefaultState(), 14))
+                .decorate(ConfiguredFeatures.Decorators.NETHER_ORE)
+                .spreadHorizontally())
+                .repeat(16);
     }
 
     public static void init(String modId) {
         DashMod.MainLogger.debug("Entering to feature registry");
 
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_fancy_oak"), FancyPaperOak);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_fancy_oak_bee"), FancyPaperOakBee);
-
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_ore"), PaperCoalOre);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_iron"), PaperIronOre);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_gold"), PaperGoldOre);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_redstone"), PaperRedstoneOre);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_lapis"), PaperLapisOre);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_diamond"), PaperDiamondOre);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_coal_emerald"), PaperEmeraldOre);
-
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_fancy_oak"), FancyPaperOak);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_fancy_oak_bee"), FancyPaperOakBee);
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "random_paper_tree"), RandomPaperTree);
+
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "random_paper_flowers"), PaperFlowers);
 
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "feature_paper_ent_tree"), PaperEntTreeFeature);
 
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_coal"), PaperCoalOre);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_gold"), PaperGoldOre);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_redstone"), PaperRedstoneOre);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_lapis"), PaperLapisOre);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_diamond"), PaperDiamondOre);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_emerald"), PaperEmeraldOre);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_quartz"), PaperQuartzOre);
+
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_ent_tree"), PaperEntTreeFeature);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(modId, "paper_iron"), PaperIronOre);
     }
 
 }

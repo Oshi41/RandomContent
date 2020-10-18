@@ -81,6 +81,7 @@ public class PaperPortalDesciption implements IPortalDesciption {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
         BlockState obsidian = Blocks.MELON.getDefaultState();
+        BlockState portal = Blocks.AIR.getDefaultState();
 
         for (int r = -1; r < 3; ++r) {
             for (int o = -1; o < 4; ++o) {
@@ -91,7 +92,6 @@ public class PaperPortalDesciption implements IPortalDesciption {
             }
         }
 
-        BlockState portal = Blocks.AIR.getDefaultState();
 
         for (int o = 0; o < 2; ++o) {
             for (int p = 0; p < 3; ++p) {

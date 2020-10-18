@@ -2,7 +2,7 @@ package dash.dashmode.mixin;
 
 import dash.dashmode.portal.DashPortalForcer;
 import dash.dashmode.portal.IPortalDesciption;
-import dash.dashmode.registry.DashPortals;
+import dash.dashmode.registry.DashDimensions;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
@@ -27,20 +27,20 @@ import java.util.concurrent.Executor;
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
     @Unique
-    private DashPortalForcer portalForcer;
+    private DashPortalForcer rc_portalForcer;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void getPortalForcer(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
-        IPortalDesciption portal = DashPortals.getPortal(registryKey);
+        IPortalDesciption portal = DashDimensions.getPortal(registryKey);
         if (portal == null)
             return;
 
-        portalForcer = new DashPortalForcer((ServerWorld) ((Object) this), portal);
+        rc_portalForcer = new DashPortalForcer((ServerWorld) ((Object) this), portal);
     }
 
     @Inject(method = "getPortalForcer", at = @At("HEAD"))
     private void getPortalForcerInject(CallbackInfoReturnable<PortalForcer> cir) {
-        if (portalForcer != null)
-            cir.setReturnValue(portalForcer);
+        if (this.rc_portalForcer != null)
+            cir.setReturnValue(this.rc_portalForcer);
     }
 }

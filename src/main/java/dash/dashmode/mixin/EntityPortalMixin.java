@@ -3,10 +3,8 @@ package dash.dashmode.mixin;
 import dash.dashmode.DashMod;
 import dash.dashmode.portal.IPortalCooldown;
 import dash.dashmode.portal.IPortalDesciption;
-import dash.dashmode.registry.DashPortals;
+import dash.dashmode.registry.DashDimensions;
 import dash.dashmode.utils.PositionUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.class_5459;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
@@ -124,7 +122,7 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
         }
 
         // possible portal description
-        IPortalDesciption portalDesciption = DashPortals.getPortal(moddedKey);
+        IPortalDesciption portalDesciption = DashDimensions.getPortal(moddedKey);
         if (portalDesciption == null)
             return;
 
@@ -149,7 +147,6 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
         }
     }
 
-    @Environment(EnvType.SERVER)
     private void changeDimension(RegistryKey<World> id) {
         ServerWorld world = ((ServerWorld) getEntityWorld());
 

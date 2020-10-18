@@ -23,7 +23,7 @@ public class DashModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-                DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling);
+                DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling, DashBlocks.PortalCane);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
                 DashBlocks.JarOfKeeping);
@@ -33,6 +33,7 @@ public class DashModClient implements ClientModInitializer {
 
         int white = 16777215;
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> white, DashBlocks.PaperGrass);
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> white, DashBlocks.PaperGrass);
 
 
         Set<String> set = Arrays.stream(FabricLoader.getInstance().getLaunchArguments(true)).collect(Collectors.toSet());

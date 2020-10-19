@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "rc:paper_emerald_ore"
-  },
-  "result": "minecraft:emerald",
-  "experience": 1.0,
-  "cookingtime": 100
-}

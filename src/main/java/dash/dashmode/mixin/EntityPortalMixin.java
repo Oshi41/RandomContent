@@ -3,18 +3,18 @@ package dash.dashmode.mixin;
 import dash.dashmode.DashMod;
 import dash.dashmode.portal.IPortalCooldown;
 import dash.dashmode.portal.IPortalDesciption;
+import dash.dashmode.portal.IPortalForcer;
 import dash.dashmode.registry.DashDimensions;
 import dash.dashmode.utils.PositionUtils;
 import net.minecraft.class_5459;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.PortalForcer;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.AreaHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Mixin(Entity.class)
 public abstract class EntityPortalMixin implements IPortalCooldown {
@@ -34,6 +35,8 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
     private final Map<RegistryKey<World>, Integer> tickMap = new HashMap<>();
     @Unique
     private final Map<RegistryKey<World>, BlockPos> posMap = new HashMap<>();
+    @Unique
+    private final Map<RegistryKey<World>, Integer> cooldownMap = new HashMap<>();
 
     @Shadow
     public abstract int getMaxNetherPortalTime();
@@ -57,13 +60,16 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
     @Shadow
     protected abstract Optional<class_5459.class_5460> method_30330(ServerWorld serverWorld, BlockPos blockPos, boolean bl);
 
+    @Shadow
+    public abstract int getDefaultNetherPortalCooldown();
+
     @Override
-    public void setCooldown(RegistryKey<World> id, int ticks) {
+    public void setTickInPortal(RegistryKey<World> id, int ticks) {
         tickMap.put(id, ticks);
     }
 
     @Override
-    public int getCooldown(RegistryKey<World> id) {
+    public int getTickInPortal(RegistryKey<World> id) {
         return tickMap.getOrDefault(id, -1);
     }
 
@@ -78,34 +84,89 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
     }
 
     @Override
+    public void setCooldown(RegistryKey<World> id, int ticks) {
+        cooldownMap.put(id, ticks);
+    }
+
+    @Override
+    public int getCoolDown(RegistryKey<World> id) {
+        return cooldownMap.getOrDefault(id, 0);
+    }
+
+    @Override
     public void copy(IPortalCooldown source) {
-        EntityPortalMixin mixin = (EntityPortalMixin) source;
+        if (source instanceof EntityPortalMixin) {
+            EntityPortalMixin mixin = (EntityPortalMixin) source;
 
-        mixin.tickMap.entrySet().stream().filter(x -> x.getValue() > 0)
-                .forEach(x -> {
-                    setCooldown(x.getKey(), x.getValue());
-                });
+            mixin.posMap.forEach(this::setLastPortalPos);
+            mixin.tickMap.forEach(this::setTickInPortal);
+            mixin.cooldownMap.forEach(this::setCooldown);
+        }
+    }
 
-        mixin.posMap.forEach(this::setLastPortalPos);
+    @Inject(method = "copyFrom", at = @At("RETURN"))
+    private void copyFromInject(Entity original, CallbackInfo ci) {
+        if (original instanceof IPortalCooldown) {
+            copy(((IPortalCooldown) original));
+        }
     }
 
     @Inject(method = "tickNetherPortal", at = @At("RETURN"))
     private void tickNetherPortalInject(CallbackInfo ci) {
-        final RegistryKey<World> currentlyTravel = tickMap.entrySet().stream().filter(x -> x.getValue() >= 0).map(Map.Entry::getKey).findFirst().orElse(null);
-        if (currentlyTravel != null) {
-            int maxTime = getMaxNetherPortalTime();
-            Integer current = tickMap.get(currentlyTravel);
+        // current ticking portal
+        Set<RegistryKey<World>> ticks = tickMap.keySet();
+        // max cooldown
+        int maxNetherPortalTime = Math.max(200, getMaxNetherPortalTime());
 
-            if (current >= maxTime) {
+        for (RegistryKey<World> key : ticks) {
+            // have cooldown for current portal
+            if (cooldownMap.containsKey(key))
+                continue;
+
+            // getting current tick amount
+            int tick = tickMap.get(key);
+
+            // can travel
+            if (tick >= maxNetherPortalTime) {
+                // remember current portal pos
+                setLastPortalPos(key, getBlockPos());
+                // set cooldown to prevent infinite travel routine
+                setCooldown(key, getDefaultNetherPortalCooldown());
+
+                // cahnge dimension onserver only
                 if (!getEntityWorld().isClient()) {
-                    changeDimension(currentlyTravel);
-                    setLastPortalPos(currentlyTravel, getBlockPos());
+                    changeDimension(key);
                 }
 
-                current = 0;
+                // removing current id from ticks
+                tickMap.remove(key);
+                // return because we did all work
+                return;
             }
 
-            tickMap.put(currentlyTravel, current - 1);
+
+            if (tick <= 0) {
+                // tick is ended, remove from map
+                tickMap.remove(key);
+            } else {
+                // remove tick if stand away from portal
+                tickMap.put(key, tick - 1);
+            }
+        }
+
+        // iterate through cooldowns strictly after regular tick
+        Set<RegistryKey<World>> coolDown = cooldownMap.keySet();
+
+        for (RegistryKey<World> key : coolDown) {
+            int value = cooldownMap.get(key) - 1;
+
+            if (value > 0) {
+                // decay cooldown
+                cooldownMap.put(key, value);
+            } else {
+                // finished cooldown
+                coolDown.remove(key);
+            }
         }
     }
 
@@ -129,22 +190,20 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
         Entity entity = (Entity) (Object) this;
         BlockPos portalPosition = PositionUtils.getTeleportPos(destination, entity);
 
-        // searhing for portal
-        Optional<class_5459.class_5460> optional = method_30330(destination, portalPosition, false);
+        PortalForcer forcer = destination.getPortalForcer();
+        if (!(forcer instanceof IPortalForcer))
+            return;
 
-        // creating new portal
+        Optional<class_5459.class_5460> optional = ((IPortalForcer) forcer).tryFindOrCreate(entity, portalDesciption, portalPosition, false);
+
         if (!optional.isPresent()) {
-            optional = destination.getPortalForcer().method_30482(getLatestPortalPos(moddedKey), Direction.Axis.X);
-        }
-
-        if (optional.isPresent()) {
-            class_5459.class_5460 lv = optional.get();
-            TeleportTarget teleportTarget = AreaHelper.method_30484(destination, lv, Direction.Axis.X, new Vec3d(0.5D, 0.0D, 0.0D), entity.getDimensions(entity.getPose()), entity.getVelocity(), entity.yaw, entity.pitch);
-
-            cir.setReturnValue(teleportTarget);
-        } else {
             DashMod.MainLogger.warn("Can't create portal for dimension :(");
+            return;
         }
+
+        class_5459.class_5460 lv = optional.get();
+        TeleportTarget teleportTarget = PositionUtils.getTeleportTarget(lv, entity);
+        cir.setReturnValue(teleportTarget);
     }
 
     private void changeDimension(RegistryKey<World> id) {

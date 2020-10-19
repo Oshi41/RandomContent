@@ -1,10 +1,13 @@
 package dash.dashmode.utils;
 
+import net.minecraft.class_5459;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.dimension.DimensionType;
 
@@ -81,5 +84,31 @@ public class PositionUtils {
 
         BlockPos portalPosition = new BlockPos(MathHelper.clamp(position.x * h, d, f), position.y, MathHelper.clamp(position.z * h, e, g));
         return portalPosition;
+    }
+
+    public static TeleportTarget getTeleportTarget(class_5459.class_5460 portalDescription, Entity entity) {
+        BlockPos blockPos = portalDescription.field_25936;
+        Direction.Axis axis2 = Direction.Axis.X;
+        Direction.Axis portalAxis = Direction.Axis.X;
+
+        if (portalDescription instanceof IOriented) {
+            axis2 = ((IOriented) portalDescription).getAxis();
+        }
+
+        double d = portalDescription.field_25937;
+        double e = portalDescription.field_25938;
+        int i = portalAxis == axis2 ? 0 : 90;
+
+        Vec3d velocity = entity.getVelocity();
+        Vec3d vec3d = new Vec3d(0.5D, 0.0D, 0.0D);
+        EntityDimensions entityDimensions = entity.getDimensions(entity.getPose());
+
+        Vec3d vec3d3 = portalAxis == axis2 ? velocity : new Vec3d(velocity.z, velocity.y, -velocity.x);
+        double h = (double) entityDimensions.width / 2.0D + (d - (double) entityDimensions.width) * vec3d.getX();
+        double j = (e - (double) entityDimensions.height) * vec3d.getY();
+        double k = 0.5D + vec3d.getZ();
+        boolean bl = axis2 == Direction.Axis.X;
+        Vec3d vec3d4 = new Vec3d((double) blockPos.getX() + (bl ? h : k), (double) blockPos.getY() + j, (double) blockPos.getZ() + (bl ? k : h));
+        return new TeleportTarget(vec3d4, vec3d3, entity.yaw + (float) i, entity.pitch);
     }
 }

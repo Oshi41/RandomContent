@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "random_content:paper_redstone_ore"
+  },
+  "result": "minecraft:redstone",
+  "experience": 0.7,
+  "cookingtime": 100
+}

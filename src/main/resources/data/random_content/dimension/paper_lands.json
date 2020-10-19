@@ -1,0 +1,13 @@
+{
+  "type": "random_content:paper_lands",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "random_content:paper_lands",
+    "seed": -1464245863,
+    "biome_source": {
+      "seed": 1464245863,
+      "type": "minecraft:fixed",
+      "biome": "random_content:paper_lands"
+    }
+  }
+}

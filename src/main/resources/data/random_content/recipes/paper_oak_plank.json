@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "random_content:paper_oak_log"
+    }
+  ],
+  "result": {
+    "item": "random_content:paper_oak_plank",
+    "count": 4
+  }
+}

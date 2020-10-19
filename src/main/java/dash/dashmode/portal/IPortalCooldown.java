@@ -11,7 +11,7 @@ public interface IPortalCooldown {
      * @param id
      * @param ticks
      */
-    void setCooldown(RegistryKey<World> id, int ticks);
+    void setTickInPortal(RegistryKey<World> id, int ticks);
 
     /**
      * Gets ticks in portal from/to current dimension
@@ -19,7 +19,7 @@ public interface IPortalCooldown {
      * @param id
      * @return
      */
-    int getCooldown(RegistryKey<World> id);
+    int getTickInPortal(RegistryKey<World> id);
 
     /**
      * Gets latest portal pose from current dimension
@@ -36,6 +36,22 @@ public interface IPortalCooldown {
      * @param pos
      */
     void setLastPortalPos(RegistryKey<World> id, BlockPos pos);
+
+    /**
+     * Applies cooldown for current portal
+     *
+     * @param id
+     * @param ticks
+     */
+    void setCooldown(RegistryKey<World> id, int ticks);
+
+    /**
+     * Gets cooldown from portal id
+     *
+     * @param id
+     * @return
+     */
+    int getCoolDown(RegistryKey<World> id);
 
     /**
      * Copy from prev

@@ -11,8 +11,9 @@
     "LivingEntityMixin",
     "MatchToolLootConditionMixin",
     "MiningToolItemMixin",
+    "PortalForcerMixin",
+    "ServerPlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",
-    "ServerWorldMixin",
     "ShapedRecipeAccessor",
     "ShearBlockMixin",
     "ThrownEntityMixin",
@@ -24,7 +25,9 @@
     "armor.PlayerEntityMixin"
   ],
   "client": [
-    "ClientPlayNetworkHandlerMixin"
+    "ClientPlayNetworkHandlerMixin",
+    "LanguageManagerMixin",
+    "LevelPropertiesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

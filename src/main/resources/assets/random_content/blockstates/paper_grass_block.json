@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "snowy=false": [
+      {
+        "model": "random_content:block/paper_grass_block"
+      },
+      {
+        "model": "random_content:block/paper_grass_block",
+        "y": 90
+      },
+      {
+        "model": "random_content:block/paper_grass_block",
+        "y": 180
+      },
+      {
+        "model": "random_content:block/paper_grass_block",
+        "y": 270
+      }
+    ],
+    "snowy=true": {
+      "model": "random_content:block/paper_grass_block_snow"
+    }
+  }
+}

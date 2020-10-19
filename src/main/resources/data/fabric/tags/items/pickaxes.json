@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "rc:iron_multitool",
-    "rc:golden_multitool",
-    "rc:diamond_multitool",
-    "rc:netherite_multitool"
+    "random_content:iron_multitool",
+    "random_content:golden_multitool",
+    "random_content:diamond_multitool",
+    "random_content:netherite_multitool"
   ]
 }

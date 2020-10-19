@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "random_content:paper_dirt",
+    "random_content:paper_grass_block",
+    "random_content:paper_stone",
+    "random_content:paper_oak_log",
+    "random_content:paper_coal_ore",
+    "random_content:paper_iron_ore",
+    "random_content:paper_gold_ore",
+    "random_content:paper_redstone_ore",
+    "random_content:paper_lapis_ore",
+    "random_content:paper_diamond_ore",
+    "random_content:paper_emerald_ore",
+    "random_content:paper_crystal_log"
+  ]
+}

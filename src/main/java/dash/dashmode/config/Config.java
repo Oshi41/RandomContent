@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import dash.dashmode.event.LangChangeEvent;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
@@ -79,6 +80,8 @@ public class Config<T> {
         }
 
         configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), modId + ".json");
+
+        LangChangeEvent.LangChanges.register(lang -> writeToFile());
     }
 
     /**
@@ -252,7 +255,7 @@ public class Config<T> {
     }
 
     private String getComment(Property property) {
-        if (property.commentLangKey().isEmpty()) {
+        if (!property.commentLangKey().isEmpty()) {
             return Language.getInstance().get(property.commentLangKey());
         }
 
@@ -260,6 +263,6 @@ public class Config<T> {
     }
 
     private String getValueRestrictions(FloatValidate prop) {
-        return String.format(Language.getInstance().get("rc.range_restrict.comment"), prop.minValue(), prop.maxValue());
+        return String.format(Language.getInstance().get("random_content.range_restrict.comment"), prop.minValue(), prop.maxValue());
     }
 }

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "rc:paper_emerald_ore"
-  },
-  "result": "minecraft:emerald",
-  "experience": 1.0,
-  "cookingtime": 200
-}

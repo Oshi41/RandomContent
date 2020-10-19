@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 public interface IPortalDesciption {
 
     /**
@@ -32,10 +34,26 @@ public interface IPortalDesciption {
     /**
      * @param world
      * @param pos
+     * @return
+     */
+    default BlockPattern.Result testWorkingPortal(WorldView world, BlockPos pos) {
+        for (Direction.Axis axis : Arrays.asList(Direction.Axis.X, Direction.Axis.Z, Direction.Axis.Y)) {
+            BlockPattern.Result result = testWorkingPortal(world, pos, axis);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param world
+     * @param pos
      * @param axis
      * @return
      */
-    BlockPattern.Result testWorkingPortal(WorldView world, BlockPos pos, Direction.Axis axis);
+    @Nullable BlockPattern.Result testWorkingPortal(WorldView world, BlockPos pos, Direction.Axis axis);
 
     /**
      * Placing portal in current block

@@ -124,7 +124,7 @@ public class JarOfKeepingItem extends BlockItem {
 
             int breakChance = tag.getInt(JarOfKeepingBlockEntity.BreakChanceTag);
             if (breakChance > 0) {
-                TranslatableText text = new TranslatableText("rc.jar_of_keeping.can_escape");
+                TranslatableText text = new TranslatableText("random_content.jar_of_keeping.can_escape");
                 text.setStyle(text.getStyle().withColor(Formatting.RED));
                 tooltip.add(text);
             }

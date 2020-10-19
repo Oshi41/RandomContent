@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "random_content:block/paper_oak_plank"
+  }
+}

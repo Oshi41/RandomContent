@@ -29,24 +29,19 @@ public class PaperPortalDesciption implements IPortalDesciption {
     public PaperPortalDesciption() {
         BlockPatternBuilder builder = BlockPatternBuilder.start()
                 .aisle("BBBB",
-                        "C  C",
-                        "C  C",
-                        "C  C",
-                        "CWWC")
+                        "BPPB",
+                        "BPPB",
+                        "BPPB",
+                        "BBBB")
                 .where('B', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.BOOKSHELF)))
-                .where('C', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(DashBlocks.PortalCane)))
-                .where('W', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.WATER)))
-                .where(' ', CachedBlockPosition.matchesBlockState(MaterialPredicate.create(Material.AIR)));
+                .where('P', CachedBlockPosition.matchesBlockState(MaterialPredicate.create(Material.AIR)));
 
         workingPattern = builder.build();
-        pattern = builder.where('C', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.SUGAR_CANE))).build();
+        pattern = builder.where('P', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.SUGAR_CANE))).build();
         axises.add(Direction.Axis.X);
         axises.add(Direction.Axis.Z);
 
         possibleCorners.add(Blocks.BOOKSHELF);
-        possibleCorners.add(DashBlocks.PortalCane);
-        possibleCorners.add(Blocks.WATER);
-        possibleCorners.add(Blocks.SUGAR_CANE);
     }
 
     @Override
@@ -80,14 +75,14 @@ public class PaperPortalDesciption implements IPortalDesciption {
     public void placePortal(World world, BlockPos corner, Direction forward, Direction right) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-        BlockState obsidian = Blocks.MELON.getDefaultState();
-        BlockState portal = Blocks.AIR.getDefaultState();
+        BlockState shelf = Blocks.BOOKSHELF.getDefaultState();
+        BlockState portal = DashBlocks.PortalCane.getDefaultState();
 
         for (int r = -1; r < 3; ++r) {
             for (int o = -1; o < 4; ++o) {
                 if (r == -1 || r == 2 || o == -1 || o == 3) {
                     mutable.set(corner, r * forward.getOffsetX(), o, r * forward.getOffsetZ());
-                    world.setBlockState(mutable, obsidian, 3);
+                    world.setBlockState(mutable, shelf, 3);
                 }
             }
         }

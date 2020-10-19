@@ -44,6 +44,7 @@ public class DashBlocks {
     public static final Block PerfectJarOfKeeping;
     public static final Block PaperOakPlank;
     public static final Block PortalCane;
+    public static final Block PaperBookshelf;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL)
@@ -153,6 +154,12 @@ public class DashBlocks {
                 .luminance((state) -> {
                     return 11;
                 }), () -> DashDimensions.PaperLands);
+
+        PaperBookshelf = new Block(FabricBlockSettings.of(Material.WOOD)
+                .requiresTool()
+                .breakByTool(FabricToolTags.SHEARS, -1)
+                .strength(1.5F)
+                .sounds(BlockSoundGroup.WOOD));
     }
 
     public static void init(String modeName) {
@@ -190,6 +197,7 @@ public class DashBlocks {
 
         initBlock(new Identifier(modeName, "paper_oak_plank"), PaperOakPlank, defaultSettings);
         initBlock(new Identifier(modeName, "portal_cane"), PortalCane, defaultSettings);
+        initBlock(new Identifier(modeName, "paper_bookshelf"), PaperBookshelf, defaultSettings);
     }
 
     // region Helping methods

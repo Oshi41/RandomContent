@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "random_content:block/paper_oak_leaves"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "rc:paper_leaves"
+    "random_content:paper_leaves"
   ]
 }

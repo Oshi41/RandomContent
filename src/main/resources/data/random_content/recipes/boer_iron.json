@@ -1,0 +1,39 @@
+{
+  "type": "random_content:crafting_shaped",
+  "pattern": [
+    " A ",
+    "AMA",
+    "VGV"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:anvil"
+    },
+    "M": {
+      "item": "random_content:iron_multitool"
+    },
+    "V": {
+      "item": "random_content:jar_of_keeping",
+      "compound": {
+        "BlockEntityTag": {
+          "entity": {
+            "id": "minecraft:villager"
+          }
+        }
+      }
+    },
+    "G": {
+      "item": "random_content:jar_of_keeping",
+      "compound": {
+        "BlockEntityTag": {
+          "entity": {
+            "id": "minecraft:iron_golem"
+          }
+        }
+      }
+    }
+  },
+  "result": {
+    "item": "random_content:boer_iron"
+  }
+}

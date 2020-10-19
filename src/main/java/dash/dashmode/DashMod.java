@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 
 public class DashMod implements ModInitializer {
-    public static final String ModId = "rc";
+    public static final String ModId = "random_content";
     public static final Config<DashConfig> MainConfig = new Config<>(DashConfig.class, "randomContent");
     public static final Logger MainLogger = LogManager.getLogger(ModId);
     public static final ItemGroup DashItemsTab = FabricItemGroupBuilder

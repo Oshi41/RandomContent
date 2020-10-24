@@ -37,7 +37,7 @@ public class DashPortalBlock extends Block {
 
             if (worldRegistryKey != null) {
                 IPortalCooldown cooldown = (IPortalCooldown) entity;
-                cooldown.setTickInPortal(worldRegistryKey, cooldown.getTickInPortal(worldRegistryKey) + 4);
+                cooldown.onTickInPortal(worldRegistryKey);
             }
         }
     }

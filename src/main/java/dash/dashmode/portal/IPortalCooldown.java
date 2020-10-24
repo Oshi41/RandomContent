@@ -59,4 +59,22 @@ public interface IPortalCooldown {
      * @param source
      */
     void copy(IPortalCooldown source);
+
+    default void onTickInPortal(RegistryKey<World> id) {
+        if (getCoolDown(id) <= 0)
+            setTickInPortal(id, getTickInPortal(id) + 3);
+    }
+
+    default void tickEntity(RegistryKey<World> id) {
+        int coolDown = getCoolDown(id);
+        if (coolDown > 0) {
+            setCooldown(id, coolDown - 1);
+            return;
+        }
+
+        int tickInPortal = getTickInPortal(id);
+        if (tickInPortal >= 0) {
+            setTickInPortal(id, tickInPortal - 1);
+        }
+    }
 }

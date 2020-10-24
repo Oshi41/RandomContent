@@ -24,8 +24,7 @@ public class EnchantmentScreenHandlerMixin {
 
     @ModifyVariable(method = "onContentChanged",
             slice = @Slice(
-                    from = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandlerContext;run(Ljava/util/function/BiConsumer;)V"),
-                    to = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isAir(Lnet/minecraft/util/math/BlockPos;)Z")
+                    from = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandlerContext;run(Ljava/util/function/BiConsumer;)V")
             ),
             at = @At(value = "STORE"),
             ordinal = 0)

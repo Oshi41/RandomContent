@@ -33,7 +33,7 @@ public class PaperPortalDesciption implements IPortalDesciption {
                         "BPPB",
                         "BPPB",
                         "BBBB")
-                .where('B', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.BOOKSHELF)))
+                .where('B', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(DashBlocks.PaperBookshelf)))
                 .where('P', CachedBlockPosition.matchesBlockState(MaterialPredicate.create(Material.AIR)));
 
         workingPattern = builder.build();
@@ -41,7 +41,7 @@ public class PaperPortalDesciption implements IPortalDesciption {
         axises.add(Direction.Axis.X);
         axises.add(Direction.Axis.Z);
 
-        possibleCorners.add(Blocks.BOOKSHELF);
+        possibleCorners.add(DashBlocks.PaperBookshelf);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class PaperPortalDesciption implements IPortalDesciption {
     public void placePortal(World world, BlockPos corner, Direction forward, Direction right) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-        BlockState shelf = Blocks.BOOKSHELF.getDefaultState();
+        BlockState shelf = DashBlocks.PaperBookshelf.getDefaultState();
         BlockState portal = DashBlocks.PortalCane.getDefaultState();
 
         for (int r = -1; r < 3; ++r) {

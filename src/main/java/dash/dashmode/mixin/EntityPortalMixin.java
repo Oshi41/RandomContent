@@ -1,5 +1,6 @@
 package dash.dashmode.mixin;
 
+import com.google.common.collect.Sets;
 import dash.dashmode.DashMod;
 import dash.dashmode.portal.IPortalCooldown;
 import dash.dashmode.portal.IPortalDesciption;
@@ -27,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @Mixin(Entity.class)
 public abstract class EntityPortalMixin implements IPortalCooldown {
@@ -58,14 +58,15 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
     public abstract BlockPos getBlockPos();
 
     @Shadow
-    protected abstract Optional<class_5459.class_5460> method_30330(ServerWorld serverWorld, BlockPos blockPos, boolean bl);
-
-    @Shadow
     public abstract int getDefaultNetherPortalCooldown();
 
     @Override
     public void setTickInPortal(RegistryKey<World> id, int ticks) {
-        tickMap.put(id, ticks);
+        if (ticks < 0) {
+            tickMap.remove(id);
+        } else {
+            tickMap.put(id, ticks);
+        }
     }
 
     @Override
@@ -85,7 +86,11 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
 
     @Override
     public void setCooldown(RegistryKey<World> id, int ticks) {
-        cooldownMap.put(id, ticks);
+        if (ticks <= 0) {
+            cooldownMap.remove(id);
+        } else {
+            cooldownMap.put(id, ticks);
+        }
     }
 
     @Override
@@ -113,59 +118,24 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
 
     @Inject(method = "tickNetherPortal", at = @At("RETURN"))
     private void tickNetherPortalInject(CallbackInfo ci) {
-        // current ticking portal
-        Set<RegistryKey<World>> ticks = tickMap.keySet();
-        // max cooldown
-        int maxNetherPortalTime = Math.max(200, getMaxNetherPortalTime());
 
-        for (RegistryKey<World> key : ticks) {
-            // have cooldown for current portal
-            if (cooldownMap.containsKey(key))
-                continue;
+        int portalTick = Math.max(200, getMaxNetherPortalTime());
+        int portalCooldown = Math.max(200, getDefaultNetherPortalCooldown());
 
-            // getting current tick amount
-            int tick = tickMap.get(key);
+        for (RegistryKey<World> key : Sets.union(tickMap.keySet(), cooldownMap.keySet())) {
+            tickEntity(key);
 
-            // can travel
-            if (tick >= maxNetherPortalTime) {
-                // remember current portal pos
+            if (getTickInPortal(key) >= portalTick) {
                 setLastPortalPos(key, getBlockPos());
-                // set cooldown to prevent infinite travel routine
-                setCooldown(key, getDefaultNetherPortalCooldown());
+                tickMap.clear();
+                setCooldown(key, portalCooldown);
 
                 // cahnge dimension onserver only
                 if (!getEntityWorld().isClient()) {
                     changeDimension(key);
                 }
 
-                // removing current id from ticks
-                tickMap.remove(key);
-                // return because we did all work
                 return;
-            }
-
-
-            if (tick <= 0) {
-                // tick is ended, remove from map
-                tickMap.remove(key);
-            } else {
-                // remove tick if stand away from portal
-                tickMap.put(key, tick - 1);
-            }
-        }
-
-        // iterate through cooldowns strictly after regular tick
-        Set<RegistryKey<World>> coolDown = cooldownMap.keySet();
-
-        for (RegistryKey<World> key : coolDown) {
-            int value = cooldownMap.get(key) - 1;
-
-            if (value > 0) {
-                // decay cooldown
-                cooldownMap.put(key, value);
-            } else {
-                // finished cooldown
-                coolDown.remove(key);
             }
         }
     }
@@ -173,7 +143,7 @@ public abstract class EntityPortalMixin implements IPortalCooldown {
     @Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
     private void getTeleportTargetInject(ServerWorld destination, CallbackInfoReturnable<@Nullable TeleportTarget> cir) {
         // unknown portal description
-        if (!tickMap.containsKey(destination.getRegistryKey()) && !tickMap.containsKey(getEntityWorld().getRegistryKey()))
+        if (!cooldownMap.containsKey(destination.getRegistryKey()) && !cooldownMap.containsKey(getEntityWorld().getRegistryKey()))
             return;
 
         // modded world id

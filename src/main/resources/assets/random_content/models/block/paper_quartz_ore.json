@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "random_content:block/paper_quartz_ore"
+  }
+}

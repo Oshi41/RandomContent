@@ -4,7 +4,7 @@
     "decorator": {
       "type": "minecraft:chance",
       "config": {
-        "chance": 100
+        "chance": 500
       }
     },
     "feature": {
@@ -25,7 +25,7 @@
           "type": "minecraft:weighted_state_provider",
           "entries": [
             {
-              "weight": 20,
+              "weight": 40,
               "data": {
                 "Name": "random_content:paper_oak_log",
                 "Properties": {
@@ -57,7 +57,7 @@
           "type": "minecraft:dark_oak_foliage_placer"
         },
         "trunk_placer": {
-          "base_height": 12,
+          "base_height": 20,
           "height_rand_a": 2,
           "height_rand_b": 1,
           "type": "minecraft:dark_oak_trunk_placer"

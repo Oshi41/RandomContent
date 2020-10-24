@@ -35,7 +35,7 @@ public class DashCraftRecipe extends ShapedRecipe {
     }
 
     public DashCraftRecipe(ShapedRecipe recipe, DefaultedList<DashIngredient> conditions) {
-        super(recipe.getId(), recipe.getGroup(), recipe.getWidth(), recipe.getHeight(), getFrom(conditions), recipe.getOutput());
+        super(recipe.getId(), ((ShapedRecipeAccessor) recipe).getGroup(), recipe.getWidth(), recipe.getHeight(), getFrom(conditions), recipe.getOutput());
         this.conditions = conditions;
     }
 

@@ -2,7 +2,7 @@ package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
 import dash.dashmode.block.*;
-import dash.dashmode.feature.PaperOakFeature;
+import dash.dashmode.feature.JsonConfiguredFeature;
 import dash.dashmode.item.JarOfKeepingItem;
 import dash.dashmode.settings.SaplingSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -59,7 +59,7 @@ public class DashBlocks {
         PaperOakLog = createLogBlock(MaterialColor.WHITE, MaterialColor.LIGHT_GRAY, settings -> settings.breakByTool(FabricToolTags.SHEARS, 0).requiresTool());
         PaperLeaves = createLeavesBlock(settings -> settings.breakByTool(FabricToolTags.SHEARS, 0).requiresTool());
 
-        PaperBirchSapling = new DashSaplingBlock(new PaperOakFeature(),
+        PaperBirchSapling = new DashSaplingBlock(new JsonConfiguredFeature(new Identifier(DashMod.ModId, "paper_oak"), new Identifier(DashMod.ModId, "paper_oak_bee")),
                 new SaplingSettings(Material.PLANT, MaterialColor.WHITE)
                         .withCanPlantCallback((floor, world, pos) -> floor.getBlock() == PaperDirt || floor.getBlock() == PaperGrass)
                         .noCollision()

@@ -39,5 +39,7 @@
   "block.random_content.paper_oak_plank": "Доски бумажного дуба",
   "block.random_content.portal_cane": "Портальный тростник",
   "block.random_content.paper_bookshelf": "Бумажная книжная полка",
-  "random_content.fixExperimentWarning.comment": "Убрать предупреждение об экспериментальных настройках"
+  "random_content.fixExperimentWarning.comment": "Убрать предупреждение об экспериментальных настройках",
+  "random_content.paper_lands_weight.comment": "Вес биома бумажного измерения.",
+  "biome.random_content.paper_lands": ""
 }

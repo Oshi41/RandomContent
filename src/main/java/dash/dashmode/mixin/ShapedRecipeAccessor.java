@@ -3,6 +3,7 @@ package dash.dashmode.mixin;
 import com.google.gson.JsonArray;
 import net.minecraft.recipe.ShapedRecipe;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ShapedRecipe.class)
@@ -16,5 +17,8 @@ public interface ShapedRecipeAccessor {
     static String[] getPattern(JsonArray json) {
         throw new AssertionError("mixin");
     }
+
+    @Accessor("group")
+    String getGroup();
 }
 

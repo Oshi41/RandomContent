@@ -40,11 +40,20 @@
     [],
     [],
     [
-      "random_content:paper_iron"
+      "random_content:paper_iron",
+      "random_content:paper_coal",
+      "random_content:paper_emerald",
+      "random_content:paper_diamond",
+      "random_content:paper_gold",
+      "random_content:paper_lapis",
+      "random_content:paper_quartz",
+      "random_content:paper_redstone"
     ],
     [],
     [
       "random_content:paper_ent_tree",
+      "random_content:paper_vegetation",
+      "random_content:paper_oak_trees",
       "minecraft:spring_water"
     ],
     [

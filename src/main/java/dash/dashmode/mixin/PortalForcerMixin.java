@@ -2,6 +2,7 @@ package dash.dashmode.mixin;
 
 import dash.dashmode.portal.IPortalDesciption;
 import dash.dashmode.portal.IPortalForcer;
+import dash.dashmode.registry.DashDimensions;
 import dash.dashmode.utils.IOriented;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.pattern.BlockPattern;
@@ -15,7 +16,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.PortalForcer;
 import net.minecraft.world.poi.PointOfInterest;
 import net.minecraft.world.poi.PointOfInterestStorage;
-import net.minecraft.world.poi.PointOfInterestType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -75,11 +75,12 @@ public class PortalForcerMixin implements IPortalForcer {
         int radius = extendedRaduis ? 16 : 128;
         pointOfInterestStorage.preloadChunks(destination, blockPos, radius);
 
-        Optional<PointOfInterest> optional = pointOfInterestStorage.getInSquare(x -> x == PointOfInterestType.NETHER_PORTAL,
+        Optional<PointOfInterest> optional = pointOfInterestStorage.getInSquare(x -> x == DashDimensions.ModdedPortals,
                 blockPos,
                 radius,
                 PointOfInterestStorage.OccupationStatus.ANY)
-                .sorted(Comparator.comparingDouble(value -> ((PointOfInterest) value).getPos().getSquaredDistance(blockPos)).thenComparingInt(x -> ((PointOfInterest) x).getPos().getY()))
+                .sorted(Comparator.comparingDouble(x -> x.getPos().getSquaredDistance(blockPos)))
+                .filter(x -> Math.sqrt(x.getPos().getSquaredDistance(blockPos)) <= radius)
                 .findFirst();
 
         if (!optional.isPresent())

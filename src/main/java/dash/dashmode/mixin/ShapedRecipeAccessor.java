@@ -9,16 +9,16 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ShapedRecipe.class)
 public interface ShapedRecipeAccessor {
     @Invoker("combinePattern")
-    static String[] combinePattern(String... lines) {
+    static String[] rc_combinePattern(String... lines) {
         throw new AssertionError("mixin");
     }
 
     @Invoker("getPattern")
-    static String[] getPattern(JsonArray json) {
+    static String[] rc_getPattern(JsonArray json) {
         throw new AssertionError("mixin");
     }
 
     @Accessor("group")
-    String getGroup();
+    String rc_getGroup();
 }
 

@@ -6,6 +6,7 @@ import dash.dashmode.feature.JsonConfiguredFeature;
 import dash.dashmode.item.JarOfKeepingItem;
 import dash.dashmode.settings.SaplingSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
@@ -187,7 +188,6 @@ public class DashBlocks {
         initBlock(new Identifier(modeName, "paper_crystal_log"), PaperCrystalLog, defaultSettings);
 
         Identifier jarOfKeeping = new Identifier(modeName, "jar_of_keeping");
-
         initBlock(jarOfKeeping, JarOfKeeping, null);
         Registry.register(Registry.ITEM, jarOfKeeping, new JarOfKeepingItem(JarOfKeeping, defaultSettings, false));
 
@@ -198,6 +198,17 @@ public class DashBlocks {
         initBlock(new Identifier(modeName, "paper_oak_plank"), PaperOakPlank, defaultSettings);
         initBlock(new Identifier(modeName, "portal_cane"), PortalCane, defaultSettings);
         initBlock(new Identifier(modeName, "paper_bookshelf"), PaperBookshelf, defaultSettings);
+
+        registerFlammable(PaperDirt, PaperGrass, PaperStone, PaperOakLog, PaperLeaves, PaperBirchSapling, PaperCoalOre, PaperIronOre,
+                PaperGoldOre, PaperRedstoneOre, PaperLapisOre, PaperDiamondOre, PaperEmeraldOre, PaperQuartzOre, PaperOakPlank, PaperBookshelf);
+    }
+
+    private static void registerFlammable(Block... blocks) {
+        FlammableBlockRegistry registry = FlammableBlockRegistry.getDefaultInstance();
+
+        for (Block block : blocks) {
+            registry.add(block, 5, 20);
+        }
     }
 
     // region Helping methods

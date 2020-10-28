@@ -2,11 +2,14 @@ package dash.dashmode.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.brigadier.StringReader;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import dash.dashmode.DashMod;
+import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourceType;
@@ -25,6 +28,7 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
@@ -104,5 +108,27 @@ public class DynamicResourceUtils {
         }
 
         return find(key, id, manager);
+    }
+
+    @Nullable
+    public static Tag loadFromNbt(Identifier id, Identifier folder) {
+        if (id == null || folder == null)
+            return null;
+
+        String path = String.format("/data/%s/%s/%s.json", id.getNamespace(), folder.getPath(), id.getPath());
+        InputStream stream = DashMod.class.getResourceAsStream(path);
+        if (stream == null)
+            return null;
+
+        try {
+            String text = IOUtils.toString(stream, StandardCharsets.UTF_8);
+
+            StringNbtReader nbtReader = new StringNbtReader(new StringReader(text));
+            Tag tag = nbtReader.parseTag();
+            return tag;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

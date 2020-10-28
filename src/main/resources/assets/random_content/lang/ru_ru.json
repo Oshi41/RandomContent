@@ -41,5 +41,7 @@
   "block.random_content.paper_bookshelf": "Бумажная книжная полка",
   "random_content.fixExperimentWarning.comment": "Убрать предупреждение об экспериментальных настройках",
   "random_content.paper_lands_weight.comment": "Вес биома бумажного измерения.",
-  "biome.random_content.paper_lands": ""
+  "biome.random_content.paper_lands": "Бумажные земли",
+  "entity_type.random_content.paper_zombie": "Бумажный зомби",
+  "entity_type.random_content.paper_cow": ""
 }

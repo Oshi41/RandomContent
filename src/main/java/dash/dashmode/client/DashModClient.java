@@ -1,6 +1,9 @@
 package dash.dashmode.client;
 
 import dash.dashmode.DashMod;
+import dash.dashmode.client.render.PaperCowRender;
+import dash.dashmode.client.render.PaperZombieRender;
+import dash.dashmode.debug.AttributesHelper;
 import dash.dashmode.debug.LangHelper;
 import dash.dashmode.registry.DashBlocks;
 import dash.dashmode.registry.DashEntities;
@@ -42,7 +45,13 @@ public class DashModClient implements ClientModInitializer {
             new LangHelper(DashMod.ModId).fill();
         }
 
+        if (set.contains("initMobStats")) {
+            new AttributesHelper(DashMod.ModId, false).init();
+        }
+
         EntityRendererRegistry.INSTANCE.register(DashEntities.JarOfKeepingThrowableEntityType, (e, c) -> new FlyingItemEntityRenderer<>(e, c.getItemRenderer()));
+        EntityRendererRegistry.INSTANCE.register(DashEntities.PaperZombie, (e, c) -> new PaperZombieRender<>(e));
+        EntityRendererRegistry.INSTANCE.register(DashEntities.PaperCow, (e, c) -> new PaperCowRender<>(e));
     }
 
 }

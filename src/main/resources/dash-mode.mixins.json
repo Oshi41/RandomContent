@@ -4,6 +4,7 @@
   "package": "dash.dashmode.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DefaultAttributeContainerMixin",
     "EnchantmentScreenHandlerMixin",
     "EntityPortalMixin",
     "FeatureMixin",
@@ -12,6 +13,7 @@
     "LivingEntityMixin",
     "MatchToolLootConditionMixin",
     "MiningToolItemMixin",
+    "MobEntityAccessor",
     "PortalForcerMixin",
     "RegistryOpsMixin",
     "ServerPlayerEntityMixin",

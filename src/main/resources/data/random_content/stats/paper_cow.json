@@ -1,0 +1,37 @@
+[
+  {
+    _comment: "Speed",
+    Base: 0.20000000298023224d,
+    Name: "minecraft:generic.movement_speed"
+  },
+  {
+    _comment: "Knockback Resistance",
+    Base: 0.0d,
+    Name: "minecraft:generic.knockback_resistance"
+  },
+  {
+    _comment: "Attack Knockback",
+    Base: 0.0d,
+    Name: "minecraft:generic.attack_knockback"
+  },
+  {
+    _comment: "Max Health",
+    Base: 10.0d,
+    Name: "minecraft:generic.max_health"
+  },
+  {
+    _comment: "Mob Follow Range",
+    Base: 16.0d,
+    Name: "minecraft:generic.follow_range"
+  },
+  {
+    _comment: "Armor",
+    Base: 0.0d,
+    Name: "minecraft:generic.armor"
+  },
+  {
+    _comment: "Armor Toughness",
+    Base: 0.0d,
+    Name: "minecraft:generic.armor_toughness"
+  }
+]

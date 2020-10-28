@@ -35,7 +35,7 @@ public class DashCraftRecipe extends ShapedRecipe {
     }
 
     public DashCraftRecipe(ShapedRecipe recipe, DefaultedList<DashIngredient> conditions) {
-        super(recipe.getId(), ((ShapedRecipeAccessor) recipe).getGroup(), recipe.getWidth(), recipe.getHeight(), getFrom(conditions), recipe.getOutput());
+        super(recipe.getId(), ((ShapedRecipeAccessor) recipe).rc_getGroup(), recipe.getWidth(), recipe.getHeight(), getFrom(conditions), recipe.getOutput());
         this.conditions = conditions;
     }
 
@@ -156,7 +156,7 @@ public class DashCraftRecipe extends ShapedRecipe {
             }
 
             Map<String, DashIngredient> components = getComponents(json.getAsJsonObject("key"));
-            String[] strings = ShapedRecipeAccessor.combinePattern(ShapedRecipeAccessor.getPattern(JsonHelper.getArray(json, "pattern")));
+            String[] strings = ShapedRecipeAccessor.rc_combinePattern(ShapedRecipeAccessor.rc_getPattern(JsonHelper.getArray(json, "pattern")));
             DefaultedList<DashIngredient> ingredients = getIngredients(strings, components, strings[0].length(), strings.length, DashIngredient.EMPTY);
 
             return new DashCraftRecipe(read, ingredients);

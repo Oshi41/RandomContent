@@ -30,6 +30,8 @@
   ],
   "client": [
     "ClientPlayNetworkHandlerMixin",
+    "EntityRenderDispatcherAccessor",
+    "ItemRendererMixin",
     "LanguageManagerMixin",
     "LevelPropertiesMixin"
   ],

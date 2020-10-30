@@ -1,6 +1,7 @@
 package dash.dashmode.client;
 
 import dash.dashmode.DashMod;
+import dash.dashmode.client.render.ItemJarOverlayRender;
 import dash.dashmode.client.render.PaperCowRender;
 import dash.dashmode.client.render.PaperZombieRender;
 import dash.dashmode.debug.AttributesHelper;
@@ -12,8 +13,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 
@@ -49,9 +52,18 @@ public class DashModClient implements ClientModInitializer {
             new AttributesHelper(DashMod.ModId, false).init();
         }
 
+        registerJarRender(DashBlocks.JarOfKeeping, DashBlocks.PerfectJarOfKeeping);
+
         EntityRendererRegistry.INSTANCE.register(DashEntities.JarOfKeepingThrowableEntityType, (e, c) -> new FlyingItemEntityRenderer<>(e, c.getItemRenderer()));
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperZombie, (e, c) -> new PaperZombieRender<>(e));
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperCow, (e, c) -> new PaperCowRender<>(e));
+    }
+
+    private void registerJarRender(Block... blocks) {
+        ItemJarOverlayRender jarRender = new ItemJarOverlayRender(blocks);
+        for (Block block : blocks) {
+            BuiltinItemRendererRegistry.INSTANCE.register(block, jarRender);
+        }
     }
 
 }

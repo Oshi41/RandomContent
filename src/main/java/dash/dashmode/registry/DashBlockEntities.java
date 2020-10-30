@@ -9,7 +9,7 @@ public class DashBlockEntities {
     public static final BlockEntityType<JarOfKeepingBlockEntity> JarOfKeepingBlockEntityType;
 
     static {
-        JarOfKeepingBlockEntityType = BlockEntityType.Builder.create(JarOfKeepingBlockEntity::new, DashBlocks.JarOfKeeping).build(null);
+        JarOfKeepingBlockEntityType = BlockEntityType.Builder.create(JarOfKeepingBlockEntity::new, DashBlocks.JarOfKeeping, DashBlocks.PerfectJarOfKeeping).build(null);
     }
 
     public static void init(String modid) {

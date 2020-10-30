@@ -71,12 +71,22 @@ public class JarOfKeepingItem extends BlockItem {
 
     @Override
     public ItemStack getDefaultStack() {
-        ItemStack stack = super.getDefaultStack();
+        return fillStack(super.getDefaultStack());
+    }
 
+    @Override
+    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
+        super.onCraft(fillStack(stack), world, player);
+    }
+
+    private ItemStack fillStack(ItemStack stack) {
         CompoundTag subTag = stack.getOrCreateSubTag(JarOfKeepingBlockEntity.BlockItemTag);
 
-        subTag.putInt(JarOfKeepingBlockEntity.BreakChanceTag, isEnhanced ? -1 : 20 * 60 * 30);
-        subTag.putInt(JarOfKeepingBlockEntity.CatchChanceTag, isEnhanced ? -1 : 10);
+        if (!subTag.contains(JarOfKeepingBlockEntity.BreakChanceTag))
+            subTag.putInt(JarOfKeepingBlockEntity.BreakChanceTag, isEnhanced ? -1 : 20 * 60 * 30);
+
+        if (!subTag.contains(JarOfKeepingBlockEntity.CatchChanceTag))
+            subTag.putInt(JarOfKeepingBlockEntity.CatchChanceTag, isEnhanced ? -1 : 10);
 
         return stack;
     }

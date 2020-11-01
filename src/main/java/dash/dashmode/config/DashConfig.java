@@ -21,4 +21,8 @@ public class DashConfig {
     @Property(category = "worldGen", commentLangKey = "random_content.paper_lands_weight.comment")
     @FloatValidate(minValue = Float.MIN_VALUE, maxValue = 1000)
     public float paperBiomeWeight = 0.5F;
+
+    @Property(category = "machines", commentLangKey = "random_content.furnaceUpgradeScale.comment")
+    @FloatValidate(minValue = 1, maxValue = 5)
+    public float furnaceUpgradeScale = 1.2F;
 }

@@ -4,6 +4,7 @@ import dash.dashmode.DashMod;
 import dash.dashmode.item.BoerItem;
 import dash.dashmode.item.DashShears;
 import dash.dashmode.item.MultiToolItem;
+import dash.dashmode.item.UpgradeItem;
 import net.minecraft.item.FoodComponents;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -25,6 +26,9 @@ public class DashItems {
     public static final Item NetheriteScissors;
 
     public static final Item IronBoer;
+    public static final Item IronFurnaceSpring;
+    public static final Item GoldFurnaceSpring;
+    public static final Item DiamondFurnaceSpring;
 
     static {
         PaperApple = new Item((new Item.Settings()).group(DashMod.DashItemsTab).food(FoodComponents.APPLE));
@@ -41,6 +45,10 @@ public class DashItems {
         GoldenScissors = new DashShears(DashToolMaterials.GoldenShears, new Item.Settings().group(DashMod.DashItemsTab));
         DiamondScissors = new DashShears(DashToolMaterials.DiamondShears, new Item.Settings().group(DashMod.DashItemsTab));
         NetheriteScissors = new DashShears(DashToolMaterials.NetheriteShears, new Item.Settings().group(DashMod.DashItemsTab));
+
+        IronFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 1);
+        GoldFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 2);
+        DiamondFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 3);
     }
 
     public static void init(String modId) {
@@ -56,5 +64,9 @@ public class DashItems {
         Registry.register(Registry.ITEM, new Identifier(modId, "boer_iron"), IronBoer);
         Registry.register(Registry.ITEM, new Identifier(modId, "iron_scissors"), IronScissors);
         Registry.register(Registry.ITEM, new Identifier(modId, "golden_scissors"), GoldenScissors);
+
+        Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_iron"), IronFurnaceSpring);
+        Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_gold"), GoldFurnaceSpring);
+        Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_diamond"), DiamondFurnaceSpring);
     }
 }

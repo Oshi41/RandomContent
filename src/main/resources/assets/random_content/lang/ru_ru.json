@@ -43,5 +43,11 @@
   "random_content.paper_lands_weight.comment": "Вес биома бумажного измерения.",
   "biome.random_content.paper_lands": "Бумажные земли",
   "entity_type.random_content.paper_zombie": "Бумажный зомби",
-  "entity_type.random_content.paper_cow": ""
+  "entity_type.random_content.paper_cow": "Бумажная корова",
+  "block.random_content.infinite_furnace": "Вечная печь",
+  "block_entity_type.random_content.infinite_furnace": "Вечная печь",
+  "item.random_content.furnace_coil_iron": "Железная пружина",
+  "item.random_content.furnace_coil_gold": "Золотая пружина",
+  "item.random_content.furnace_coil_diamond": "Алмазная пружина",
+  "random_content.furnaceUpgradeScale.comment": "Параметр ускорения улучшений для вечной печки. Скорость считается как уровень * параметр ускорения"
 }

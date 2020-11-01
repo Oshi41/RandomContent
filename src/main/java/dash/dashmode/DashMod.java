@@ -46,6 +46,7 @@ public class DashMod implements ModInitializer {
         DashRecipes.init(ModId);
 
         DashDimensions.init();
+        DashScreens.init(ModId);
 
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
         ResLoadedEvent.EVENT.register(new DashBioms(ModId));

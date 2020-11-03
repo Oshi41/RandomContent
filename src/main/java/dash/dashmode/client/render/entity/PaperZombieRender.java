@@ -1,4 +1,4 @@
-package dash.dashmode.client.render;
+package dash.dashmode.client.render.entity;
 
 import dash.dashmode.DashMod;
 import dash.dashmode.client.model.ZombieModel;

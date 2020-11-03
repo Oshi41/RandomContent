@@ -1,6 +1,6 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.client.render.ItemJarOverlayRender;
+import dash.dashmode.client.render.entity.ItemJarOverlayRender;
 import dash.dashmode.registry.DashBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

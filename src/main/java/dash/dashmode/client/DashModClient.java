@@ -1,13 +1,15 @@
 package dash.dashmode.client;
 
 import dash.dashmode.DashMod;
-import dash.dashmode.client.render.ItemJarOverlayRender;
-import dash.dashmode.client.render.PaperCowRender;
-import dash.dashmode.client.render.PaperZombieRender;
+import dash.dashmode.client.render.block.StackHolderBlockEntityRenderer;
+import dash.dashmode.client.render.entity.ItemJarOverlayRender;
+import dash.dashmode.client.render.entity.PaperCowRender;
+import dash.dashmode.client.render.entity.PaperZombieRender;
 import dash.dashmode.client.screen.DashForgeScreen;
 import dash.dashmode.client.screen.InfiniteFurnaceScreen;
 import dash.dashmode.debug.AttributesHelper;
 import dash.dashmode.debug.LangHelper;
+import dash.dashmode.registry.DashBlockEntities;
 import dash.dashmode.registry.DashBlocks;
 import dash.dashmode.registry.DashEntities;
 import dash.dashmode.registry.DashScreens;
@@ -15,6 +17,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -33,7 +36,7 @@ public class DashModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-                DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling, DashBlocks.PortalCane, DashBlocks.Forge);
+                DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling, DashBlocks.PortalCane, DashBlocks.Forge, DashBlocks.Pillar);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
                 DashBlocks.JarOfKeeping);
@@ -61,6 +64,8 @@ public class DashModClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(DashEntities.JarOfKeepingThrowableEntityType, (e, c) -> new FlyingItemEntityRenderer<>(e, c.getItemRenderer()));
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperZombie, (e, c) -> new PaperZombieRender<>(e));
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperCow, (e, c) -> new PaperCowRender<>(e));
+
+        BlockEntityRendererRegistry.INSTANCE.register(DashBlockEntities.StackHolder, StackHolderBlockEntityRenderer::new);
 
         ScreenRegistry.register(DashScreens.InfiniteFurnace, InfiniteFurnaceScreen::new);
         ScreenRegistry.register(DashScreens.Forge, DashForgeScreen::new);

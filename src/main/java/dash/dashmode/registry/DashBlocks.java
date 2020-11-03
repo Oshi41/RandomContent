@@ -48,6 +48,7 @@ public class DashBlocks {
     public static final Block PaperBookshelf;
     public static final Block InfiniteFurnace;
     public static final Block Forge;
+    public static final Block Pillar;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL)
@@ -170,6 +171,11 @@ public class DashBlocks {
                 .luminance(createLightLevelFromBlockState(15)));
 
         Forge = new DashForgeBlock(AbstractBlock.Settings.of(Material.REPAIR_STATION, MaterialColor.IRON).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.ANVIL));
+
+        Pillar = new BlockPillar(AbstractBlock.Settings.of(Material.STONE, MaterialColor.WHITE)
+                .requiresTool()
+                .strength(5.0F, 1200.0F)
+                .sounds(BlockSoundGroup.BASALT));
     }
 
     public static void init(String modeName) {
@@ -210,6 +216,7 @@ public class DashBlocks {
 
         initBlock(new Identifier(modeName, "infinite_furnace"), InfiniteFurnace, defaultSettings);
         initBlock(new Identifier(modeName, "forge"), Forge, defaultSettings);
+        initBlock(new Identifier(modeName, "pillar"), Pillar, defaultSettings);
 
         registerFlammable(PaperDirt, PaperGrass, PaperStone, PaperOakLog, PaperLeaves, PaperBirchSapling, PaperCoalOre, PaperIronOre,
                 PaperGoldOre, PaperRedstoneOre, PaperLapisOre, PaperDiamondOre, PaperEmeraldOre, PaperQuartzOre, PaperOakPlank, PaperBookshelf);

@@ -81,7 +81,7 @@ public class DynamicResourceUtils {
         JsonObject object;
         try {
             InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-            object = NbtUtil.GSON.fromJson(reader, JsonObject.class);
+            object = Parser.GSON.fromJson(reader, JsonObject.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

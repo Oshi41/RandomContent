@@ -36,7 +36,7 @@
   "random_content.fixModdedShears.comment": "Выставите в true, чтобы дроп с блоков учитывал все ножницы мода, а не только ванильные",
   "block.random_content.paper_quartz_ore": "Бумажная руда кварца",
   "item.random_content.golden_scissors": "Золотые ножницы",
-  "block.random_content.paper_oak_plank": "Доски бумажного дуба",
+  "block.random_content.paper_oak_plank": "Доски бумажногRо дуба",
   "block.random_content.portal_cane": "Портальный тростник",
   "block.random_content.paper_bookshelf": "Бумажная книжная полка",
   "random_content.fixExperimentWarning.comment": "Убрать предупреждение об экспериментальных настройках",
@@ -49,5 +49,6 @@
   "item.random_content.furnace_coil_iron": "Железная пружина",
   "item.random_content.furnace_coil_gold": "Золотая пружина",
   "item.random_content.furnace_coil_diamond": "Алмазная пружина",
-  "random_content.furnaceUpgradeScale.comment": "Параметр ускорения улучшений для вечной печки. Скорость считается как уровень * параметр ускорения"
+  "random_content.furnaceUpgradeScale.comment": "Параметр ускорения улучшений для вечной печки. Скорость считается как уровень * параметр ускорения",
+  "block.random_content.forge": "Наковальня с жителем"
 }

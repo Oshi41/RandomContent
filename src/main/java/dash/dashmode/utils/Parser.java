@@ -1,15 +1,20 @@
 package dash.dashmode.utils;
 
 import com.google.gson.*;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dash.dashmode.recipe.DashIngredient;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.ShapedRecipe;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class NbtUtil {
-    public static final String CompoundTagName = "compound";
+public class Parser {
+    private static final String tagName = "compound";
     public static final Gson GSON = new GsonBuilder().create();
 
     /**
@@ -96,5 +101,38 @@ public class NbtUtil {
 
 
         throw new IllegalStateException("Unknown tag type: " + type);
+    }
+
+    /**
+     * Parse single Dash ingredient
+     *
+     * @param object - json element
+     * @return
+     */
+    public static DashIngredient parseIngredient(JsonObject object) {
+        DashIngredient ingredient = new DashIngredient(Ingredient.fromJson(object));
+
+        if (object.has(tagName)) {
+            String rawJson = Parser.GSON.toJson(object.getAsJsonObject(tagName));
+            try {
+                CompoundTag tag = StringNbtReader.parse(rawJson);
+                ingredient = ingredient.and(tag);
+            } catch (CommandSyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ingredient;
+    }
+
+    public static ItemStack parseItemStack(JsonObject object) {
+        ItemStack stack = ShapedRecipe.getItemStack(object);
+
+        if (object.has(tagName)) {
+            CompoundTag compoundTag = parseCompound(object.getAsJsonObject(tagName));
+            stack.setTag(compoundTag);
+        }
+
+        return stack;
     }
 }

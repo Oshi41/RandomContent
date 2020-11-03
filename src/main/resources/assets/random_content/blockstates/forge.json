@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "random_content:block/forge",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "random_content:block/forge",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "random_content:block/forge"
+    },
+    "facing=west": {
+      "model": "random_content:block/forge",
+      "y": 90
+    }
+  }
+}

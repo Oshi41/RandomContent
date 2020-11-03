@@ -1,0 +1,32 @@
+{
+  "type": "random_content:forge",
+  "experience": 30,
+  "catalyst": {
+    "item": "random_content:jar_of_keeping",
+    "compound": {
+      "BlockEntityTag": {
+        "entity": {
+          "id": "minecraft:blaze"
+        }
+      }
+    }
+  },
+  "shaped": {
+    "pattern": [
+      "III",
+      "IRI",
+      "III"
+    ],
+    "key": {
+      "I": {
+        "item": "minecraft:gold_ingot"
+      },
+      "R": {
+        "item": "random_content:furnace_coil_iron"
+      }
+    },
+    "result": {
+      "item": "random_content:furnace_coil_gold"
+    }
+  }
+}

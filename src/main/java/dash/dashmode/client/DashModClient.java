@@ -4,6 +4,7 @@ import dash.dashmode.DashMod;
 import dash.dashmode.client.render.ItemJarOverlayRender;
 import dash.dashmode.client.render.PaperCowRender;
 import dash.dashmode.client.render.PaperZombieRender;
+import dash.dashmode.client.screen.DashForgeScreen;
 import dash.dashmode.client.screen.InfiniteFurnaceScreen;
 import dash.dashmode.debug.AttributesHelper;
 import dash.dashmode.debug.LangHelper;
@@ -32,7 +33,7 @@ public class DashModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-                DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling, DashBlocks.PortalCane);
+                DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling, DashBlocks.PortalCane, DashBlocks.Forge);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
                 DashBlocks.JarOfKeeping);
@@ -62,6 +63,7 @@ public class DashModClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperCow, (e, c) -> new PaperCowRender<>(e));
 
         ScreenRegistry.register(DashScreens.InfiniteFurnace, InfiniteFurnaceScreen::new);
+        ScreenRegistry.register(DashScreens.Forge, DashForgeScreen::new);
     }
 
     private void registerJarRender(Block... blocks) {

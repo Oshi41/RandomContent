@@ -8,6 +8,7 @@ import dash.dashmode.client.render.entity.PaperZombieRender;
 import dash.dashmode.client.screen.DashForgeScreen;
 import dash.dashmode.client.screen.InfiniteFurnaceScreen;
 import dash.dashmode.debug.AttributesHelper;
+import dash.dashmode.debug.JsonCheckDebug;
 import dash.dashmode.debug.LangHelper;
 import dash.dashmode.registry.DashBlockEntities;
 import dash.dashmode.registry.DashBlocks;
@@ -57,6 +58,10 @@ public class DashModClient implements ClientModInitializer {
 
         if (set.contains("initMobStats")) {
             new AttributesHelper(DashMod.ModId, false).init();
+        }
+
+        if (set.contains("checkBlockLoot")) {
+            new JsonCheckDebug(DashMod.ModId).init();
         }
 
         registerJarRender(DashBlocks.JarOfKeeping, DashBlocks.PerfectJarOfKeeping);

@@ -1,7 +1,9 @@
-package dash.dashmode.mixin;
+package dash.dashmode.mixin.client;
 
 import dash.dashmode.DashMod;
 import dash.dashmode.armor.IArmorSupplier;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.sound.MovingMinecartSoundInstance;
@@ -9,8 +11,10 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityEquipmentUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -76,5 +80,20 @@ public class ClientPlayNetworkHandlerMixin {
         }
 
         ((IArmorSupplier) entity).refresh();
+    }
+
+    @Inject(method = "onBlockEntityUpdate", at = @At("RETURN"))
+    private void onBlockEntityUpdateInject(BlockEntityUpdateS2CPacket packet, CallbackInfo ci) {
+        int blockEntityType = packet.getBlockEntityType();
+        BlockEntityType<?> type = Registry.BLOCK_ENTITY_TYPE.get(blockEntityType);
+        if (type == null)
+            return;
+
+        BlockPos blockPos = packet.getPos();
+        BlockEntity entity = world.getBlockEntity(blockPos);
+        if (entity == null || entity.getType() != type)
+            return;
+
+        entity.fromTag(world.getBlockState(blockPos), packet.getCompoundTag());
     }
 }

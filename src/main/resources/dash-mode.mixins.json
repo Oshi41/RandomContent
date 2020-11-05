@@ -4,7 +4,6 @@
   "package": "dash.dashmode.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "DefaultAttributeContainerMixin",
     "EnchantmentScreenHandlerMixin",
     "EntityPortalMixin",
     "FeatureMixin",
@@ -29,11 +28,11 @@
     "armor.PlayerEntityMixin"
   ],
   "client": [
-    "ClientPlayNetworkHandlerMixin",
-    "EntityRenderDispatcherAccessor",
-    "ItemRendererMixin",
-    "LanguageManagerMixin",
-    "LevelPropertiesMixin"
+    "client.ClientPlayNetworkHandlerMixin",
+    "client.DefaultAttributeContainerMixin",
+    "client.EntityRenderDispatcherAccessor",
+    "client.LanguageManagerMixin",
+    "client.LevelPropertiesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

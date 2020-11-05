@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class JarOfKeepingItem extends BlockItem {
@@ -113,7 +114,11 @@ public class JarOfKeepingItem extends BlockItem {
                                         (random.nextFloat() * 2) - 1
                                 );
 
-                        EntityType.getEntityFromTag(entityTag, world).ifPresent(e -> e.setPos(pos.x, pos.y, pos.z));
+                        Optional<Entity> optional = EntityType.getEntityFromTag(entityTag, world);
+                        if (optional.isPresent()) {
+                            optional.get().setPos(pos.x, pos.y, pos.z);
+                            world.spawnEntity(optional.get());
+                        }
                     }
 
                     tag.put(JarOfKeepingBlockEntity.EntityTag, new CompoundTag());
@@ -139,5 +144,26 @@ public class JarOfKeepingItem extends BlockItem {
                 tooltip.add(text);
             }
         }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public EntityType<?> getEntityType(ItemStack stack) {
+        if (stack != null) {
+            CompoundTag tag = stack.getTag();
+            if (tag != null) {
+                CompoundTag blockTag = tag.getCompound(JarOfKeepingBlockEntity.BlockItemTag);
+                if (blockTag != null) {
+                    CompoundTag entityTag = blockTag.getCompound(JarOfKeepingBlockEntity.EntityTag);
+                    if (entityTag != null) {
+                        Optional<EntityType<?>> optional = EntityType.fromTag(entityTag);
+                        if (optional.isPresent()) {
+                            return optional.get();
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

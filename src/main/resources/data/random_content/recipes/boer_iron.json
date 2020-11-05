@@ -23,7 +23,7 @@
       }
     },
     "G": {
-      "item": "random_content:jar_of_keeping",
+      "tag": "random_content:mob_jars",
       "compound": {
         "BlockEntityTag": {
           "entity": {

@@ -2,6 +2,8 @@ package dash.dashmode.debug;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.nbt.ListTag;
@@ -57,6 +59,7 @@ public class AttributesHelper {
         Map<Identifier, DefaultAttributeContainer.Builder> attributes = new HashMap<Identifier, DefaultAttributeContainer.Builder>() {{
             put(new Identifier(modid, "paper_zombie"), ZombieEntity.createZombieAttributes());
             put(new Identifier(modid, "paper_cow"), CowEntity.createCowAttributes());
+            put(new Identifier(modid, "cosmo_ghast"), GhastEntity.createGhastAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 50));
         }};
 
         return attributes;

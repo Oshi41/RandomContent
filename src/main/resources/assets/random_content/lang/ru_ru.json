@@ -52,5 +52,6 @@
   "random_content.furnaceUpgradeScale.comment": "Параметр ускорения улучшений для вечной печки. Скорость считается как уровень * параметр ускорения",
   "block.random_content.forge": "Наковальня с жителем",
   "block.random_content.pillar": "Пъедестал",
-  "block_entity_type.random_content.stack_holder": "Пъедестал"
+  "block_entity_type.random_content.stack_holder": "Пъедестал",
+  "entity_type.random_content.cosmo_ghast": ""
 }

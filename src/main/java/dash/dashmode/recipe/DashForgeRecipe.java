@@ -2,7 +2,7 @@ package dash.dashmode.recipe;
 
 import com.google.gson.JsonObject;
 import dash.dashmode.registry.DashRecipes;
-import dash.dashmode.utils.Parser;
+import dash.dashmode.utils.JsonUtils;
 import dash.dashmode.utils.RecipeUtils;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -80,10 +80,10 @@ public class DashForgeRecipe implements Recipe<Inventory> {
             DashIngredient catalyst = DashIngredient.EMPTY;
             JsonObject catalystJson = json.getAsJsonObject("catalyst");
             if (catalystJson != null) {
-                catalyst = Parser.parseIngredient(catalystJson);
+                catalyst = JsonUtils.parseIngredient(catalystJson);
             }
 
-            ItemStack output = Parser.parseItemStack(json.getAsJsonObject("shaped").getAsJsonObject("result"));
+            ItemStack output = JsonUtils.parseItemStack(json.getAsJsonObject("shaped").getAsJsonObject("result"));
             String group = JsonHelper.getString(json, "group", "");
 
             return new DashForgeRecipe(id, shaped, catalyst, exp, output, group);

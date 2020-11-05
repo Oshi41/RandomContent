@@ -40,7 +40,7 @@ public class RecipeUtils {
                 throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
             }
 
-            DashIngredient ingredient = Parser.parseIngredient(entry.getValue().getAsJsonObject());
+            DashIngredient ingredient = JsonUtils.parseIngredient(entry.getValue().getAsJsonObject());
 
             map.put(entry.getKey(), ingredient);
         }

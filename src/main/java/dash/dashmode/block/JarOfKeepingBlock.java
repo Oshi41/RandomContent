@@ -18,7 +18,7 @@ public class JarOfKeepingBlock extends BlockWithEntity {
     private final int catchChance;
 
     public JarOfKeepingBlock(Settings settings, boolean isEnhanced) {
-        super(settings);
+        super(settings.dropsNothing());
 
         // can stain for near 30 minutes
         breakChance = isEnhanced ? -1 : 20 * 60 * 30;

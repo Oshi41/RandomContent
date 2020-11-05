@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class Parser {
+public class JsonUtils {
     private static final String tagName = "compound";
     public static final Gson GSON = new GsonBuilder().create();
 
@@ -113,7 +113,7 @@ public class Parser {
         DashIngredient ingredient = new DashIngredient(Ingredient.fromJson(object));
 
         if (object.has(tagName)) {
-            String rawJson = Parser.GSON.toJson(object.getAsJsonObject(tagName));
+            String rawJson = JsonUtils.GSON.toJson(object.getAsJsonObject(tagName));
             try {
                 CompoundTag tag = StringNbtReader.parse(rawJson);
                 ingredient = ingredient.and(tag);

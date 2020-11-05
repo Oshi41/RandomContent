@@ -1,4 +1,4 @@
-package dash.dashmode.mixin;
+package dash.dashmode.mixin.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

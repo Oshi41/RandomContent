@@ -1,6 +1,7 @@
 package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
+import dash.dashmode.entities.cosmic.CosmoGhastEntity;
 import dash.dashmode.entities.paper.PaperCowEntity;
 import dash.dashmode.entities.paper.PaperZombieEntity;
 import dash.dashmode.entities.throwable.JarOfKeepingThrowableEntity;
@@ -28,8 +29,9 @@ import java.util.stream.Collectors;
 
 public class DashEntities {
     public static final EntityType<JarOfKeepingThrowableEntity> JarOfKeepingThrowableEntityType;
-    public static EntityType<PaperZombieEntity> PaperZombie;
-    public static EntityType<PaperCowEntity> PaperCow;
+    public static final EntityType<PaperZombieEntity> PaperZombie;
+    public static final EntityType<PaperCowEntity> PaperCow;
+    public static final EntityType<CosmoGhastEntity> CosmoGhast;
 
     static {
         JarOfKeepingThrowableEntityType = FabricEntityTypeBuilder.<JarOfKeepingThrowableEntity>create(SpawnGroup.MISC, (type, world) -> new JarOfKeepingThrowableEntity(world))
@@ -48,6 +50,12 @@ public class DashEntities {
                 .trackRangeBlocks(14)
                 .build();
 
+        CosmoGhast = FabricEntityTypeBuilder.<CosmoGhastEntity>create(SpawnGroup.MONSTER, (type, world) -> new CosmoGhastEntity(world))
+                .dimensions(EntityDimensions.fixed(7, 7))
+                .trackRangeBlocks(10)
+                .fireImmune()
+                .build();
+
     }
 
     public static void init(String modid) {
@@ -59,6 +67,7 @@ public class DashEntities {
         Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "jar_of_keeping_throwable"), JarOfKeepingThrowableEntityType);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "paper_zombie"), PaperZombie);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "paper_cow"), PaperCow);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "cosmo_ghast"), CosmoGhast);
     }
 
     private static void initAttributes(String modid) {

@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import dash.dashmode.mixin.IngredientAccessor;
 import dash.dashmode.mixin.ShapedRecipeAccessor;
 import dash.dashmode.registry.DashRecipes;
-import dash.dashmode.utils.Parser;
+import dash.dashmode.utils.JsonUtils;
 import dash.dashmode.utils.RecipeUtils;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -84,7 +84,7 @@ public class DashCraftRecipe extends ShapedRecipe {
 
             JsonObject result = json.getAsJsonObject("result");
             if (result.has(tagName)) {
-                CompoundTag compound = Parser.parseCompound(result.getAsJsonObject(tagName));
+                CompoundTag compound = JsonUtils.parseCompound(result.getAsJsonObject(tagName));
                 output.setTag(compound);
             }
 

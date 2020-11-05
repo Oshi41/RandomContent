@@ -1,5 +1,7 @@
-package dash.dashmode.mixin;
+package dash.dashmode.mixin.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@Environment(EnvType.CLIENT)
 @Mixin(DefaultAttributeContainer.class)
 public class DefaultAttributeContainerMixin implements Supplier<ListTag> {
     @Shadow

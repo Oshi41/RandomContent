@@ -1,6 +1,6 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.utils.ItemStackPredicates;
+import dash.dashmode.utils.ItemStackUtils;
 import net.minecraft.block.BeehiveBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +15,6 @@ public class ShearBlockMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"),
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;")))
     public Item inject(ItemStack stack) {
-        return ItemStackPredicates.redirectIfShears(stack);
+        return ItemStackUtils.redirectIfShears(stack);
     }
 }

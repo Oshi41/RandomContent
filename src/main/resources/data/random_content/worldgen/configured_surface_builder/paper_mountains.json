@@ -1,0 +1,17 @@
+{
+  "config": {
+    "top_material": {
+      "Properties": {
+        "snowy": "false"
+      },
+      "Name": "random_content:paper_grass_block"
+    },
+    "under_material": {
+      "Name": "random_content:paper_dirt"
+    },
+    "underwater_material": {
+      "Name": "random_content:paper_stone"
+    }
+  },
+  "type": "random_content:shattered_savanna"
+}

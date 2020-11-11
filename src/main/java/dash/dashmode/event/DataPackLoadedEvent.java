@@ -5,10 +5,10 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.util.registry.DynamicRegistryManager;
 
 @FunctionalInterface
-public interface ResLoadedEvent {
-    Event<ResLoadedEvent> EVENT = EventFactory.createArrayBacked(ResLoadedEvent.class,
+public interface DataPackLoadedEvent {
+    Event<DataPackLoadedEvent> EVENT = EventFactory.createArrayBacked(DataPackLoadedEvent.class,
             listeners -> manager -> {
-                for (ResLoadedEvent event : listeners) {
+                for (DataPackLoadedEvent event : listeners) {
                     event.afterLoading(manager);
                 }
             }

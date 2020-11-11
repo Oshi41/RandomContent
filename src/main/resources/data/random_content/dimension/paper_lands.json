@@ -5,9 +5,11 @@
     "settings": "random_content:paper_lands",
     "seed": 0,
     "biome_source": {
+      "type": "random_content:paper",
+      "biome": "random_content:paper_mountains",
       "seed": 0,
-      "type": "minecraft:fixed",
-      "biome": "random_content:paper_lands"
+      "squareSize": 500,
+      "mountainWidth": 100
     }
   }
 }

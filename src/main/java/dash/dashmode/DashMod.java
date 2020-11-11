@@ -4,8 +4,8 @@ import com.mojang.serialization.Lifecycle;
 import dash.dashmode.armor.ArmorDescription;
 import dash.dashmode.config.Config;
 import dash.dashmode.config.DashConfig;
+import dash.dashmode.config.JsonEngine;
 import dash.dashmode.event.BlockBreakEvent;
-import dash.dashmode.event.ResLoadedEvent;
 import dash.dashmode.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 public class DashMod implements ModInitializer {
     public static final String ModId = "random_content";
-    public static final Config<DashConfig> MainConfig = new Config<>(DashConfig.class, ModId);
+    public static final Config<DashConfig> MainConfig = new Config<>(DashConfig.class, ModId, new JsonEngine());
     public static final Logger MainLogger = LogManager.getLogger(ModId);
     public static final ItemGroup DashItemsTab = FabricItemGroupBuilder
             .build(new Identifier(ModId, "general"),
@@ -46,9 +46,10 @@ public class DashMod implements ModInitializer {
         DashRecipes.init(ModId);
 
         DashDimensions.init();
+        DashFeatures.init(ModId);
+        DashBiomes.init(ModId);
         DashScreens.init(ModId);
 
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
-        ResLoadedEvent.EVENT.register(new DashBioms(ModId));
     }
 }

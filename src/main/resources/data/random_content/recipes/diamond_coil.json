@@ -1,6 +1,6 @@
 {
   "type": "random_content:forge",
-  "experience": 60,
+  "experience": 20,
   "catalyst": {
     "tag": "random_content:mob_jars",
     "compound": {
@@ -13,15 +13,18 @@
   },
   "shaped": {
     "pattern": [
-      "III",
-      "IRI",
-      "III"
+      "ICI",
+      "CRC",
+      "ICI"
     ],
     "key": {
       "I": {
         "item": "minecraft:diamond"
       },
       "R": {
+        "item": "minecraft:redstone"
+      },
+      "C": {
         "item": "random_content:furnace_coil_gold"
       }
     },

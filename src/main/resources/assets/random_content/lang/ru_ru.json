@@ -53,5 +53,7 @@
   "block.random_content.forge": "Наковальня с жителем",
   "block.random_content.pillar": "Пъедестал",
   "block_entity_type.random_content.stack_holder": "Пъедестал",
-  "entity_type.random_content.cosmo_ghast": ""
+  "entity_type.random_content.cosmo_ghast": "Космический гаст",
+  "block.random_content.infinite_shulker_box": "Бесконечный шалкер",
+  "block_entity_type.random_content.infinite_shulker_box": "Бесконечный шалкер"
 }

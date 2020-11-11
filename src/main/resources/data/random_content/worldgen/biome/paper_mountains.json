@@ -1,5 +1,5 @@
 {
-  "scale": 0.05,
+  "scale": 1.425,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -12,7 +12,7 @@
     "water_color": 16777215,
     "water_fog_color": 16777215
   },
-  "surface_builder": "random_content:paper_lands",
+  "surface_builder": "random_content:paper_mountains",
   "carvers": {
     "air": [
       "minecraft:cave",
@@ -77,8 +77,8 @@
   "spawn_costs": {},
   "player_spawn_friendly": false,
   "precipitation": "rain",
-  "temperature": 0.8,
-  "downfall": 1.6,
+  "temperature": 1,
+  "downfall": 2.0,
   "category": "none",
-  "depth": 0.125
+  "depth": 0.3625
 }

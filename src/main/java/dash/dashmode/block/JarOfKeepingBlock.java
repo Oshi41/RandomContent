@@ -1,6 +1,8 @@
 package dash.dashmode.block;
 
 import dash.dashmode.blockentity.JarOfKeepingBlockEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -62,5 +64,11 @@ public class JarOfKeepingBlock extends BlockWithEntity {
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+        return this.asItem().getDefaultStack();
     }
 }

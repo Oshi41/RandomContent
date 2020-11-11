@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-public class ItemStackPredicates {
+public class ItemStackUtils {
 
     /**
      * Redirecting method for shears item.

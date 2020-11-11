@@ -1,6 +1,6 @@
 package dash.dashmode.mixin;
 
-import dash.dashmode.utils.ItemStackPredicates;
+import dash.dashmode.utils.ItemStackUtils;
 import net.minecraft.block.TripwireBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +13,6 @@ public class TripwireBlockMixin {
     @Redirect(method = "onBreak",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     public Item inject(ItemStack stack) {
-        return ItemStackPredicates.redirectIfShears(stack);
+        return ItemStackUtils.redirectIfShears(stack);
     }
 }

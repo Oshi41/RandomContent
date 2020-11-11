@@ -24,5 +24,5 @@ public class DashConfig {
 
     @Property(category = "machines", commentLangKey = "random_content.furnaceUpgradeScale.comment")
     @FloatValidate(minValue = 1, maxValue = 5)
-    public float furnaceUpgradeScale = 1.2F;
+    public float furnaceUpgradeScale = 1.7F;
 }

@@ -1,14 +1,17 @@
 package dash.dashmode.client;
 
 import dash.dashmode.DashMod;
+import dash.dashmode.client.render.block.InfiniteShulkerBoxRender;
 import dash.dashmode.client.render.block.JarOfKeepingBlockEntityRenderer;
 import dash.dashmode.client.render.block.StackHolderBlockEntityRenderer;
 import dash.dashmode.client.render.entity.CosmoGhastEntityRenderer;
 import dash.dashmode.client.render.entity.PaperCowRender;
 import dash.dashmode.client.render.entity.PaperZombieRender;
+import dash.dashmode.client.render.item.ItemInfiniteShulkerRender;
 import dash.dashmode.client.render.item.ItemJarOverlayRender;
 import dash.dashmode.client.screen.DashForgeScreen;
 import dash.dashmode.client.screen.InfiniteFurnaceScreen;
+import dash.dashmode.client.screen.InfiniteShulkerBoxScreen;
 import dash.dashmode.debug.AttributesHelper;
 import dash.dashmode.debug.JsonCheckDebug;
 import dash.dashmode.debug.LangHelper;
@@ -25,10 +28,14 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -58,9 +65,15 @@ public class DashModClient implements ClientModInitializer {
         renderEntities();
         renderBlockEntities();
         renderScreens();
+
+        ClientSpriteRegistryCallback.event(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE).register(this::registerSprite);
     }
 
-    private void registerJarRender(Block... blocks) {
+    private void registerSprite(SpriteAtlasTexture atlas, ClientSpriteRegistryCallback.Registry registry) {
+        registry.register(new Identifier(DashMod.ModId, "entity/infinite_shulker_box"));
+    }
+
+    private void registerItemJarRender(Block... blocks) {
         ItemJarOverlayRender jarRender = new ItemJarOverlayRender();
         for (Block block : blocks) {
             BuiltinItemRendererRegistry.INSTANCE.register(block, jarRender);
@@ -76,14 +89,15 @@ public class DashModClient implements ClientModInitializer {
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
                 DashBlocks.PaperGrass);
-
-        registerJarRender(DashBlocks.JarOfKeeping, DashBlocks.PerfectJarOfKeeping);
     }
 
     private void renderItems() {
         int white = 16777215;
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> white, DashBlocks.PaperGrass);
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> white, DashBlocks.PaperGrass);
+
+        registerItemJarRender(DashBlocks.JarOfKeeping, DashBlocks.PerfectJarOfKeeping);
+        BuiltinItemRendererRegistry.INSTANCE.register(DashBlocks.InfiniteShulker, new ItemInfiniteShulkerRender());
     }
 
     private void renderEntities() {
@@ -96,10 +110,12 @@ public class DashModClient implements ClientModInitializer {
     private void renderBlockEntities() {
         BlockEntityRendererRegistry.INSTANCE.register(DashBlockEntities.StackHolder, StackHolderBlockEntityRenderer::new);
         BlockEntityRendererRegistry.INSTANCE.register(DashBlockEntities.JarOfKeepingBlockEntityType, JarOfKeepingBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(DashBlockEntities.InfiniteShulker, InfiniteShulkerBoxRender::new);
     }
 
     private void renderScreens() {
         ScreenRegistry.register(DashScreens.InfiniteFurnace, InfiniteFurnaceScreen::new);
         ScreenRegistry.register(DashScreens.Forge, DashForgeScreen::new);
+        ScreenRegistry.register(DashScreens.InfiniteShulker, InfiniteShulkerBoxScreen::new);
     }
 }

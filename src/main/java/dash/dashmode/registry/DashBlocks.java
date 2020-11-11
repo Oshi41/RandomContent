@@ -49,6 +49,7 @@ public class DashBlocks {
     public static final Block InfiniteFurnace;
     public static final Block Forge;
     public static final Block Pillar;
+    public static final Block InfiniteShulker;
 
     static {
         PaperDirt = new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.WHITE).strength(0.5F).sounds(BlockSoundGroup.GRAVEL)
@@ -176,6 +177,8 @@ public class DashBlocks {
                 .requiresTool()
                 .strength(5.0F, 1200.0F)
                 .sounds(BlockSoundGroup.BASALT));
+
+        InfiniteShulker = new InfiniteShulkerBoxBlock(AbstractBlock.Settings.of(Material.SHULKER_BOX).strength(2).nonOpaque().requiresTool().dropsNothing());
     }
 
     public static void init(String modeName) {
@@ -217,6 +220,7 @@ public class DashBlocks {
         initBlock(new Identifier(modeName, "infinite_furnace"), InfiniteFurnace, defaultSettings);
         initBlock(new Identifier(modeName, "forge"), Forge, defaultSettings);
         initBlock(new Identifier(modeName, "pillar"), Pillar, defaultSettings);
+        initBlock(new Identifier(modeName, "infinite_shulker_box"), InfiniteShulker, defaultSettings);
 
         registerFlammable(PaperDirt, PaperGrass, PaperStone, PaperOakLog, PaperLeaves, PaperBirchSapling, PaperCoalOre, PaperIronOre,
                 PaperGoldOre, PaperRedstoneOre, PaperLapisOre, PaperDiamondOre, PaperEmeraldOre, PaperQuartzOre, PaperOakPlank, PaperBookshelf);

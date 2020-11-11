@@ -25,11 +25,15 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class InfiniteShulkerBoxBlock extends BlockWithEntity {
     public static final EnumProperty<Direction> FACING = FacingBlock.FACING;
@@ -107,7 +111,7 @@ public class InfiniteShulkerBoxBlock extends BlockWithEntity {
                 if (i <= 4) {
                     ++i;
                     MutableText mutableText = itemStack.getName().shallowCopy();
-                    mutableText.append(" x").append(String.valueOf(itemStack.getCount()));
+                    mutableText.append(" x ").append(NumberFormat.getInstance(Locale.US).format(itemStack.getCount()));
                     tooltip.add(mutableText);
                 }
             }
@@ -146,6 +150,14 @@ public class InfiniteShulkerBoxBlock extends BlockWithEntity {
     @Override
     public PistonBehavior getPistonBehavior(BlockState state) {
         return PistonBehavior.DESTROY;
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        return blockEntity instanceof InfiniteShulkerBoxBlockEntity
+                ? VoxelShapes.cuboid(((InfiniteShulkerBoxBlockEntity) blockEntity).getBoundingBox(state))
+                : VoxelShapes.fullCube();
     }
 
     private boolean checkAnimation(World world, BlockEntity entity, BlockState state, BlockPos pos) {

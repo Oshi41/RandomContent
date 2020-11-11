@@ -85,7 +85,7 @@ public class DashModClient implements ClientModInitializer {
                 DashBlocks.PaperFlower, DashBlocks.PaperBirchSapling, DashBlocks.PortalCane, DashBlocks.Forge, DashBlocks.Pillar);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
-                DashBlocks.JarOfKeeping);
+                DashBlocks.JarOfKeeping, DashBlocks.PerfectJarOfKeeping);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
                 DashBlocks.PaperGrass);

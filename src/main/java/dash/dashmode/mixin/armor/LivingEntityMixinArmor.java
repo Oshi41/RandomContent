@@ -4,12 +4,16 @@ import dash.dashmode.DashMod;
 import dash.dashmode.armor.ArmorDescription;
 import dash.dashmode.armor.EntityAttackCallback;
 import dash.dashmode.armor.IArmorSupplier;
+import dash.dashmode.utils.RangeEnchantApply;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,10 +21,14 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixinArmor implements IArmorSupplier {
+    @Shadow
+    public abstract void equipStack(EquipmentSlot slot, ItemStack stack);
+
     @Unique
     private final Set<Identifier> rc_setId = new HashSet<>();
 
@@ -87,6 +95,8 @@ public abstract class LivingEntityMixinArmor implements IArmorSupplier {
 
         LivingEntity livingEntity = (LivingEntity) ((Object) this);
 
+        long time = livingEntity.getEntityWorld().getTime();
+
         for (Identifier id : rc_setId) {
             ArmorDescription description = DashMod.ArmorSetRegistry.get(id);
             if (description == null) {
@@ -94,8 +104,36 @@ public abstract class LivingEntityMixinArmor implements IArmorSupplier {
             }
 
             // Potions
-            description.potions.entrySet().stream().filter(x -> !livingEntity.hasStatusEffect(x.getKey()))
-                    .forEach(x -> livingEntity.addStatusEffect(x.getValue()));
+            try {
+                for (Map.Entry<StatusEffect, Supplier<StatusEffectInstance>> entry : description.applyingPotions.entrySet()) {
+                    StatusEffect statusEffect = entry.getKey();
+                    if (!livingEntity.hasStatusEffect(statusEffect) && !description.forbiddenPotions.contains(statusEffect)) {
+                        livingEntity.addStatusEffect(entry.getValue().get());
+                    }
+                }
+
+                for (StatusEffect effect : description.forbiddenPotions) {
+                    if (livingEntity.hasStatusEffect(effect)) {
+                        livingEntity.removeStatusEffect(effect);
+                    }
+                }
+
+                for (RangeEnchantApply apply : description.applyingPotionsToEntities.values()) {
+                    if (time % apply.time != 0)
+                        continue;
+
+                    List<LivingEntity> entitiesByClass = livingEntity.getEntityWorld().getEntitiesByClass(
+                            LivingEntity.class,
+                            livingEntity.getBoundingBox().expand(apply.radius),
+                            entity -> apply.entity.test(entity) && entity != livingEntity);
+
+                    for (LivingEntity entity : entitiesByClass) {
+                        entity.addStatusEffect(new StatusEffectInstance(apply.createEffect.get()));
+                    }
+                }
+            } catch (Exception e) {
+                DashMod.MainLogger.warn(e);
+            }
 
             // on tick
             if (description.onTick != null) {

@@ -4,6 +4,7 @@
   "package": "dash.dashmode.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ArmorItemAccessor",
     "EnchantmentScreenHandlerMixin",
     "EntityPortalMixin",
     "FeatureMixin",
@@ -30,6 +31,7 @@
     "armor.PlayerEntityMixin"
   ],
   "client": [
+    "client.ArmorFeatureRendererMixin",
     "client.ClientPlayNetworkHandlerMixin",
     "client.DefaultAttributeContainerMixin",
     "client.EntityRenderDispatcherAccessor",

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Environment(EnvType.CLIENT)
 public enum NumberScope {
     Simple("%s", 1),
-    Hundreds("%h", 100),
+    Hundreds("%sh", 100),
     Thousands("%sk", 1000),
     KiloThousands("%shk", 1000 * 100),
     Millions("%sm", 1000 * 1000),
@@ -42,6 +42,6 @@ public enum NumberScope {
             }
         }
 
-        return Simple;
+        return Billions;
     }
 }

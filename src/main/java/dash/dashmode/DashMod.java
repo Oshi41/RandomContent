@@ -42,7 +42,6 @@ public class DashMod implements ModInitializer {
         DashBlockEntities.init(ModId);
         DashEntities.init(ModId);
 
-        DashArmor.init(ModId);
         DashRecipes.init(ModId);
 
         DashDimensions.init();
@@ -50,6 +49,7 @@ public class DashMod implements ModInitializer {
         DashBiomes.init(ModId);
         DashScreens.init(ModId);
 
+        DashArmor.init(ModId);
         PlayerBlockBreakEvents.AFTER.register(new BlockBreakEvent());
     }
 }

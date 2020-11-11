@@ -1,22 +1,29 @@
 package dash.dashmode.armor;
 
+import dash.dashmode.utils.RangeEnchantApply;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ArmorDescription {
 
-    public final Map<StatusEffect, StatusEffectInstance> potions = new HashMap<>();
+    public final Map<StatusEffect, RangeEnchantApply> applyingPotionsToEntities = new HashMap<>();
+    public final Map<StatusEffect, Supplier<StatusEffectInstance>> applyingPotions = new HashMap<>();
+    public final Set<StatusEffect> forbiddenPotions = new HashSet<>();
     // region fields
     private final Map<EquipmentSlot, Predicate<ItemStack>> conditions = new HashMap<>();
     public @Nullable Consumer<LivingEntity> onTick;
@@ -30,6 +37,11 @@ public class ArmorDescription {
     // endregion
     @Nullable
     public Predicate<DamageSource> invunerable;
+
+    public ArmorDescription withSet(Map<EquipmentSlot, ArmorItem> set) {
+        set.forEach(this::withSlot);
+        return this;
+    }
 
     public ArmorDescription withSlot(EquipmentSlot slot, Predicate<ItemStack> predicate) {
         conditions.put(slot, predicate);
@@ -68,8 +80,30 @@ public class ArmorDescription {
      * @param instance
      * @return
      */
-    public ArmorDescription withPermanentPotion(StatusEffectInstance instance) {
-        potions.put(instance.getEffectType(), instance);
+    public ArmorDescription withPermanentPotion(Supplier<StatusEffectInstance> instance) {
+        applyingPotions.put(instance.get().getEffectType(), instance);
+        return this;
+    }
+
+    /**
+     * Clear potion on person wearing current set
+     *
+     * @param potion
+     * @return
+     */
+    public ArmorDescription restrict(StatusEffect potion) {
+        forbiddenPotions.add(potion);
+        return this;
+    }
+
+    /**
+     * Applying potion for entities near
+     *
+     * @param apply
+     * @return
+     */
+    public ArmorDescription forEntitiesNear(RangeEnchantApply apply) {
+        applyingPotionsToEntities.put(apply.createEffect.get().getEffectType(), apply);
         return this;
     }
 

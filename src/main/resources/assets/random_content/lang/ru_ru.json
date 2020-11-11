@@ -55,5 +55,10 @@
   "block_entity_type.random_content.stack_holder": "Пъедестал",
   "entity_type.random_content.cosmo_ghast": "Космический гаст",
   "block.random_content.infinite_shulker_box": "Бесконечный шалкер",
-  "block_entity_type.random_content.infinite_shulker_box": "Бесконечный шалкер"
+  "block_entity_type.random_content.infinite_shulker_box": "Бесконечный шалкер",
+  "item.random_content.glowstone_legs": "Штаны прозрения",
+  "item.random_content.glowstone_chest": "Нагрудник откровения",
+  "item.random_content.glowstone_head": "Шлем открытия",
+  "item.random_content.glowstone_feet": "Ботинки зрения",
+  "item.random_content.glowstone_chunk": "Осколок светкамня"
 }

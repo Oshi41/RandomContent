@@ -1,14 +1,21 @@
 package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
-import dash.dashmode.item.BoerItem;
-import dash.dashmode.item.DashShears;
-import dash.dashmode.item.MultiToolItem;
-import dash.dashmode.item.UpgradeItem;
+import dash.dashmode.item.*;
+import dash.dashmode.utils.CustomArmorMaterial;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.FoodComponents;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DashItems {
     public static final Item PaperApple;
@@ -30,6 +37,8 @@ public class DashItems {
     public static final Item GoldFurnaceSpring;
     public static final Item DiamondFurnaceSpring;
 
+    public static final Item GlowstoneChunk;
+
     static {
         PaperApple = new Item((new Item.Settings()).group(DashMod.DashItemsTab).food(FoodComponents.APPLE));
         PaperCrystal = new Item(new Item.Settings().group(DashMod.DashItemsTab));
@@ -49,6 +58,8 @@ public class DashItems {
         IronFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 1);
         GoldFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 2);
         DiamondFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 3);
+
+        GlowstoneChunk = new Item(new Item.Settings().group(DashMod.DashItemsTab));
     }
 
     public static void init(String modId) {
@@ -68,5 +79,62 @@ public class DashItems {
         Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_iron"), IronFurnaceSpring);
         Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_gold"), GoldFurnaceSpring);
         Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_diamond"), DiamondFurnaceSpring);
+
+        createAndRegisterArmorSet(DashArmor.GlowstoneArmor, new Item.Settings().group(DashMod.DashItemsTab), modId);
+
+        Registry.register(Registry.ITEM, new Identifier(modId, "glowstone_chunk"), GlowstoneChunk);
+    }
+
+    /**
+     * Easy create & register armor set.
+     * 1) Create ArmorMaterial with custom name, for example "glowstone"
+     * 2) place in "texture\models\armor" two files: "glowstone_layer_1" and "glowstone_layer_2"
+     * 3) create 4 item textures: "glowstone_head", "glowstone_chest", "glowstone_legs", "glowstone_feet"
+     *
+     * @param material - modded material for registry
+     * @param settings - item settings for all set
+     * @param modid    - id of mod
+     * @return
+     */
+    private static Map<EquipmentSlot, ArmorItem> createAndRegisterArmorSet(CustomArmorMaterial material, Item.Settings settings, String modid) {
+        HashMap<EquipmentSlot, ArmorItem> map = new HashMap<>();
+
+        for (EquipmentSlot slot : Arrays.asList(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
+            map.put(slot, new DashArmorItem(material, slot, settings));
+        }
+
+        for (ArmorItem item : map.values()) {
+            Registry.register(Registry.ITEM, new Identifier(modid, String.format("%s_%s", material.getRegistryName(), item.getSlotType().getName())), item);
+        }
+
+        return map;
+    }
+
+
+    /**
+     * Performs search for modded armor item
+     *
+     * @param material - custom material
+     * @param slot     - current slot
+     * @return
+     */
+    @Nullable
+    public static ArmorItem find(CustomArmorMaterial material, EquipmentSlot slot) {
+        Identifier identifier = new Identifier(DashMod.ModId, String.format("%s_%s", material.getRegistryName(), slot.getName()));
+        Item item = Registry.ITEM.get(identifier);
+        if (item instanceof ArmorItem)
+            return ((ArmorItem) item);
+
+        return null;
+    }
+
+    public static Map<EquipmentSlot, ArmorItem> find(CustomArmorMaterial material) {
+        Map<EquipmentSlot, ArmorItem> map = Arrays.stream(EquipmentSlot.values())
+                .filter(x -> x.getType() == EquipmentSlot.Type.ARMOR)
+                .map(x -> find(material, x))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(ArmorItem::getSlotType, x -> x));
+
+        return map;
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -178,7 +179,13 @@ public class DashBlocks {
                 .strength(5.0F, 1200.0F)
                 .sounds(BlockSoundGroup.BASALT));
 
-        InfiniteShulker = new InfiniteShulkerBoxBlock(AbstractBlock.Settings.of(Material.SHULKER_BOX).strength(2).nonOpaque().requiresTool().dropsNothing());
+        InfiniteShulker = new InfiniteShulkerBoxBlock(FabricBlockSettings.of(Material.SHULKER_BOX)
+                .breakByTool(FabricToolTags.PICKAXES, ToolMaterials.IRON.getMiningLevel())
+                .strength(2)
+                .nonOpaque()
+                .requiresTool()
+                .dynamicBounds()
+                .dropsNothing());
     }
 
     public static void init(String modeName) {

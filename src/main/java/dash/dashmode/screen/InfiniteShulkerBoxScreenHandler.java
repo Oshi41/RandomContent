@@ -91,33 +91,48 @@ public class InfiniteShulkerBoxScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack onSlotClick(int i, int j, SlotActionType actionType, PlayerEntity playerEntity) {
-        if (actionType == SlotActionType.CLONE && playerEntity.abilities.creativeMode && playerInventory.getCursorStack().isEmpty() && i >= 0) {
-            Slot slot = this.slots.get(i);
-            if (slot != null && slot.hasStack()) {
-                ItemStack stack = slot.getStack().copy();
-                stack.setCount(Math.min(stack.getMaxCount(), ((CustomStackSize) (Object) stack).getInitialStackSize()));
-                playerInventory.setCursorStack(stack);
-                return stack;
-            }
+
+        switch (actionType) {
+            case CLONE:
+                if (playerEntity.abilities.creativeMode && playerInventory.getCursorStack().isEmpty() && i >= 0) {
+                    Slot slot = this.slots.get(i);
+                    if (slot != null && slot.hasStack()) {
+                        ItemStack stack = slot.getStack().copy();
+                        stack.setCount(Math.max(stack.getCount(), ((CustomStackSize) (Object) stack).getInitialStackSize()));
+                        playerInventory.setCursorStack(stack);
+                        return stack;
+                    }
+                }
+
+                break;
+
+            case PICKUP:
+                if (!playerInventory.getCursorStack().isEmpty()
+                        && 0 <= i && i < inventory.size()
+                        && !slots.get(i).getStack().isEmpty()
+                        && slots.get(i).canInsert(playerInventory.getCursorStack())) {
+                    ItemStack stack = playerInventory.getCursorStack();
+                    Slot slot = slots.get(i);
+                    if (stack.isItemEqualIgnoreDamage(slot.getStack()) && ItemStack.areTagsEqual(slot.getStack(), stack)) {
+                        CustomStackSize.createWithCustomStackSize(stack, inventory.getMaxCountPerStack());
+                    }
+                }
+                break;
+
+            case PICKUP_ALL:
+                if (!playerInventory.getCursorStack().isEmpty() && i >= 0) {
+                    CustomStackSize.createWithCustomStackSize(playerInventory.getCursorStack(), inventory.getMaxCountPerStack());
+                }
+
+                break;
+
         }
 
-        if (actionType == SlotActionType.PICKUP
-                && !playerInventory.getCursorStack().isEmpty()
-                && i < inventory.size()
-                && !slots.get(i).getStack().isEmpty()
-                && slots.get(i).canInsert(playerInventory.getCursorStack())) {
-
-            ItemStack stack = playerInventory.getCursorStack();
-            Slot slot = slots.get(i);
-            if (stack.isItemEqualIgnoreDamage(slot.getStack()) && ItemStack.areTagsEqual(slot.getStack(), stack)) {
-                CustomStackSize.createWithCustomStackSize(stack, inventory.getMaxCountPerStack());
-            }
-        }
 
         ItemStack stack = super.onSlotClick(i, j, actionType, playerEntity);
 
-        stack = i >= inventory.size()
-                ? CustomStackSize.withDefaultStackSize(stack)
+        stack = 0 <= i && i < inventory.size()
+                ? CustomStackSize.createWithCustomStackSize(stack, inventory.getMaxCountPerStack())
                 : CustomStackSize.withDefaultStackSize(stack);
 
         return stack;

@@ -9,22 +9,21 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ArmorDescription {
 
+    public final List<Text> fullSetPerks = new ArrayList<>();
     public final Map<StatusEffect, RangeEnchantApply> applyingPotionsToEntities = new HashMap<>();
     public final Map<StatusEffect, Supplier<StatusEffectInstance>> applyingPotions = new HashMap<>();
     public final Set<StatusEffect> forbiddenPotions = new HashSet<>();
-    // region fields
     private final Map<EquipmentSlot, Predicate<ItemStack>> conditions = new HashMap<>();
     public @Nullable Consumer<LivingEntity> onTick;
     @Nullable
@@ -34,7 +33,6 @@ public class ArmorDescription {
     @Nullable
     public EntityAttackCallback beingAttackedCallback;
 
-    // endregion
     @Nullable
     public Predicate<DamageSource> invunerable;
 
@@ -81,7 +79,9 @@ public class ArmorDescription {
      * @return
      */
     public ArmorDescription withPermanentPotion(Supplier<StatusEffectInstance> instance) {
-        applyingPotions.put(instance.get().getEffectType(), instance);
+        StatusEffect effectType = instance.get().getEffectType();
+        applyingPotions.put(effectType, instance);
+        fullSetPerks.add(new TranslatableText("random_content.constant_potion").append(new TranslatableText(effectType.getTranslationKey())));
         return this;
     }
 
@@ -93,6 +93,7 @@ public class ArmorDescription {
      */
     public ArmorDescription restrict(StatusEffect potion) {
         forbiddenPotions.add(potion);
+        fullSetPerks.add(new TranslatableText("random_content.restricted_potion").append(new TranslatableText(potion.getTranslationKey())));
         return this;
     }
 
@@ -103,7 +104,9 @@ public class ArmorDescription {
      * @return
      */
     public ArmorDescription forEntitiesNear(RangeEnchantApply apply) {
-        applyingPotionsToEntities.put(apply.createEffect.get().getEffectType(), apply);
+        StatusEffect potion = apply.createEffect.get().getEffectType();
+        applyingPotionsToEntities.put(potion, apply);
+        fullSetPerks.add(new TranslatableText("random_content.ranged_potion_str_format", apply.radius).append(new TranslatableText(potion.getTranslationKey())));
         return this;
     }
 

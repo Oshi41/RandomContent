@@ -13,19 +13,25 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class DashArmor {
-    public static final CustomArmorMaterial GlowstoneArmor = new CustomArmorMaterial("glowstone",
-            15,
-            new int[]{2, 5, 6, 2},
-            9,
-            SoundEvents.ITEM_ARMOR_EQUIP_IRON,
-            0.0F,
-            0.0F,
-            () -> Ingredient.ofItems(Items.IRON_INGOT));
+    public static final Identifier GlowstoneArmorDescriptionId = new Identifier(DashMod.ModId, "glowstone");
 
+    public static final CustomArmorMaterial GlowstoneArmor;
+
+    static {
+        GlowstoneArmor = new CustomArmorMaterial("glowstone",
+                15,
+                new int[]{2, 5, 6, 2},
+                9,
+                SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+                0.0F,
+                0.0F,
+                () -> Ingredient.ofItems(Items.IRON_INGOT),
+                () -> GlowstoneArmorDescriptionId);
+    }
 
     public static void init(String modid) {
         Registry.register(DashMod.ArmorSetRegistry,
-                new Identifier(modid, "glowstone"),
+                GlowstoneArmorDescriptionId,
                 new ArmorDescription()
                         .withSet(DashItems.find(GlowstoneArmor))
                         .restrict(StatusEffects.GLOWING)
@@ -33,7 +39,7 @@ public class DashArmor {
                         .forEntitiesNear(new RangeEnchantApply(
                                 StatusEffects.GLOWING,
                                 entity -> true,
-                                10,
+                                20,
                                 20 * 10)));
     }
 }

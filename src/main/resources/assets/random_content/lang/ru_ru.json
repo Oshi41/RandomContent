@@ -60,5 +60,9 @@
   "item.random_content.glowstone_chest": "Нагрудник откровения",
   "item.random_content.glowstone_head": "Шлем открытия",
   "item.random_content.glowstone_feet": "Ботинки зрения",
-  "item.random_content.glowstone_chunk": "Осколок светкамня"
+  "item.random_content.glowstone_chunk": "Осколок светкамня",
+  "random_content.full_set_perks": "Способности при полном сете:",
+  "random_content.constant_potion": "Постоянный эффект -  ",
+  "random_content.restricted_potion": "Снимает эффект - ",
+  "random_content.ranged_potion_str_format": "В радиусе %s блоков накладывает на мобов "
 }

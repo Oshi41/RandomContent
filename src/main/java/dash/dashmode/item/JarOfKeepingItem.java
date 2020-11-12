@@ -22,6 +22,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +53,17 @@ public class JarOfKeepingItem extends BlockItem {
 
         // Already have entity inside
         if (tag != null && !tag.isEmpty() && EntityType.fromTag(tag.getCompound(JarOfKeepingBlockEntity.EntityTag)).isPresent()) {
+
+            if (user.isSneaking()) {
+                HitResult hitResult = user.raycast(5, 1, false);
+                Vec3d pos = hitResult.getPos();
+                if (pos == null) {
+                    pos = user.getPos();
+                }
+
+                spawnEntity(world, itemStack, new BlockPos(pos));
+            }
+
             return use;
         }
 
@@ -107,18 +120,11 @@ public class JarOfKeepingItem extends BlockItem {
                 if (breakChance > 0 && random.nextInt(breakChance) == 0) {
 
                     if (!world.isClient()) {
-                        Vec3d pos = entity.getPos()
-                                .add(
-                                        (random.nextFloat() * 2) - 1,
-                                        (random.nextFloat() * 2) - 1,
-                                        (random.nextFloat() * 2) - 1
-                                );
-
-                        Optional<Entity> optional = EntityType.getEntityFromTag(entityTag, world);
-                        if (optional.isPresent()) {
-                            optional.get().setPos(pos.x, pos.y, pos.z);
-                            world.spawnEntity(optional.get());
-                        }
+                        spawnEntity(world, stack, new BlockPos(entity.getPos().add(
+                                (random.nextFloat() * 2) - 1,
+                                (random.nextFloat() * 2) - 1,
+                                (random.nextFloat() * 2) - 1
+                        )));
                     }
 
                     tag.put(JarOfKeepingBlockEntity.EntityTag, new CompoundTag());
@@ -165,5 +171,20 @@ public class JarOfKeepingItem extends BlockItem {
         }
 
         return null;
+    }
+
+    private void spawnEntity(World world, ItemStack stack, BlockPos pos) {
+        CompoundTag subTag = stack.getOrCreateSubTag(JarOfKeepingBlockEntity.BlockItemTag);
+        CompoundTag entityTag = subTag.getCompound(JarOfKeepingBlockEntity.EntityTag);
+        subTag.put(JarOfKeepingBlockEntity.EntityTag, new CompoundTag());
+
+        if (!entityTag.isEmpty()) {
+            Optional<EntityType<?>> type = EntityType.fromTag(entityTag);
+            if (type.isPresent() && !world.isClient()) {
+                Entity entity = type.get().create(world);
+                entity.setPos(pos.getX(), pos.getY(), pos.getX());
+                world.spawnEntity(entity);
+            }
+        }
     }
 }

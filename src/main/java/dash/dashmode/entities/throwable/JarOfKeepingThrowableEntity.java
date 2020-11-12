@@ -2,8 +2,6 @@ package dash.dashmode.entities.throwable;
 
 import dash.dashmode.blockentity.JarOfKeepingBlockEntity;
 import dash.dashmode.registry.DashEntities;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -14,6 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
@@ -52,28 +52,41 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
         Entity entity = entityHitResult.getEntity();
         ItemStack stack = getItem();
 
-        boolean isCreative = getOwner() instanceof PlayerEntity && ((PlayerEntity) getOwner()).isCreative();
+        // creative player can catch any mobs
+        boolean isCreative = (getOwner() instanceof PlayerEntity && ((PlayerEntity) getOwner()).isCreative());
+        // or check can catch
+        boolean canCatch = isCreative || isCatchableEntity(entity);
 
-        if (entity != null)
-            if (isCreative || isCatchableEntity(entity)) {
-                CompoundTag tag = stack.getOrCreateSubTag(JarOfKeepingBlockEntity.BlockItemTag);
-                if (tag != null && !tag.isEmpty()) {
-                    int catchChance = tag.getInt(JarOfKeepingBlockEntity.CatchChanceTag);
-                    boolean canCatch = catchChance <= 0 || world.random.nextInt(catchChance) == 0;
+        // perform catch logic
+        if (canCatch) {
+            // contains NBT
+            CompoundTag tag = stack.getOrCreateSubTag(JarOfKeepingBlockEntity.BlockItemTag);
+            canCatch = tag != null && !tag.isEmpty();
 
-                    if (canCatch || isCreative) {
-                        CompoundTag entityTag = new CompoundTag();
-                        entity.saveToTag(entityTag);
-                        tag.put(JarOfKeepingBlockEntity.EntityTag, entity.toTag(entityTag));
-                    }
+            // should check for catch chance
+            if (canCatch && !isCreative) {
+                int catchChance = tag.getInt(JarOfKeepingBlockEntity.CatchChanceTag);
+                canCatch = catchChance <= 0 || world.random.nextInt(catchChance) == 0;
+            }
 
-                    if (world.isClient()) {
-                        spawnParticles(canCatch);
-                    } else {
-                        entity.remove();
-                    }
+            // save entity to NBT
+            if (canCatch) {
+                CompoundTag entityTag = new CompoundTag();
+                canCatch = entity.saveToTag(entityTag);
+
+                if (canCatch) {
+                    tag.put(JarOfKeepingBlockEntity.EntityTag, entity.toTag(entityTag));
                 }
             }
+        }
+
+        // perform particle effect
+        if (world.isClient()) {
+            spawnParticles(canCatch);
+        } else if (canCatch) {
+            // removing entity if can catch
+            entity.remove();
+        }
 
         dropStack(stack);
         remove();
@@ -101,21 +114,30 @@ public class JarOfKeepingThrowableEntity extends ThrownItemEntity {
         return slowness != null && slowness.getAmplifier() >= 3;
     }
 
-    @Environment(EnvType.CLIENT)
+    @Override
+    public Packet<?> createSpawnPacket() {
+        int id = 0;
+        if (getOwner() != null) {
+            id = getOwner().getEntityId();
+        }
+        return new EntitySpawnS2CPacket(this, id);
+    }
+
     protected void spawnParticles(boolean wasCaught) {
-        ParticleEffect effect = wasCaught ? ParticleTypes.EXPLOSION : ParticleTypes.SMOKE;
+        ParticleEffect effect = wasCaught ? ParticleTypes.EXPLOSION : ParticleTypes.FLAME;
 
         Random random = getEntityWorld().random;
+        int count = wasCaught ? 3 : 18;
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < count; i++) {
             world.addParticle(
                     effect,
                     getX() + random.nextFloat() - random.nextFloat(),
                     getY() + random.nextFloat() - random.nextFloat(),
                     getZ() + random.nextFloat() - random.nextFloat(),
-                    random.nextFloat() - 1,
+                    0,
                     random.nextFloat(),
-                    random.nextFloat() - 1
+                    0
             );
         }
     }

@@ -10,6 +10,7 @@ import net.minecraft.client.sound.MovingMinecartSoundInstance;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityEquipmentUpdateS2CPacket;
@@ -67,6 +68,11 @@ public class ClientPlayNetworkHandlerMixin {
         this.world.addEntity(i, entity);
         if (entity instanceof AbstractMinecartEntity) {
             client.getSoundManager().play(new MovingMinecartSoundInstance((AbstractMinecartEntity) entity));
+        }
+
+        if (entity instanceof ThrownEntity) {
+            Entity owner = world.getEntityById(packet.getEntityData());
+            ((ThrownEntity) entity).setOwner(owner);
         }
 
         ci.cancel();

@@ -1,7 +1,7 @@
 package dash.dashmode.item;
 
 import dash.dashmode.blockentity.JarOfKeepingBlockEntity;
-import dash.dashmode.entities.throwable.JarOfKeepingThrowableEntity;
+import dash.dashmode.entities.projectiles.JarOfKeepingThrowableEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;

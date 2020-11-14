@@ -16,4 +16,5 @@ public class DashToolMaterials {
     public static final ToolMaterial DiamondShears = new DashToolMaterial(2, 1561 * 0.95f, 8.0F, 0, 10, () -> Ingredient.ofItems(Items.DIAMOND));
     public static final ToolMaterial NetheriteShears = new DashToolMaterial(3, 2031 * 0.95f, 9.0F, 0, 15, () -> Ingredient.ofItems(Items.NETHERITE_INGOT));
 
+    public static final ToolMaterial PaperSword = new DashToolMaterial(0, 250, 6.0F, 0, 15, () -> Ingredient.ofItems(DashItems.PaperCrystal));
 }

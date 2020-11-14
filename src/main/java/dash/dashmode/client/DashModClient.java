@@ -5,6 +5,7 @@ import dash.dashmode.client.render.block.InfiniteShulkerBoxRender;
 import dash.dashmode.client.render.block.JarOfKeepingBlockEntityRenderer;
 import dash.dashmode.client.render.block.StackHolderBlockEntityRenderer;
 import dash.dashmode.client.render.entity.CosmoGhastEntityRenderer;
+import dash.dashmode.client.render.entity.PaperBookEntityRenderer;
 import dash.dashmode.client.render.entity.PaperCowRender;
 import dash.dashmode.client.render.entity.PaperZombieRender;
 import dash.dashmode.client.render.item.ItemInfiniteShulkerRender;
@@ -102,9 +103,12 @@ public class DashModClient implements ClientModInitializer {
 
     private void renderEntities() {
         EntityRendererRegistry.INSTANCE.register(DashEntities.JarOfKeepingThrowableEntityType, (e, c) -> new FlyingItemEntityRenderer<>(e, c.getItemRenderer()));
+        EntityRendererRegistry.INSTANCE.register(DashEntities.CustomFireBall, (e, c) -> new FlyingItemEntityRenderer<>(e, c.getItemRenderer()));
+
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperZombie, (e, c) -> new PaperZombieRender<>(e));
         EntityRendererRegistry.INSTANCE.register(DashEntities.PaperCow, (e, c) -> new PaperCowRender<>(e));
         EntityRendererRegistry.INSTANCE.register(DashEntities.CosmoGhast, (e, c) -> new CosmoGhastEntityRenderer(e));
+        EntityRendererRegistry.INSTANCE.register(DashEntities.PaperBook, (e, c) -> new PaperBookEntityRenderer<>(e));
     }
 
     private void renderBlockEntities() {

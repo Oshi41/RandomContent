@@ -64,5 +64,10 @@
   "random_content.full_set_perks": "Способности при полном сете:",
   "random_content.constant_potion": "Постоянный эффект -  ",
   "random_content.restricted_potion": "Снимает эффект - ",
-  "random_content.ranged_potion_str_format": "В радиусе %s блоков накладывает на мобов "
+  "random_content.ranged_potion_str_format": "В радиусе %s блоков накладывает на мобов ",
+  "item.random_content.bedrock_chunk": "Кусок бедрока",
+  "item.random_content.paper_sword": "Бумажный меч",
+  "random_content.any_armor_pass": "Пробивает любую защиту",
+  "entity_type.random_content.book": "",
+  "entity_type.random_content.custom_fireball": ""
 }

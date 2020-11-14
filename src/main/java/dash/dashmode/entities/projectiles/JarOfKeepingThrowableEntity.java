@@ -1,4 +1,4 @@
-package dash.dashmode.entities.throwable;
+package dash.dashmode.entities.projectiles;
 
 import dash.dashmode.blockentity.JarOfKeepingBlockEntity;
 import dash.dashmode.registry.DashEntities;

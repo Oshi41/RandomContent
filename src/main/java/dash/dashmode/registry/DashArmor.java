@@ -35,7 +35,7 @@ public class DashArmor {
                 new ArmorDescription()
                         .withSet(DashItems.find(GlowstoneArmor))
                         .restrict(StatusEffects.GLOWING)
-                        .withPermanentPotion(() -> new StatusEffectInstance(StatusEffects.NIGHT_VISION, 20))
+                        .withPermanentPotion(() -> new StatusEffectInstance(StatusEffects.NIGHT_VISION, 20, 0, false, false, true))
                         .forEntitiesNear(new RangeEnchantApply(
                                 StatusEffects.GLOWING,
                                 entity -> true,

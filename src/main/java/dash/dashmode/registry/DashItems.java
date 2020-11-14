@@ -38,6 +38,8 @@ public class DashItems {
     public static final Item DiamondFurnaceSpring;
 
     public static final Item GlowstoneChunk;
+    public static final Item BedrockChunk;
+    public static final Item PaperSword;
 
     static {
         PaperApple = new Item((new Item.Settings()).group(DashMod.DashItemsTab).food(FoodComponents.APPLE));
@@ -60,6 +62,8 @@ public class DashItems {
         DiamondFurnaceSpring = new UpgradeItem(new Item.Settings().maxCount(1).group(DashMod.DashItemsTab), 3);
 
         GlowstoneChunk = new Item(new Item.Settings().group(DashMod.DashItemsTab));
+        BedrockChunk = new Item(new Item.Settings().group(DashMod.DashItemsTab));
+        PaperSword = new DirectDamageSword(DashToolMaterials.PaperSword, 2, -2.4f, new Item.Settings().group(DashMod.DashItemsTab));
     }
 
     public static void init(String modId) {
@@ -83,6 +87,8 @@ public class DashItems {
         createAndRegisterArmorSet(DashArmor.GlowstoneArmor, new Item.Settings().group(DashMod.DashItemsTab), modId);
 
         Registry.register(Registry.ITEM, new Identifier(modId, "glowstone_chunk"), GlowstoneChunk);
+        Registry.register(Registry.ITEM, new Identifier(modId, "bedrock_chunk"), BedrockChunk);
+        Registry.register(Registry.ITEM, new Identifier(modId, "paper_sword"), PaperSword);
     }
 
     /**

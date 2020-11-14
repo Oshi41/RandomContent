@@ -2,9 +2,11 @@ package dash.dashmode.registry;
 
 import dash.dashmode.DashMod;
 import dash.dashmode.entities.cosmic.CosmoGhastEntity;
+import dash.dashmode.entities.paper.PaperBookEntity;
 import dash.dashmode.entities.paper.PaperCowEntity;
 import dash.dashmode.entities.paper.PaperZombieEntity;
-import dash.dashmode.entities.throwable.JarOfKeepingThrowableEntity;
+import dash.dashmode.entities.projectiles.CustomFireBall;
+import dash.dashmode.entities.projectiles.JarOfKeepingThrowableEntity;
 import dash.dashmode.utils.DynamicResourceUtils;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -32,6 +34,8 @@ public class DashEntities {
     public static final EntityType<PaperZombieEntity> PaperZombie;
     public static final EntityType<PaperCowEntity> PaperCow;
     public static final EntityType<CosmoGhastEntity> CosmoGhast;
+    public static final EntityType<PaperBookEntity> PaperBook;
+    public static final EntityType<dash.dashmode.entities.projectiles.CustomFireBall> CustomFireBall;
 
     static {
         JarOfKeepingThrowableEntityType = FabricEntityTypeBuilder.<JarOfKeepingThrowableEntity>create(SpawnGroup.MISC, (type, world) -> new JarOfKeepingThrowableEntity(world))
@@ -56,6 +60,16 @@ public class DashEntities {
                 .fireImmune()
                 .build();
 
+        PaperBook = FabricEntityTypeBuilder.<PaperBookEntity>create(SpawnGroup.MONSTER, (type, world) -> new PaperBookEntity(world))
+                .dimensions(EntityDimensions.fixed(1, 1.5F))
+                .trackRangeBlocks(10)
+                .build();
+
+        CustomFireBall = FabricEntityTypeBuilder.<dash.dashmode.entities.projectiles.CustomFireBall>create(SpawnGroup.MONSTER, (type, world) -> new CustomFireBall(world))
+                .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
+                .trackRangeBlocks(4)
+                .trackRangeBlocks(10)
+                .build();
     }
 
     public static void init(String modid) {
@@ -68,6 +82,8 @@ public class DashEntities {
         Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "paper_zombie"), PaperZombie);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "paper_cow"), PaperCow);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "cosmo_ghast"), CosmoGhast);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "book"), PaperBook);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(modid, "custom_fireball"), CustomFireBall);
     }
 
     private static void initAttributes(String modid) {

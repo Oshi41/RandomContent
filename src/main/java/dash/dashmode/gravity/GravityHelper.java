@@ -27,7 +27,7 @@ public class GravityHelper {
             return 1f;
         }
 
-        return DashMod.MainConfig.getConfig().dimensionsGravity.getOrDefault(world.getRegistryKey().getValue(), 1f);
+        return DashMod.MainConfig.getConfig().dimensionsGravity.getOrDefault(world.getRegistryKey().getValue().toString(), 1f);
     }
 
     /**

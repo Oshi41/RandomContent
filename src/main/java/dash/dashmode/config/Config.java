@@ -1,5 +1,6 @@
 package dash.dashmode.config;
 
+import dash.dashmode.config.engine.IoEngine;
 import dash.dashmode.event.LangChangeEvent;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.crash.CrashReport;

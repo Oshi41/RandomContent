@@ -4,7 +4,7 @@ import com.mojang.serialization.Lifecycle;
 import dash.dashmode.armor.ArmorDescription;
 import dash.dashmode.config.Config;
 import dash.dashmode.config.DashConfig;
-import dash.dashmode.config.JsonEngine;
+import dash.dashmode.config.engine.JsonEngine;
 import dash.dashmode.event.BlockBreakEvent;
 import dash.dashmode.registry.*;
 import net.fabricmc.api.ModInitializer;

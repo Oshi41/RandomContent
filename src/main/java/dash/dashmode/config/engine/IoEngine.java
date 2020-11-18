@@ -1,4 +1,6 @@
-package dash.dashmode.config;
+package dash.dashmode.config.engine;
+
+import dash.dashmode.config.ValueInfo;
 
 import java.util.List;
 

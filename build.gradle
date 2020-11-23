@@ -23,7 +23,14 @@ dependencies {
     compile group: 'org.skyscreamer', name: 'jsonassert', version: "${project.json_assert_version}"
 
     // https://mvnrepository.com/artifact/com.esotericsoftware.yamlbeans/yamlbeans
-    compile group: 'com.amihaiemil.web', name: 'eo-yaml', version: "${project.toml_version}"
+    compile group: 'com.amihaiemil.web', name: 'eo-yaml', version: "${project.eo_toml_version}"
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: "${project.jackson_version}"
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: "${project.jackson_version}"
+
 
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.

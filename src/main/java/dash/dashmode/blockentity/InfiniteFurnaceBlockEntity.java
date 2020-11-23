@@ -208,7 +208,7 @@ public class InfiniteFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
             return 1;
         }
 
-        return (int) (DashMod.MainConfig.getConfig().furnaceUpgradeScale * levels);
+        return (int) (DashMod.MainConfig.furnaceUpgradeScale.getValue() * levels);
     }
 
     protected void setCookTime(int time) {

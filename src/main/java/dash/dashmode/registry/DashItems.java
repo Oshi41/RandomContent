@@ -3,8 +3,10 @@ package dash.dashmode.registry;
 import dash.dashmode.DashMod;
 import dash.dashmode.item.*;
 import dash.dashmode.utils.CustomArmorMaterial;
+import net.minecraft.data.client.model.BlockStateVariantMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.FoodComponents;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -84,11 +86,19 @@ public class DashItems {
         Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_gold"), GoldFurnaceSpring);
         Registry.register(Registry.ITEM, new Identifier(modId, "furnace_coil_diamond"), DiamondFurnaceSpring);
 
-        createAndRegisterArmorSet(DashArmor.GlowstoneArmor, new Item.Settings().group(DashMod.DashItemsTab), modId);
+        createAndRegisterArmorSet(DashArmor.GlowstoneArmor,
+                new Item.Settings().group(DashMod.DashItemsTab),
+                modId,
+                DashArmorItem::new);
 
         Registry.register(Registry.ITEM, new Identifier(modId, "glowstone_chunk"), GlowstoneChunk);
         Registry.register(Registry.ITEM, new Identifier(modId, "bedrock_chunk"), BedrockChunk);
         Registry.register(Registry.ITEM, new Identifier(modId, "paper_sword"), PaperSword);
+
+        createAndRegisterArmorSet(DashArmor.GalaxyArmor,
+                new Item.Settings().group(DashMod.DashItemsTab),
+                modId,
+                AbsorbArmorItem::new);
     }
 
     /**
@@ -102,11 +112,14 @@ public class DashItems {
      * @param modid    - id of mod
      * @return
      */
-    private static Map<EquipmentSlot, ArmorItem> createAndRegisterArmorSet(CustomArmorMaterial material, Item.Settings settings, String modid) {
+    private static Map<EquipmentSlot, ArmorItem> createAndRegisterArmorSet(CustomArmorMaterial material,
+                                                                           Item.Settings settings,
+                                                                           String modid,
+                                                                           BlockStateVariantMap.TriFunction<ArmorMaterial, EquipmentSlot, Item.Settings, ArmorItem> pieceFunc) {
         HashMap<EquipmentSlot, ArmorItem> map = new HashMap<>();
 
         for (EquipmentSlot slot : Arrays.asList(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
-            map.put(slot, new DashArmorItem(material, slot, settings));
+            map.put(slot, pieceFunc.apply(material, slot, settings));
         }
 
         for (ArmorItem item : map.values()) {

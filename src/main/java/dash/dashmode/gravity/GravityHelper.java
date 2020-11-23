@@ -6,7 +6,6 @@ import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.world.World;
 
 public class GravityHelper {
 
@@ -18,16 +17,17 @@ public class GravityHelper {
      * @return
      */
     public static float getGravity(Entity entity) {
-        if (entity == null) {
+        if (entity == null || entity.getEntityWorld() == null) {
             return 1f;
         }
 
-        World world = entity.getEntityWorld();
-        if (world == null) {
-            return 1f;
+        Float result = DashMod.MainConfig.gravityMap.getValue().get(entity.getEntityWorld().getRegistryKey().getValue());
+
+        if (result == null) {
+            return 1;
         }
 
-        return DashMod.MainConfig.getConfig().dimensionsGravity.getOrDefault(world.getRegistryKey().getValue().toString(), 1f);
+        return result;
     }
 
     /**

@@ -16,6 +16,7 @@ public class DashArmor {
     public static final Identifier GlowstoneArmorDescriptionId = new Identifier(DashMod.ModId, "glowstone");
 
     public static final CustomArmorMaterial GlowstoneArmor;
+    public static final CustomArmorMaterial GalaxyArmor;
 
     static {
         GlowstoneArmor = new CustomArmorMaterial("glowstone",
@@ -27,6 +28,15 @@ public class DashArmor {
                 0.0F,
                 () -> Ingredient.ofItems(Items.IRON_INGOT),
                 () -> GlowstoneArmorDescriptionId);
+
+        GalaxyArmor = new CustomArmorMaterial("galaxy",
+                -1,
+                new int[]{3, 6, 8, 3},
+                10,
+                SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+                0.0F,
+                0.0F,
+                () -> Ingredient.EMPTY);
     }
 
     public static void init(String modid) {

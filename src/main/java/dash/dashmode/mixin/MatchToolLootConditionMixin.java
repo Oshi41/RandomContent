@@ -25,7 +25,7 @@ public class MatchToolLootConditionMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void initInject(ItemPredicate predicate, CallbackInfo ci) {
-        if (!DashMod.MainConfig.getConfig().fixModdedShearsDrop)
+        if (!DashMod.MainConfig.fixShears.getValue())
             return;
 
         Item item = ((ItemPredicateAccessor) predicate).rc_getItem();

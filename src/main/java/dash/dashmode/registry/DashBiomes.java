@@ -30,7 +30,7 @@ public class DashBiomes {
         Registry.register(Registry.BIOME_SOURCE, PaperBiomeSource.getValue(), dash.dashmode.biome.PaperBiomeSource.CODEC);
 
         BiomeRegistry biomeRegistry = new BiomeRegistry(modId, PaperLands, PaperMountains);
-        biomeRegistry.injectToOverworld(PaperLands, DashMod.MainConfig.getConfig().paperBiomeWeight);
+        biomeRegistry.injectToOverworld(PaperLands, DashMod.MainConfig.paperBiomeWeight.getValue());
 
         DataPackLoadedEvent.EVENT.register(biomeRegistry);
     }

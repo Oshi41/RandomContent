@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class LevelPropertiesMixin {
     @Inject(method = "getLifecycle", at = @At("RETURN"), cancellable = true)
     private void getLifecycleInject(CallbackInfoReturnable<Lifecycle> cir) {
-        if (cir.getReturnValue() == Lifecycle.experimental() && DashMod.MainConfig.getConfig().fixExperimentWarning) {
+        if (cir.getReturnValue() == Lifecycle.experimental() && DashMod.MainConfig.fixExperimentWarning.getValue()) {
             cir.setReturnValue(Lifecycle.stable());
         }
     }

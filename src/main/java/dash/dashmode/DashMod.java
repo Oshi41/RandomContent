@@ -2,11 +2,10 @@ package dash.dashmode;
 
 import com.mojang.serialization.Lifecycle;
 import dash.dashmode.armor.ArmorDescription;
-import dash.dashmode.config.Config;
-import dash.dashmode.config.DashConfig;
-import dash.dashmode.config.engine.JsonEngine;
+import dash.dashmode.config.ModConfig;
 import dash.dashmode.event.BlockBreakEvent;
 import dash.dashmode.registry.*;
+import dash.dashmode.utils.YamlReflectUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -22,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 public class DashMod implements ModInitializer {
     public static final String ModId = "random_content";
-    public static final Config<DashConfig> MainConfig = new Config<>(DashConfig.class, ModId, new JsonEngine());
+    public static final ModConfig MainConfig = new ModConfig(new Identifier(ModId, "main"));
     public static final Logger MainLogger = LogManager.getLogger(ModId);
     public static final ItemGroup DashItemsTab = FabricItemGroupBuilder
             .build(new Identifier(ModId, "general"),
@@ -34,7 +33,13 @@ public class DashMod implements ModInitializer {
     @Override
     public void onInitialize() {
         MainLogger.info("Random Content is loading...");
-        MainConfig.read();
+
+        DashMod.MainLogger.info("Patching yaml serializer");
+        if (!YamlReflectUtils.patchStringClasses(Identifier.class)) {
+            DashMod.MainLogger.warn("Yaml patching was failed");
+        }
+
+        MainConfig.config.load();
 
         DashBlocks.init(ModId);
         DashItems.init(ModId);

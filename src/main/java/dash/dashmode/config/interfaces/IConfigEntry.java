@@ -1,6 +1,6 @@
 package dash.dashmode.config.interfaces;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import dash.dashmode.config.yamlImpl.TypeRef;
 import net.minecraft.text.Text;
 
 public interface IConfigEntry<T> {
@@ -53,7 +53,7 @@ public interface IConfigEntry<T> {
      *
      * @return
      */
-    TypeReference<T> typeRef();
+    TypeRef<T> typeRef();
 
     /**
      * Validates value from config

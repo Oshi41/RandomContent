@@ -1,9 +1,9 @@
 package dash.dashmode.config;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import dash.dashmode.DashMod;
 import dash.dashmode.config.interfaces.IConfigCategory;
 import dash.dashmode.config.interfaces.IConfigEntry;
+import dash.dashmode.config.yamlImpl.TypeRef;
 import net.minecraft.text.Text;
 
 import java.util.function.Function;
@@ -11,17 +11,17 @@ import java.util.function.Function;
 public class ConfigEntry<T> implements IConfigEntry<T> {
     private final String key;
     private final Text comment;
-    private final TypeReference<T> clazz;
+    private final TypeRef<T> clazz;
     private final Function<T, T> validateFunc;
 
     private IConfigCategory category;
     private T value;
 
-    public ConfigEntry(IConfigCategory category, String key, Text comment, TypeReference<T> clazz, Function<T, T> validateFunc, T defaultValue) {
+    public ConfigEntry(IConfigCategory category, String key, Text comment, Function<T, T> validateFunc, T defaultValue) {
         category.withChildren(this);
         this.key = key;
         this.comment = comment;
-        this.clazz = clazz;
+        this.clazz = new TypeRef<>(defaultValue.getClass());
 
         if (validateFunc == null) {
             validateFunc = t -> t;
@@ -56,7 +56,7 @@ public class ConfigEntry<T> implements IConfigEntry<T> {
         }
 
         try {
-            this.value = (T) val;
+            this.value = (T) typeRef().clazz.cast(val);
         } catch (Exception e) {
             DashMod.MainLogger.warn(String.format("Error during populate config\n origing value: %s\npopulating value^ %s", value, val));
         }
@@ -73,7 +73,7 @@ public class ConfigEntry<T> implements IConfigEntry<T> {
     }
 
     @Override
-    public TypeReference<T> typeRef() {
+    public TypeRef<T> typeRef() {
         return clazz;
     }
 

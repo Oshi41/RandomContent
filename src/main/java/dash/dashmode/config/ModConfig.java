@@ -5,7 +5,6 @@ import dash.dashmode.DashMod;
 import dash.dashmode.config.configs.YamlConfig;
 import dash.dashmode.config.interfaces.IConfig;
 import dash.dashmode.config.interfaces.IConfigEntry;
-import dash.dashmode.config.yamlImpl.TypeRef;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -32,7 +31,6 @@ public class ModConfig {
         gravityMap = new ConfigEntry<>(environment,
                 "gravity",
                 new TranslatableText("random_content.gravity_dims.comment"),
-                new TypeRef<>(),
                 null,
                 new HashMap<Identifier, Float>() {{
                     put(World.OVERWORLD.getValue(), 1F);
@@ -44,21 +42,18 @@ public class ModConfig {
                 new TranslatableText("random_content.paper_lands_weight.comment")
                         .append(System.lineSeparator())
                         .append(new TranslatableText("random_content.range_restrict.comment", Float.MIN_NORMAL, 1000)),
-                new TypeRef<>(),
                 t -> MathHelper.clamp(t, Float.MIN_NORMAL, 1000),
                 0.5F);
 
         fixShears = new ConfigEntry<>(environment,
                 "fixShears",
                 new TranslatableText("random_content.fixModdedShears.comment"),
-                new TypeRef<>(),
                 null,
                 true);
 
         fixExperimentWarning = new ConfigEntry<>(environment,
                 "fixExperimentWarning",
                 new TranslatableText("random_content.fixExperimentWarning.comment"),
-                new TypeRef<>(),
                 null,
                 true);
 
@@ -67,7 +62,6 @@ public class ModConfig {
                 new TranslatableText("random_content.furnaceUpgradeScale.comment")
                         .append(System.lineSeparator())
                         .append(new TranslatableText("random_content.range_restrict.comment", 1, 5)),
-                new TypeRef<>(),
                 t -> MathHelper.clamp(t, 1, 5),
                 1.7F);
 
